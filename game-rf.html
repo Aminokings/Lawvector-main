@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="court">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Real or Fake — LawOrchard Law Lab</title>
+<meta name="description" content="Twelve genuine decisions and six inventions. The fakes read perfectly well — the tell is whether the rule does any work. A free interactive law game from LawOrchard.">
+<meta name="theme-color" content="#1d1712">
+<meta name="color-scheme" content="dark light">
+<link rel="canonical" href="https://laworchard.com/game-rf.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LawOrchard">
+<meta property="og:title" content="Real or Fake — LawOrchard">
+<meta property="og:description" content="Twelve genuine decisions and six inventions. The fakes read perfectly well — the tell is whether the rule does any work.">
+<meta property="og:url" content="https://laworchard.com/game-rf.html">
+<meta property="og:image" content="https://laworchard.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Real or Fake — LawOrchard">
+<meta name="twitter:description" content="Twelve genuine decisions and six inventions. The fakes read perfectly well — the tell is whether the rule does any work.">
+<meta name="twitter:image" content="https://laworchard.com/og-image.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2064%2064%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20aria-hidden%3D%22true%22%3E%3Cpolygon%20points%3D%2232%2C3%2061%2C32%2032%2C61%203%2C32%22%20fill%3D%22%23b8983c%22%20opacity%3D%22.22%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%229%22%20width%3D%2244%22%20height%3D%2244%22%20fill%3D%22none%22%20stroke%3D%22%23b8983c%22%20stroke-width%3D%223.2%22%2F%3E%3Cpolygon%20points%3D%2224.56%2C21.05%2033.05%2C12.56%2035.88%2C15.39%2027.39%2C23.88%22%20fill%3D%22%233b1c0e%22%2F%3E%3Cpolygon%20points%3D%2228.45%2C24.94%2036.94%2C16.45%2051.44%2C30.95%2042.95%2C39.44%22%20fill%3D%22%233b1c0e%22%2F%3E%3Cpolygon%20points%3D%2238.71%2C26.71%2035.88%2C23.88%2021.74%2C38.02%2024.56%2C40.85%22%20fill%3D%22%233b1c0e%22%2F%3E%3Cpolygon%20points%3D%2221.31%2C37.60%2024.99%2C41.27%2016.79%2C45.80%22%20fill%3D%22%23b8983c%22%2F%3E%3Cpath%20d%3D%22M16.79%2045.80%20L20.32%2042.26%22%20stroke%3D%22%23faf9f5%22%20stroke-width%3D%221.1%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2224.21%22%20cy%3D%2238.37%22%20r%3D%221%22%20fill%3D%22%23faf9f5%22%2F%3E%3C%2Fsvg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="lab" data-game="rf">
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="topbar">
+  <div class="wrap tb-main">
+    <a class="brand" href="index.html"><svg class="logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><polygon points="32,3 61,32 32,61 3,32" fill="var(--brass)" opacity=".22"/><rect x="10" y="9" width="44" height="44" fill="none" stroke="var(--brass)" stroke-width="3.2"/><polygon points="24.56,21.05 33.05,12.56 35.88,15.39 27.39,23.88" fill="var(--ink)"/><polygon points="28.45,24.94 36.94,16.45 51.44,30.95 42.95,39.44" fill="var(--ink)"/><polygon points="38.71,26.71 35.88,23.88 21.74,38.02 24.56,40.85" fill="var(--ink)"/><polygon points="21.31,37.60 24.99,41.27 16.79,45.80" fill="var(--brass)"/><path d="M16.79 45.80 L20.32 42.26" stroke="var(--panel)" stroke-width="1.1" stroke-linecap="round"/><circle cx="24.21" cy="38.37" r="1" fill="var(--panel)"/></svg><b>LawOrchard</b><i>LAW, EXPLAINED</i></a>
+    <div class="tb-tools">
+      <div class="lens" id="lensSel">
+        <button data-l="" class="on">ALL</button><button data-l="CM">COMMON</button>
+        <button data-l="CV">CIVIL</button><button data-l="MX">MIXED</button></div>
+      <button class="iconbtn" id="searchBtn" aria-label="Search the site">⌕ Search</button>
+      <div class="thmwrap">
+        <button class="iconbtn" id="thmBtn">◐ Theme</button>
+        <div class="thmmenu" id="thmMenu"></div>
+      </div>
+      <button class="iconbtn" id="moreBtn">··· More</button>
+      <span class="clock" id="clock"></span>
+    </div>
+  </div>
+  <div class="groupnav"><div class="wrap"><div class="grow" id="gnav"></div></div></div>
+  <div class="subnav" id="subnav"><div class="wrap"><div class="srow" id="nav"></div></div></div>
+  <div class="ticker" id="ticker"><span class="tk-lbl">LIVE</span><div class="tk-track" id="tkTrack"></div></div>
+  <div class="lensbar" id="lensBar"><div class="wrap"></div></div>
+</div>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span id="heroMeta">LAW LAB · CASE LAW</span></div>
+    <h1>Real or Fake</h1>
+    <p class="sub">Twelve genuine decisions and six inventions. The fakes read perfectly well — the tell is whether the rule does any work.</p>
+    <div class="cta"><a class="btn lg ghost" href="lab.html">← All twelve games</a></div>
+  </div>
+</div>
+
+<main class="wrap" id="main" tabindex="-1"></main>
+
+<footer class="wrap">
+  <p><b>LAWORCHARD</b> — understand the law without a law degree.</p>
+  <p style="margin-top:9px;max-width:80ch">Homicide rates and population sync live from the World Bank API (free, no key). Rule-of-law dimensions are a curated snapshot calibrated to published indices; sub-dimension decompositions are modelled and labelled as such. Case summaries are simplified for teaching.</p>
+  <p style="margin-top:9px">Research and education only. <b style="color:var(--red)">Not legal advice.</b> Laws differ by jurisdiction and change constantly — verify against primary sources before relying on anything here.</p>
+  <div class="docket" id="docketBlock"></div>
+  <p style="margin-top:18px">© 2026 LawOrchard.</p>
+</footer>
+
+<button id="syncBtn" style="display:none"></button>
+<div class="searchov" id="searchOv" role="dialog" aria-label="Search">
+  <div class="searchbox">
+    <input id="searchIn" type="search" placeholder="Search everything — a country, a case, a term, a problem…" aria-label="Search query">
+    <div class="srch-list" id="searchRes"></div>
+    <div class="searchfoot"><span><span class="kbd">↑</span> <span class="kbd">↓</span> move</span>
+      <span><span class="kbd">enter</span> open</span><span><span class="kbd">esc</span> close</span>
+      <span style="margin-left:auto"><span class="kbd">⌘K</span> or <span class="kbd">/</span> anywhere</span></div>
+  </div>
+</div>
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<div class="toast" id="toast"></div>
+
+<div class="term" id="term">
+  <div class="term-bar" id="termBar"><b style="margin:0;color:var(--brass);font-weight:700">laworchard</b>:~$
+    <span style="color:var(--faint)">legal research console</span>
+    <b id="termHint">click to open · type /help</b></div>
+  <div class="term-body">
+    <div class="term-out" id="termOut"></div>
+    <div class="term-in"><span>laworchard:~$</span><input id="termIn" placeholder="/help" autocomplete="off" spellcheck="false"></div>
+  </div>
+</div>
+
+<button class="dock-fab" id="dockFab">Ask the Clerk</button>
+<div class="dock" id="dock">
+  <div class="dock-h"><b>Clerk</b><i>LOCAL</i><button id="dockX">✕</button></div>
+  <div class="dock-b">
+    <div class="dock-out" id="dockOut"></div>
+    <div class="suggest" id="dockSug"></div>
+    <div class="dock-in"><input id="dockIn" placeholder="Ask about a jurisdiction, case or term…"><button class="btn" id="dockGo">Run</button></div>
+  </div>
+</div>
+
+
+<script src="fx.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
