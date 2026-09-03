@@ -36,6 +36,10 @@ Two streams, and the distinction matters.
 
 A case can qualify on both counts; put it where it lands hardest.
 
+**`CURRENTS`** is a separate array for the third stream, *The wider picture* — shifts that are not a single ruling. An index that moves, a count of countries adopting something, a measured trend. These absorbed the old Legal Wire section.
+
+The bar here is higher, not lower, because a trend claim is easy to assert and hard to check. Every entry needs a body that publishes its method — the World Justice Project, UNCTAD, Amnesty, a national statistics office — and the validator rejects any entry whose text contains a figure but no source. No "experts say", no "courts are increasingly", no direction-of-travel claims that nobody has counted.
+
 ## What does not belong here
 
 - Procedural rulings, case management, permission decisions

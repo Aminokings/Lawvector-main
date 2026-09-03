@@ -31,6 +31,13 @@ const RECENT = [
  why:'This is the biggest change to adult safeguarding law in over a decade, and it cuts both ways. There were 364,900 authorisation requests in England in 2024/25, most of them for people over 65 in care homes, and only 21% were processed within the legal time limit. Far fewer will now be needed. But the flip side is real: some older and disabled people may lose a legal safeguard simply because they do not object to their care. If you have a relative in a care home under one of these authorisations, it may now be reviewed and removed.',
  src:'https://supremecourt.uk/uploads/uksc_2025_0042_judgment_4f54653cf4.pdf', srcName:'Judgment (PDF)'},
 
+{id:'icjstrike', t:'Right to Strike under ILO Convention No. 87 (advisory opinion)',
+ cite:'ICJ, advisory opinion', date:'2026-05-21', court:'International Court of Justice', iso:'',
+ area:'Workers\u2019 rights', stream:'people',
+ sum:'By ten votes to four the International Court of Justice held that the right to strike is protected under ILO Convention No. 87, the 1948 treaty on freedom of association. The question had been referred by the International Labour Organization after decades of deadlock between governments, unions and employers over whether a treaty that never uses the word "strike" nonetheless protects it. The Court said it does. It also went out of its way to say it was not defining the scope of that right \u2014 what counts as a lawful strike, and what limits a state may place on it, are left open.',
+ why:'Roughly 160 countries have ratified Convention 87, so this reaches far beyond the courtroom. Advisory opinions are not binding, but national courts and labour tribunals routinely treat them as authoritative, and unions now have a much stronger footing when a government says striking is not a protected activity. The unresolved half matters just as much: because the Court declined to define scope, the fights over essential-services bans, notice requirements and secondary action all continue.',
+ src:'https://www.icj-cij.org/case/191', srcName:'ICJ case file'},
+
 {id:'ukscep', t:'Emotional Perception AI Ltd v Comptroller General of Patents',
  cite:'[2026] UKSC 3', date:'2026-02-11', court:'UK Supreme Court', iso:'GBR',
  area:'Patents and AI', stream:'landmark',
@@ -85,6 +92,22 @@ const RECENT = [
  cite:'[2026] UKSC 4', date:'2026-02-11', court:'UK Supreme Court', iso:'GBR',
  area:'Trade marks', stream:'landmark', sum:'', why:'',
  src:'https://supremecourt.uk/cases/uksc-2025-0004', srcName:'Supreme Court case page'}
+];
+
+/* The wider picture: shifts that are not a single ruling. Same rule as
+   everything else here \u2014 a figure without a source does not go in. */
+const CURRENTS = [
+{id:'wjp2025', t:'Rule of law fell in more than two thirds of countries',
+ date:'2025-10-28', area:'Rule of law', kind:'Index',
+ sum:'The World Justice Project\u2019s 2025 index found 68% of the 143 countries it measures had declined, against 57% the year before \u2014 the sharpest annual drop since the index began in 2009, and the eighth consecutive year in which more countries fell than rose. The asymmetry is the striking part: countries that improved gained an average of 0.52%, while those that declined lost 1.07%, twice as much.',
+ why:'Rule of law is not an abstraction. It is whether a court will hear you, whether a decision can be challenged, and whether the answer depends on who you are. A broad decline means those things are getting harder in more places at once than at any point this index has recorded.',
+ src:'https://worldjusticeproject.org/news/wjp-rule-law-index-2025-global-press-release', srcName:'World Justice Project'},
+
+{id:'unctaddp', t:'Data protection law now covers most of the world, very unevenly',
+ date:'2026-01-01', area:'Data protection', kind:'Coverage',
+ sum:'UNCTAD\u2019s cyberlaw tracker puts data protection legislation in place across 71% of the 194 economies it follows, with 9% at draft stage and 15% with nothing at all. The regional spread is enormous: 96% of European countries have such a law, against 69% in the Americas, 57% in Asia and the Pacific, and 50% in Africa.',
+ why:'Whether you can find out what a company holds about you, object to it, or complain to anyone who can act, depends almost entirely on which of those groups your country falls into. The gap is not closing evenly, and half of Africa still has no framework at all.',
+ src:'https://unctad.org/topic/ecommerce-and-digital-economy/ecommerce-law-reform/summary-adoption-e-commerce-legislation-worldwide', srcName:'UNCTAD Global Cyberlaw Tracker'}
 ];
 
 /* Cases argued but not yet decided. Worth watching, clearly separated

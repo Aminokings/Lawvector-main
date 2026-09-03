@@ -34,12 +34,13 @@ catch { console.error('FAIL  cases-recent.js is missing.'); process.exit(1); }
 const PROBE = `
 ;({ RECENT:         typeof RECENT         !== 'undefined' ? RECENT         : undefined,
     PENDING:        typeof PENDING        !== 'undefined' ? PENDING        : undefined,
+    CURRENTS:       typeof CURRENTS       !== 'undefined' ? CURRENTS       : undefined,
     RECENT_UPDATED: typeof RECENT_UPDATED !== 'undefined' ? RECENT_UPDATED : undefined })`;
 
-let RECENT, PENDING, RECENT_UPDATED;
+let RECENT, PENDING, CURRENTS, RECENT_UPDATED;
 try {
   const ctx = vm.createContext({});
-  ({ RECENT, PENDING, RECENT_UPDATED } = vm.runInContext(src + PROBE, ctx, { timeout: 4000 }));
+  ({ RECENT, PENDING, CURRENTS, RECENT_UPDATED } = vm.runInContext(src + PROBE, ctx, { timeout: 4000 }));
 } catch (e) {
   console.error('FAIL  cases-recent.js does not parse: ' + e.message);
   process.exit(1);
@@ -95,6 +96,24 @@ const today = new Date().toISOString().slice(0, 10);
     warn(`${at} reads as a prediction or a promise. Keep it descriptive.`);
 });
 
+/* CURRENTS — the wider picture. Not court decisions, so no citation, but the
+   same rule applies: a figure without a source does not go in. */
+(Array.isArray(CURRENTS) ? CURRENTS : []).forEach((c, i) => {
+  const at = `CURRENTS[${i}] ${c && c.id ? '(' + c.id + ')' : ''}`;
+  ['id', 't', 'date', 'area', 'sum', 'src'].forEach(k => {
+    if (!c[k] || String(c[k]).trim() === '') fail(`${at} is missing "${k}".`);
+  });
+  if (c.id) {
+    if (seen.has(c.id)) fail(`${at} duplicate id (clashes with a case).`);
+    seen.add(c.id);
+  }
+  if (c.src && !/^https:\/\//.test(c.src)) fail(`${at} src must be an https URL.`);
+  if (c.date && !/^\d{4}-\d{2}-\d{2}$/.test(c.date)) fail(`${at} date must be YYYY-MM-DD.`);
+  if (c.date && c.date > today) fail(`${at} is dated in the future (${c.date}).`);
+  /* a trend claim with a number in it and no source is the worst case here */
+  if (/\d/.test(c.sum || '') && !c.src) fail(`${at} states figures with no source.`);
+});
+
 (Array.isArray(PENDING) ? PENDING : []).forEach((p, i) => {
   const at = `PENDING[${i}] ${p && p.id ? '(' + p.id + ')' : ''}`;
   ['id', 't', 'court', 'what', 'stage', 'src'].forEach(k => {
@@ -110,7 +129,7 @@ const nLi = (RECENT || []).length - nEx;
 
 console.log('');
 console.log(`  cases-recent.js — ${(RECENT || []).length} decisions (${nEx} explained, ${nLi} listed), ` +
-            `${(PENDING || []).length} pending, reviewed ${RECENT_UPDATED}`);
+            `${(CURRENTS || []).length} currents, ${(PENDING || []).length} pending, reviewed ${RECENT_UPDATED}`);
 console.log('');
 
 warnings.forEach(w => console.log('  warn  ' + w));

@@ -17,6 +17,8 @@ Amin reviews the diff in GitHub Desktop and pushes. Do not commit or push withou
 | `validate-cases.js` | Run before committing any change to `cases-recent.js` |
 | `DEPLOY.md`, `UPDATING.md` | Hosting notes, and the brief for updating cases |
 
+The old Legal Wire section on About was folded into Recent Decisions — most of it was unsourced trend writing and did not survive the sourcing rule. Do not reintroduce a second "what's new" area.
+
 No build step, no dependencies, no framework. Plain HTML, CSS and JS.
 
 ## Before finishing any change
@@ -38,4 +40,4 @@ No build step, no dependencies, no framework. Plain HTML, CSS and JS.
 
 Written for people who are not lawyers and may be frightened. Plain language, define terms in the same sentence, short paragraphs. Say who loses as well as who gains. Never advise — explain what the law is, not what someone should do. Every factual claim that could matter carries a source or a confidence label.
 
-Counts change; check before repeating one in copy. Currently: 112 jurisdictions, 42 landmark cases, 13 games, 9 annotated documents, 6 process maps, 5 issue-spotter fact patterns, 36 help jurisdictions, 24 qualification routes, 11 recent decisions.
+Counts change; check before repeating one in copy. Currently: 112 jurisdictions, 42 landmark cases, 13 games, 9 annotated documents, 6 process maps, 5 issue-spotter fact patterns, 36 help jurisdictions, 24 qualification routes, 12 recent decisions and 2 currents.

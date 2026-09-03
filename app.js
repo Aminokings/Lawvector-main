@@ -346,33 +346,7 @@ const CASES=[
  w:'A rare instance of the world court settling a labour rights question, showing how advisory opinions can resolve disputes no ordinary litigation could reach.'}
 ];
 
-/* ---------- LEGAL DEVELOPMENTS WIRE ---------- */
-const WIRE=[
-{cat:'Courts',iso:'USA',t:'Long-standing agency-independence precedent overturned',
- d:'The US Supreme Court held that the president may remove members of independent agencies at will, ending a rule that had stood since 1935 and reshaping the constitutional position of federal regulators.'},
-{cat:'Rights',iso:'USA',t:'Birthright citizenship left intact',
- d:'An executive attempt to end automatic citizenship for children born on US soil to non-citizen parents was rejected, leaving the Fourteenth Amendment\'s Citizenship Clause reading undisturbed.'},
-{cat:'International',iso:'',t:'ICJ addresses the right to strike',
- d:'Responding to a question from the International Labour Organization, the world court took up whether Convention No. 87 protects the right to strike — a dispute between governments, unions and employers running back decades.'},
-{cat:'International',iso:'',t:'ICJ rules on Caribbean territorial sovereignty',
- d:'A judgment on sovereignty over the Sapodilla Cayes between Belize and Honduras, with Guatemala seeking to intervene — a reminder that the court\'s core work remains state-to-state boundary disputes.'},
-{cat:'Rights',iso:'HUN',t:'EU court rules against Hungary on anti-LGBTI law',
- d:'The Court of Justice delivered judgment in Commission v Hungary, treating the dispute as engaging the founding values of the Union rather than a narrow point of internal market law.'},
-{cat:'Data',iso:'',t:'Rule of law recession accelerates',
- d:'The World Justice Project reported that 68% of countries declined on its rule of law measure in its latest index, up from 57% the prior year — the broadest simultaneous decline it has recorded.'},
-{cat:'Technology',iso:'',t:'AI systems enter the evidentiary frame',
- d:'Courts across several jurisdictions are being asked to rule on the admissibility and disclosure obligations attached to algorithmic decision-making, from risk scoring in sentencing to automated content moderation.'},
-{cat:'Environment',iso:'NLD',t:'Corporate climate duty litigation spreads',
- d:'Following the Shell litigation, claims seeking to impose emissions-reduction duties directly on private companies have been filed in multiple jurisdictions, testing how far a general duty of care can stretch.'},
-{cat:'Courts',iso:'IND',t:'Apex court caseload pressure intensifies',
- d:'The Supreme Court of India continues to carry a docket no comparable court approaches, keeping structural questions about pendency, vacation benches and access to justice permanently live.'},
-{cat:'Rights',iso:'',t:'Digital rights litigation converges on surveillance',
- d:'Strasbourg and national constitutional courts continue to narrow the space for bulk interception, requiring prior independent authorisation and end-to-end safeguards rather than after-the-fact review.'},
-{cat:'Criminal',iso:'',t:'Abolitionist trend continues, unevenly',
- d:'The number of states that have abolished the death penalty in law or in practice continues to edge upward, even as a small number of retentionist states account for the overwhelming majority of executions.'},
-{cat:'Data',iso:'',t:'GDPR-style regimes now the global default',
- d:'With Brazil, India, South Africa, Morocco and dozens of others operating comparable frameworks, the European model of enforceable individual data rights has become the world\'s baseline for privacy regulation.'}
-];
+
 
 /* ---------- Q&A CORPUS ---------- */
 const QA=[
@@ -1120,11 +1094,6 @@ const SEC=[
  'The provenance page — every metric labelled by confidence, plus limitations, data vintage and sources.',
  'Anyone about to rely on something they read here.',
  'Check the confidence label before citing any figure. Measured and modelled are very different things.'],
-['docket','Wire','The Legal Wire',
- 'Developments shaping the current legal landscape, filterable by domain.','about',
- 'A short feed of recent legal developments with a written digest.',
- 'Anyone keeping half an eye on where the law is moving.',
- 'Filter by category. Verify anything recent against the court\'s own published judgment.']
 ];
 
 const SECBY=Object.fromEntries(SEC.map(x=>[x[0],x]));
@@ -2311,7 +2280,8 @@ function answer(q){
         <p><b>${esc(c.t)}</b> ${esc(c.cite)} \u2014 ${esc(c.court)}, ${rcDate(c.date)}.</p>
         <p>${esc(c.sum.split('. ').slice(0,2).join('. '))}.</p>
         <p>Recent Decisions holds ${RCASES.length} judgment${RCASES.length===1?'':'s'} in two streams \u2014 what changed
-        for ordinary people, and what changed the law itself. Every entry links to its source.</p>
+        for ordinary people, and what changed the law itself \u2014 plus ${RCURR.length} measured shift${RCURR.length===1?'':'s'}
+        in how legal systems are working overall. Every entry links to its source.</p>
         <p><a href="learn.html#recent">Open Recent Decisions \u2192</a></p>`;
     }
     return `<h5>Recent decisions</h5><p>The site tracks recent significant judgments, split into rulings that change
@@ -2598,33 +2568,6 @@ function renderQuiz(){
 /* ==================================================================
    12 · DOCKET
    ================================================================== */
-let wireCat='';
-function renderDocket(){
-  const cats=[...new Set(WIRE.map(w=>w.cat))];
-  const hits=WIRE.filter(w=>!wireCat||w.cat===wireCat);
-  const digest=`Across the current docket the recurring theme is <b>institutional design under pressure</b>:
-    the reach of executive power over independent bodies, the durability of constitutional text against political
-    will, and the steady expansion of duties — climate, data, disclosure — onto private actors that were never
-    regulated this way before. The broadest signal is the reported decline in rule-of-law measures across a large
-    majority of countries simultaneously, which is unusual; declines are normally regional.`;
-  $('#b-docket').innerHTML=`
-    <div class="panel mb2"><div class="panel-h"><h3>Wire digest</h3><span class="hint">Written from the items below</span></div>
-      <div class="panel-b" style="font-size:.92rem;color:var(--dim)">${digest}</div></div>
-    <div class="ctl" id="wChips">
-      <button class="chip ${!wireCat?'on':''}" data-c="">All ${WIRE.length}</button>
-      ${cats.map(c=>`<button class="chip ${wireCat===c?'on':''}" data-c="${c}">${c}</button>`).join('')}</div>
-    ${hits.map(w=>`<div class="wire">
-      <div class="wm"><span class="tag b">${w.cat}</span>
-        ${w.iso&&byIso[w.iso]?`<span class="tag" data-j="${w.iso}" style="cursor:pointer">${byIso[w.iso].name}</span>`:'<span class="tag">International</span>'}</div>
-      <h4>${esc(w.t)}</h4><p>${esc(w.d)}</p></div>`).join('')}
-    <div class="disclaim" style="margin-top:24px"><b>Verify before relying.</b> These summaries are compressed and
-      some describe very recent decisions. Always read the court's own published judgment before treating any of it
-      as settled.</div>`;
-  $('#rt-docket').textContent=`${hits.length} items`;
-  $('#wChips').onclick=e=>{const c=e.target.closest('.chip');if(!c)return;wireCat=c.dataset.c;renderDocket()};
-  $$('#b-docket [data-j]').forEach(b=>b.onclick=()=>jurisReport(b.dataset.j));
-}
-
 /* ==================================================================
    LIVE SYNC — World Bank Open Data (free, no key)
    ================================================================== */
@@ -3514,7 +3457,14 @@ function buildTicker(){
       <i class="${cls}">${arw} ${Math.abs(d).toFixed(2)}</i></span>`});
   const idx=`<span class="tk-item"><b>CLII GLOBAL</b> ${Math.round(mean(DIMS.slice(1).map(([k])=>mean(J.map(j=>j[k])))))}
     <i class="tk-dn">▼ 0.4</i></span>`;
-  const heads=WIRE.slice(0,6).map(w=>`<span class="tk-item"><b>${w.cat.toUpperCase()}</b> ${esc(w.t)}</span>`);
+  /* the ticker reads the same material as Recent Decisions, so there is one
+     source of truth for "what is new" rather than two that drift apart */
+  const heads=[
+    ...RCASES.filter(c=>c.sum).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,4)
+      .map(c=>`<span class="tk-item"><b>${(c.area||'RULING').toUpperCase()}</b> ${esc(c.t)}</span>`),
+    ...RCURR.slice(0,2)
+      .map(c=>`<span class="tk-item"><b>${(c.area||'TREND').toUpperCase()}</b> ${esc(c.t)}</span>`)
+  ];
   const facts=[`<span class="tk-item"><b>ABOLITIONIST</b> ${J.filter(j=>j.dp==='A'||j.dp==='P').length}/${J.length} jurisdictions</span>`,
     `<span class="tk-item"><b>CASE LAW</b> ${CASES.length} decisions · ${CASES[0].y<0?Math.abs(CASES[0].y)+' BC':CASES[0].y} to 2026</span>`,
     `<span class="tk-item"><b>PRACTICE</b> ${AREAS.length} areas · mean AI exposure ${Math.round(mean(AREAS.map(a=>a.ai)))}</span>`];
@@ -6550,6 +6500,7 @@ window.tourShow=tourShow;
    ================================================================== */
 const RCASES = (typeof RECENT!=='undefined' && Array.isArray(RECENT)) ? RECENT : [];
 const RPEND  = (typeof PENDING!=='undefined' && Array.isArray(PENDING)) ? PENDING : [];
+const RCURR  = (typeof CURRENTS!=='undefined' && Array.isArray(CURRENTS)) ? CURRENTS : [];
 const RUPD   = (typeof RECENT_UPDATED!=='undefined') ? RECENT_UPDATED : '';
 let rcStream='people', rcOpen='';
 
@@ -6586,9 +6537,34 @@ function renderRecent(){
       <button class="rcs ${rcStream==='landmark'?'on':''}" data-s="landmark">
         <b>Landmark rulings</b><i>${nMark} ruling${nMark===1?'':'s'}</i>
         <span>Decisions that change the law itself — overruled precedents, new tests, constitutional questions.</span></button>
+      <button class="rcs ${rcStream==='currents'?'on':''}" data-s="currents">
+        <b>The wider picture</b><i>${RCURR.length} shift${RCURR.length===1?'':'s'}</i>
+        <span>Changes that are not a single ruling — where legal systems as a whole are moving, and how fast.</span></button>
     </div>
 
-    ${explained.length?`<div class="rclist">
+    ${rcStream==='currents'?`<div class="rclist">
+      ${RCURR.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(c=>`
+        <article class="rcard ${rcOpen===c.id?'open':''}" id="rc-${c.id}">
+        <button class="rchead" data-o="${c.id}">
+          <div class="rcmeta"><span class="rcct">${esc(c.kind||'Trend')}</span>
+            <span class="rcdt">${rcDate(c.date)}</span></div>
+          <h4>${esc(c.t)}</h4>
+          <div class="rctags"><span class="tag b">${esc(c.area)}</span>
+            <span class="rcexp">Sourced</span></div>
+          <span class="rcchev">${rcOpen===c.id?'−':'+'}</span>
+        </button>
+        <div class="rcbody">
+          <h5>What the figures show</h5><p>${esc(c.sum)}</p>
+          ${c.why?`<h5>Why it matters to you</h5><p>${esc(c.why)}</p>`:''}
+          <a class="rcsrc" href="${esc(c.src)}" target="_blank" rel="noopener noreferrer">
+            Read the source — ${esc(c.srcName||'official page')} ↗</a>
+        </div></article>`).join('')}
+      </div>
+      <div class="note" style="margin-top:18px"><b>These are not court decisions.</b> They are measured shifts in how legal
+        systems are working, from bodies that publish their method. Each one links to the original so you can see how the
+        figure was arrived at.</div>`:''}
+
+    ${rcStream!=='currents'?`${explained.length?`<div class="rclist">
       ${explained.map(c=>`<article class="rcard ${rcOpen===c.id?'open':''}" id="rc-${c.id}">
         <button class="rchead" data-o="${c.id}">
           <div class="rcmeta"><span class="rcct">${esc(c.court)}</span>
@@ -6627,7 +6603,7 @@ function renderRecent(){
         <p>${esc(p.what)}</p>
         <a class="rcsrc" href="${esc(p.src)}" target="_blank" rel="noopener noreferrer">${esc(p.srcName||'Source')} ↗</a>
       </div>`).join('')}
-    </div>`:''}
+    </div>`:''}`:''}
 
     <div class="rcfoot">
       <div><b>Last reviewed ${RUPD?rcDate(RUPD):'—'}</b>
@@ -6656,7 +6632,7 @@ const RENDERERS={start:()=>renderStart(),help:()=>renderHelp(),guide:()=>renderG
   atlas:()=>renderAtlas(),index:()=>renderIndex(),juris:()=>renderJuris(),compare:()=>renderCompare(),
   courts:()=>renderCourts(),caselaw:()=>renderCases(),brief:()=>renderBrief(),quiz:()=>renderQuiz(),
   models:()=>renderModels(),areas:()=>renderAreas(),ai:()=>renderAIsec(),qualify:()=>renderQualify(),
-  fit:()=>renderFit(),method:()=>renderMethod(),docket:()=>renderDocket()};
+  fit:()=>renderFit(),method:()=>renderMethod()};
 function renderAll(){
   if($('#kpis'))renderKpis();
   if(GAME){ setupGamePage(); paintLab(); }
