@@ -9,8 +9,9 @@ Upload **everything in the folder**, keeping the filenames exactly as they are. 
 | File | Why |
 |---|---|
 | `index.html` | Home — Start here |
-| `situation.html` | Your situation — help, walkthrough, questions, letters |
-| `lab.html` | The Law Lab |
+| `situation.html` | Your situation — your letter, what happens next, help, walkthrough, questions, letters |
+| `lab.html` | The Law Lab (index of 13 games) |
+| `game-*.html` | One page per game — 13 of them |
 | `world.html` | World systems |
 | `learn.html` | Case law, brief trainer, quiz |
 | `tools.html` | The seven models |
@@ -18,6 +19,9 @@ Upload **everything in the folder**, keeping the filenames exactly as they are. 
 | `about.html` | Method and the wire |
 | `styles.css` | All styling, shared by every page |
 | `app.js` | All content and logic, shared by every page |
+| `cases-recent.js` | Recent decisions — the only file the automatic update writes to |
+| `validate-cases.js` | Checks that file before it is committed. Never loaded by a page |
+| `UPDATING.md` | The brief for whoever updates the cases |
 | `fx.js` | Hero scenes and motion |
 | `og-image.png` | Link preview card |
 | `robots.txt`, `sitemap.xml` | Search engine basics |
@@ -68,7 +72,16 @@ If you are staying on GitHub Pages: **Settings → Pages → Custom domain**, en
 
 **Check the link preview.** Paste your URL into a Slack or WhatsApp message, or use a card validator, to confirm `og-image.png` is loading.
 
-**Add analytics.** If you want visitor counts without tracking people, Plausible, Fathom and Cloudflare Web Analytics are all cookie-free and privacy-respecting. Each gives you one `<script>` tag to paste before `</head>`.
+**Add analytics.** Worth doing early. Right now nobody knows which parts of the site people actually use, and that means every decision about what to build next is a guess.
+
+Plausible, Fathom and Cloudflare Web Analytics are all cookie-free, need no consent banner, and give you one `<script>` tag to paste before `</head>` on each page.
+
+The site has a hook built in for this. Because most navigation happens without a page reload, a plain script tag only records the first page someone lands on. To record section changes too:
+
+1. Paste your analytics `<script>` tag into the `<head>` of every `.html` file
+2. In `app.js`, find `const ANALYTICS=false;` near the top and change it to `true`
+
+It is `false` by default and does nothing at all until you change it. No cookie is set and nobody is identified either way — it reports which section was viewed, and that is all.
 
 **Nothing else is required.** No cookie banner is needed, because the site sets no cookies and collects nothing.
 
@@ -82,11 +95,24 @@ If you change `app.js` or `styles.css` and do not see the change, hard-refresh w
 
 ---
 
+## The recent decisions file
+
+`cases-recent.js` is deliberately separate from `app.js`. It holds the Recent Decisions section and nothing else.
+
+If it is missing, or if a bad edit breaks it, the rest of the site carries on working and that one section simply shows nothing. That is why updates are written there and nowhere else.
+
+Two rules apply to anything added to it, and they are written at the top of the file:
+
+- **Every entry needs a source.** A link to the judgment itself, or to an official court page. No source, no entry.
+- **Only summarise a judgment that has been read.** If the outcome is not confirmed, leave the summary blank — the entry then renders under "listed, not yet summarised" with a link. Saying less is better than saying something wrong about a real case.
+
 ## Two things to keep an eye on
 
 **The Method page states a review date.** It currently says the data was reviewed in 2026. If the site is still up in a year with the same figures, that claim stops being true — either refresh the data or change the date.
 
 **The Find help page will drift.** Organisations rename, merge and change eligibility rules. It carries a warning telling people to verify, but it is worth re-checking once a year, especially the phone number.
+
+**The tour shows once.** First-time visitors get a five-card introduction, remembered on their device. Anyone can reopen it from **More → Show the introduction**. If you change the site substantially, the tour text lives in `TOUR` in `app.js`.
 
 **The Law Lab weights are illustrative.** The jury evidence values and sentencing multipliers are teaching devices, and each one says so on screen. Keep those disclaimers if you edit the numbers.
 

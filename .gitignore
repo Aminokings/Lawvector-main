@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Node — only ever used for local testing, never shipped
+node_modules/
+package-lock.json
+
+# Scratch
+*.zip
+*.bak
+*.log

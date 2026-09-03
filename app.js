@@ -545,7 +545,7 @@ const GLOS=[
 
 /* ---------- GUIDED WALKTHROUGH GRAPH ---------- */
 const FLOW={
-start:{q:'What kind of situation would you like to understand?',sub:'This runs entirely in your browser. Nothing is stored or sent anywhere.',
+start:{q:'What kind of situation would you like to understand?',sub:'This runs entirely in your browser and is never sent anywhere.',
  o:[{l:'I was stopped or questioned by police',n:'p1'},{l:'Something with my housing or landlord',n:'h1'},
     {l:'Something at work',n:'w1'},{l:'A purchase or service went wrong',n:'c1'},
     {l:'An agreement or contract I signed',n:'k1'},{l:'My personal data or privacy online',n:'d1'}]},
@@ -692,6 +692,69 @@ function closeModal(){$('#modal').classList.remove('on');document.body.style.ove
 $('#modal').onclick=e=>{if(e.target.id==='modal')closeModal()};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 
+
+/* ==================================================================
+   PERSISTENCE + LIVE SLIDER REFRESH
+   ================================================================== */
+/* ------------------------------------------------------------------
+   ANALYTICS — off by default, and it stays off unless you turn it on.
+   Paste a privacy-friendly script tag (Plausible, Fathom, Cloudflare
+   Web Analytics) into each page's <head> and set this to true so the
+   site reports its own in-page navigation as well as page loads.
+   Nothing here sets a cookie or identifies anyone. See DEPLOY.md.
+   ------------------------------------------------------------------ */
+const ANALYTICS=false;
+function pageview(name){
+  if(!ANALYTICS)return;
+  try{
+    if(window.plausible)window.plausible('pageview',{u:location.origin+location.pathname+'#'+name});
+    else if(window.fathom)window.fathom.trackPageview({url:location.pathname+'#'+name});
+  }catch(e){}
+}
+
+const STORE_KEY='laworchard.v1';
+function loadStore(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY)||'{}') }catch(e){ return {} } }
+function saveStore(patch){ try{ const s=Object.assign(loadStore(),patch);
+  localStorage.setItem(STORE_KEY,JSON.stringify(s)); return s }catch(e){ return {} } }
+function storeGet(k,d){ const v=loadStore()[k]; return v===undefined?d:v }
+function clearStore(){ try{ localStorage.removeItem(STORE_KEY) }catch(e){} }
+
+/* --- progress: what you have looked at and played ------------------ */
+function track(kind,id,extra){
+  try{
+    const s=loadStore(), p=s.progress||{}, k=kind+':'+id;
+    const rec=p[k]||{n:0,first:Date.now()};
+    rec.n++; rec.last=Date.now();
+    if(extra&&typeof extra.score==='number'){
+      rec.best=Math.max(rec.best===undefined?-1:rec.best,extra.score);
+      if(extra.of)rec.of=extra.of;
+    }
+    p[k]=rec; saveStore({progress:p});
+  }catch(e){}
+}
+function progressAll(){ try{ return loadStore().progress||{} }catch(e){ return {} } }
+function progGet(kind,id){ return progressAll()[kind+':'+id]||null }
+function progCount(kind){ return Object.keys(progressAll()).filter(k=>k.indexOf(kind+':')===0).length }
+window.clearStore=clearStore;
+
+/* Re-render only the [data-live] regions so a slider being dragged survives. */
+function liveRefresh(renderFn, hostSel){
+  const host=$(hostSel||'#b-lab'); if(!host)return;
+  const tmp=document.createElement('div'); tmp.innerHTML=renderFn();
+  host.querySelectorAll('[data-live]').forEach(el=>{
+    const src=tmp.querySelector('[data-live="'+el.dataset.live+'"]');
+    if(src&&src.innerHTML!==el.innerHTML)el.innerHTML=src.innerHTML;
+  });
+  host.querySelectorAll('[data-lbl]').forEach(el=>{
+    const src=tmp.querySelector('[data-lbl="'+el.dataset.lbl+'"]');
+    if(src&&src.textContent!==el.textContent)el.textContent=src.textContent;
+  });
+  host.querySelectorAll('[data-livestyle]').forEach(el=>{
+    const src=tmp.querySelector('[data-livestyle="'+el.dataset.livestyle+'"]');
+    if(src)el.setAttribute('style',src.getAttribute('style')||'');
+  });
+}
+
 /* ==================================================================
    SECTION SCAFFOLD
    ================================================================== */
@@ -702,13 +765,237 @@ const GROUPS=[
 ['start','Start here'],['situation','Your situation'],['lab','Law Lab'],['world','World systems'],
 ['learn','Learn'],['tools','Tools'],['careers','Careers in law'],['about','About']];
 
+/* ==================================================================
+   32 · WHAT DOES THIS MEAN — annotated documents
+   ================================================================== */
+const DOCS=[
+{id:'claim',t:'A court claim form',who:'A court, on behalf of someone suing you',urg:3,
+ dl:'Usually 14 days to acknowledge; 28 in total if you then file a defence',
+ gist:'Someone has started a court case against you over money or property. This is the formal beginning of that case — not a threat, and not a warning shot.',
+ calm:'Receiving one does not mean you have lost, or that anyone has decided you owe anything. It means a claim has been filed and you now have a right to answer it.',
+ parts:[
+  ['Claim number','A reference like 1AB23456, usually top right. Quote it on everything you send. Losing track of it is the most common way people lose track of their own case.'],
+  ['Claimant and defendant','The claimant is suing. The defendant is you. If your name or address is wrong, say so — but still respond within the deadline.'],
+  ['Particulars of claim','Their side of the story and what they say you owe. It may be attached, or it may follow within a couple of weeks.'],
+  ['Amount claimed','The sum, plus court fees and usually interest. This is what they are asking for, not what a court has decided.'],
+  ['The response pack','Forms letting you admit, dispute, or ask for more time. Filling one in is how you take part.'],
+  ['Date of service','The date you are treated as having received it. Your clock runs from here, not from the day you opened the envelope.']],
+ ignore:'A default judgment can be entered against you with no hearing at all. That becomes a court judgment on your credit record and opens the door to enforcement — bailiffs, deductions from wages, or a charge over your home.',
+ act:['Write the deadline in a calendar today, before you do anything else.','Respond even if you dispute all of it. Responding is not admitting.','If you need more time, acknowledging the claim usually buys you a further fortnight.','Get advice before the deadline, not after it.'],
+ ask:['Is the amount right, and can they prove it?','Am I actually the right defendant?','Is it too old to be enforceable where I live?']},
+
+{id:'evict',t:'A notice to leave your home',who:'Your landlord, or their letting agent',urg:3,
+ dl:'The notice period varies enormously — weeks to months — by country and by the reason given',
+ gist:'Your landlord wants the property back. In almost every system this is the first step in a process, not an order to go.',
+ calm:'A notice is not an eviction. In most countries a landlord cannot lawfully remove you without a court order, however the letter is worded.',
+ parts:[
+  ['The type of notice','There are usually several kinds — one alleging you did something, one requiring no reason at all. Which one you have determines everything that follows.'],
+  ['The ground relied on','If a reason is given it must be a lawful ground. Rent arrears, damage, and the landlord wanting to sell or move in are the common ones.'],
+  ['The expiry date','The earliest date they could ask a court for possession. It is not a date you must be out by.'],
+  ['How it was served','Notices are invalid surprisingly often — the period miscalculated, the wrong form used, or served in a way the rules do not allow.'],
+  ['Preconditions','Many systems require the landlord to have done things first: protected your deposit, given you safety certificates, licensed the property. Failures here can void the notice entirely.']],
+ ignore:'The landlord can apply to a court for a possession order. If they get one and you still do not leave, an enforcement officer can remove you. None of that happens without a court.',
+ act:['Do not leave on the strength of the notice alone — leaving voluntarily can affect your right to be rehoused.','Check the notice period against the rules where you live. Errors are extremely common.','Keep paying rent if you possibly can.','Contact a housing adviser or tenants union now, not when a court date arrives.'],
+ ask:['Is this the right form, correctly filled in?','Has the notice period been calculated properly?','Did my landlord do everything they had to do first?']},
+
+{id:'discip',t:'An invitation to a disciplinary meeting',who:'Your employer',urg:2,
+ dl:'Usually a few days notice. The meeting date is the deadline that matters',
+ gist:'Your employer is formally investigating something, and this meeting could end in a warning or in dismissal. It is a process with rules — and those rules are where employers most often go wrong.',
+ calm:'An invitation is not a decision. The fairness of what happens between now and the outcome is itself something a tribunal can rule on later.',
+ parts:[
+  ['The allegation','It must be specific enough for you to answer. "Conduct issues" is not specific. You are entitled to know what you are said to have actually done.'],
+  ['The evidence','You should normally receive it in advance. Being shown it for the first time in the room is a procedural failure worth noting.'],
+  ['The possible outcome','If dismissal is on the table the letter should say so. Being dismissed at a meeting you were told was informal is a textbook unfair dismissal.'],
+  ['Right to be accompanied','In many systems you may bring a colleague or union representative. Use it — a second person taking notes changes how a meeting runs.'],
+  ['Date, time and place','If you genuinely cannot attend, ask in writing to rearrange rather than simply not appearing.']],
+ ignore:'The meeting can usually proceed without you, and a decision be made in your absence.',
+ act:['Ask in writing for the evidence and the specific allegation if either is missing.','Arrange to be accompanied.','Write your own account beforehand, while it is fresh.','Take notes. Afterwards, write down what was said the same day.'],
+ ask:['Do I know exactly what I am accused of?','Have I seen everything they are relying on?','Was I told dismissal was possible?']},
+
+{id:'debt',t:'A letter from a debt collector',who:'A collection agency — sometimes one that bought the debt',urg:2,
+ dl:'Usually 14 or 30 days, and often softer than the tone suggests',
+ gist:'Someone says you owe money and wants paying. The letter is designed to feel official and urgent. By itself it carries no legal force at all.',
+ calm:'This is not a court document. Nobody can take anything from you on the strength of a letter — that requires a court, and a court requires notice to you.',
+ parts:[
+  ['Who is actually asking','The original creditor and the collector may be different companies. If the debt was sold, the collector must be able to prove they now own it.'],
+  ['The amount','Check it against your own records. Added fees and interest are frequently disputed, and sometimes not properly owed at all.'],
+  ['The threatened action','Language about "further action" or "doorstep collection" usually describes what could happen, not what will. Only a court can order enforcement.'],
+  ['The reference number','You need it to dispute or query anything.'],
+  ['Whether it is a pre-action letter','Some are formal notices immediately before court proceedings. Those are genuinely more serious, and normally say so explicitly.']],
+ ignore:'The collector may escalate to court. If the debt is genuinely yours and still enforceable, ignoring it makes a judgment more likely rather than less.',
+ act:['Do not pay or acknowledge anything until you know the debt is yours and correctly calculated.','Ask in writing for the original agreement and a full statement.','Check whether it is old enough to be time-barred where you live.','Speak to a free debt advice charity before agreeing any payment plan.'],
+ ask:['Can they prove this is mine?','Is the figure right?','Is it too old to enforce?']},
+
+{id:'police',t:'A notice after arrest or police interview',who:'The police, when releasing you',urg:3,
+ dl:'Either a date to return, or an open-ended investigation with no date at all',
+ gist:'You have been released, but the investigation continues. The form tells you what happens next and what you must do meanwhile.',
+ calm:'Being under investigation is not being charged, and being charged is not being convicted. Most investigations end without charge.',
+ parts:[
+  ['Bail conditions','If you were bailed there may be conditions — where you may go, who you must not contact. Breaching one is itself an offence.'],
+  ['Return date','Some systems require you back on a set date. Others release you "under investigation" with no date, which can run for months.'],
+  ['The offence being investigated','What they are looking at. It can change as the investigation develops.'],
+  ['Your solicitor','If you had a duty solicitor their details should be here. That representation normally continues.'],
+  ['Property receipt','A list of anything seized and how to get it back.']],
+ ignore:'Failing to answer bail is a separate offence and usually results in arrest.',
+ act:['Do not contact any witness or complainant, even to explain yourself. It can become a further offence.','Keep the same solicitor if you can — continuity matters more than people expect.','Write down everything you remember about the incident now, and date it.','If months pass with no news, your solicitor can press for a decision.'],
+ ask:['Am I on bail, and if so what are the conditions?','Do I have a return date?','Who is my solicitor?']},
+
+{id:'et',t:'A court or tribunal timetable order',who:'The court or tribunal, once a case is under way',urg:3,
+ dl:'Every date in it is a real deadline',
+ gist:'This is the court telling both sides what to do and by when: exchange documents, write witness statements, prepare the bundle. It is the timetable of your case.',
+ calm:'It reads as intimidating but it is administrative. It says nothing at all about who is going to win.',
+ parts:[
+  ['Case number','Quote it on everything.'],
+  ['Disclosure','The date by which each side must hand over relevant documents — including ones that damage their own case.'],
+  ['Witness statements','When written evidence is exchanged. Usually simultaneously, so neither side sees the other first.'],
+  ['The bundle','An agreed, paginated file of documents for the hearing. Someone has to compile it, and the order says who.'],
+  ['The hearing','Date, length, and whether it is final or preliminary. A preliminary hearing decides how the case runs, not who wins.']],
+ ignore:'Missing a timetable deadline can lead to your case being struck out — losing without anyone ever considering the merits.',
+ act:['Put every date into a calendar the day you receive it.','Start gathering documents immediately. Disclosure arrives sooner than people expect.','If you cannot meet a date, apply to change it before it passes, not after.','Check whether conciliation or mediation is still open. Most cases settle.'],
+ ask:['What is the very next date, and what must I produce?','Who is compiling the bundle?','Is this hearing final, or about procedure?']},
+
+{id:'refuse',t:'A refusal with a right of appeal',who:'A government department or immigration authority',urg:3,
+ dl:'Often very short — sometimes 14 days, sometimes fewer',
+ gist:'An application has been refused. The crucial question is what kind of challenge the letter gives you, because appeal, administrative review and judicial review are completely different routes with different deadlines.',
+ calm:'A refusal is a decision, not the end of the road — but only if you act inside the window, which is usually short.',
+ parts:[
+  ['The reasons for refusal','Read them as a numbered list, not as prose. Each one has to be answered separately in any challenge.'],
+  ['Your right of challenge','Appeal, administrative review, or judicial review. The letter should say which. They are not interchangeable.'],
+  ['The deadline','Stated in days, and usually shorter than people expect. It may differ depending on where you are.'],
+  ['Consequences','Whether you may remain while challenging, and what happens to any permission you currently hold.']],
+ ignore:'Rights of appeal expire and are very rarely revived. Losing status can have consequences that last years.',
+ act:['Find the deadline and diarise it before you read anything else.','Use a properly accredited adviser. This is one area where unqualified help causes real damage.','Gather evidence answering each refusal reason individually.'],
+ ask:['What exactly can I challenge, and by when?','Can I stay while I do it?','Which specific reason is weakest?']},
+
+{id:'summons',t:'A witness summons',who:'A court, usually at one party’s request',urg:3,
+ dl:'The date on the summons is compulsory',
+ gist:'A court is ordering you to attend and give evidence. This is not an invitation, and not something you can decline because it is inconvenient.',
+ calm:'You are a witness, not a party. Nobody is accusing you of anything — you are there to say what you saw.',
+ parts:[
+  ['The date and the court','Attendance is compulsory. Tell the court at once if the date is genuinely impossible.'],
+  ['What you must bring','Some summonses require documents as well as your attendance.'],
+  ['Expenses','You can usually claim travel and lost earnings. Ask the party who called you.'],
+  ['Consequences of not attending','Normally stated on the form, and normally serious.']],
+ ignore:'Ignoring a witness summons is contempt of court, which can mean a fine or arrest.',
+ act:['Attend — or tell the court in advance, in writing, why you cannot.','Refresh your memory from any statement you gave, but do not rehearse answers.','If you are frightened of attending, say so. Special measures exist for exactly this.'],
+ ask:['What am I being asked about?','Can I claim my costs?','Do I need protective measures?']},
+
+{id:'breachnote',t:'A data breach notification',who:'A company that lost control of your data',urg:1,
+ dl:'No legal deadline for you, but the practical steps are time-sensitive',
+ gist:'An organisation is telling you they lost information about you. Most of these letters are vague, because the organisation often does not yet know the full picture itself.',
+ calm:'It is worth acting on, but it is not an emergency and you are not in trouble. You are the person this happened to.',
+ parts:[
+  ['What data was involved','The most important line in the letter. Names and addresses are one problem; passwords or payment details are another entirely.'],
+  ['What they are doing','Containment and remediation. Frequently boilerplate.'],
+  ['What they suggest','Usually change passwords and watch for fraud. Reasonable, if minimal.'],
+  ['Your rights','You can ask what specifically about you was affected, and complain to the data regulator free of charge.']],
+ ignore:'Nothing formal happens to you, but the fraud risk is real and rises the longer a reused password stays live.',
+ act:['Change any reused password now, and turn on two-factor authentication.','Ask in writing exactly which of your data was affected.','Watch statements and your credit file for a few months.','Complain to the regulator if the answer is unsatisfactory. It costs nothing.'],
+ ask:['Was a password or payment detail involved?','Have I used that password anywhere else?','What are they offering to do about it?']}];
+const DOCSBY=Object.fromEntries(DOCS.map(d=>[d.id,d]));
+/* ==================================================================
+   33 · WHAT HAPPENS NEXT — process maps
+   ================================================================== */
+const PROCS=[
+{id:'small',t:'A small money claim',ic:'coin',
+ tag:'Suing, or being sued, over a modest sum',
+ total:'Typically 4 to 10 months, start to finish',
+ gist:'The small claims route exists so that ordinary people can use a court without a lawyer. Procedure is deliberately relaxed, costs are capped, and judges expect to be dealing with people representing themselves.',
+ who:'Usually just you, the other side, and a judge in a small room. No wigs, no jury, no public gallery.',
+ steps:[
+  ['Before you file','Days to weeks','Most systems expect you to have asked properly first — a letter setting out what you want and why, with a deadline. Skipping this can cost you money later even if you win.','Send a letter before action and keep proof of postage.'],
+  ['Filing the claim','1 day','You complete a form describing what happened and what you want, and pay a fee. The fee usually scales with the amount claimed.','Be specific about dates and figures. Vagueness here haunts you later.'],
+  ['They respond','2 to 4 weeks','They can admit, dispute, or ignore it. If they ignore it you can usually ask for judgment without a hearing.','If they file a defence, read it closely — what they do not deny is often more useful than what they do.'],
+  ['Allocation and directions','2 to 6 weeks','The court decides the case belongs on the small claims track and issues a timetable: what to send, and when.','Diarise every date. They are enforced even against people without lawyers.'],
+  ['Exchanging evidence','4 to 10 weeks','Both sides send documents and witness statements. Photographs, messages, receipts and notes made at the time carry real weight.','Anything you did not disclose, you usually cannot rely on.'],
+  ['The hearing','1 to 3 hours','Informal. You explain what happened, they explain theirs, the judge asks questions and usually decides on the day.','Bring three copies of everything. Speak to the judge, not to the other side.'],
+  ['Getting paid','Weeks to months','Winning and being paid are different things. If they do not pay, enforcement is a separate application with its own fee.','Think about whether they can actually pay before you start.']],
+ fear:['You will not be cross-examined by a barrister — usually there is no barrister.','Losing does not normally mean paying the other side’s legal costs on this track.','The judge knows you are not a lawyer and will walk you through the procedure.']},
+
+{id:'tribunal',t:'An employment claim',ic:'scale',
+ tag:'A claim against an employer or ex-employer',
+ total:'Often 9 to 18 months, sometimes longer',
+ gist:'Employment claims run on a strict timetable that starts far earlier than people realise — the deadline to begin is frequently a matter of weeks or months from the thing you are complaining about, not years.',
+ who:'You, your employer (often with a lawyer), and either a single judge or a judge sitting with two lay members.',
+ steps:[
+  ['The clock starts','Immediately','The limitation period runs from the dismissal, or from the act complained of. It is short, and missing it usually ends the claim regardless of merit.','Find out your actual deadline in week one. This is the single most important thing on this page.'],
+  ['Early conciliation','Up to about 6 weeks','Many systems require an attempt at conciliation through a state body before you may file. It pauses the clock while it runs.','Free, confidential, and it resolves a large share of disputes without any hearing.'],
+  ['Filing the claim','1 day','A form setting out what happened and which legal wrongs you say occurred. Getting the legal labels roughly right matters.','You can usually amend later, but it is harder than getting it close now.'],
+  ['Their response','28 days','Your employer files a defence. You will see their account of events, often for the first time.','Read it twice. The gap between their story and their own documents is where cases are won.'],
+  ['Case management','1 to 3 months in','A short hearing, or a written order, setting the timetable, the issues, and the length of the final hearing.','Every date here is enforced. Missing them can end the claim.'],
+  ['Disclosure and statements','3 to 9 months in','Both sides exchange documents, then written witness statements. Statements usually stand as your evidence.','Tell the story in order and stick to what you personally saw or heard.'],
+  ['The hearing','1 day to 2 weeks','Evidence, cross-examination, submissions. The panel may decide on the day or send judgment in writing later.','Most claims settle before this. That is a normal outcome, not a failure.'],
+  ['Remedy','Weeks afterwards','If you win, a separate stage decides what you get. Usually financial loss, sometimes with an award for injury to feelings.','Keep records of your job search. Failing to mitigate reduces awards.']],
+ fear:['The great majority of claims settle without a final hearing.','Conciliation is free and commits you to nothing.','You cannot normally be ordered to pay the employer’s costs simply for losing.']},
+
+{id:'possess',t:'Possession proceedings',ic:'door',
+ tag:'A landlord going to court to get a property back',
+ total:'Usually 2 to 8 months from notice to any enforcement',
+ gist:'The route from a landlord wanting you out to you actually having to leave has several stages. Each takes time, and you can take part in every one of them.',
+ who:'You, the landlord or their solicitor, and a judge. Hearings are often short and listed in blocks with other cases.',
+ steps:[
+  ['The notice','Weeks to months','A written notice with a legally-set minimum period. It gives a date after which the landlord may apply to court. You do not have to leave on that date.','Check the notice for defects. Many are invalid and have to be started again from scratch.'],
+  ['The claim is issued','Days','Once the notice expires the landlord can file. The court sends you the papers and usually a form to reply.','Fill in the reply form. It is your chance to raise defences and explain your circumstances.'],
+  ['The hearing','4 to 10 weeks later','Often short. The judge checks whether the legal requirements are met and hears anything you want to say.','Turn up. Free duty advisers are frequently available at court on the day.'],
+  ['The order','On the day, or reserved','The judge may dismiss the claim, or make an order giving you a date to leave — sometimes suspended on conditions, such as paying off arrears.','A suspended order means you can stay if you keep to the terms. Keep to them.'],
+  ['If you do not leave','Further weeks','The landlord must apply separately for enforcement. Only a court-appointed officer may remove you, and only on notice.','There is still time at this stage. Emergency applications are sometimes possible.']],
+ fear:['A landlord changing the locks or removing you personally is unlawful almost everywhere.','Free advice is often available at court on the morning of the hearing.','Your circumstances are relevant. Judges have real discretion in many kinds of case.']},
+
+{id:'crim',t:'A criminal case',ic:'gavel',
+ tag:'From arrest through to trial',
+ total:'Months, often well over a year',
+ gist:'Most criminal cases never reach a trial. They end with no charge, a discontinuance, or a guilty plea. The process is long, and much of the waiting happens before anything visible occurs.',
+ who:'You, your solicitor, a prosecutor, and a judge or magistrates. A jury only in the more serious cases.',
+ steps:[
+  ['Arrest or invitation','Hours','You may be arrested, or asked to attend voluntarily. Either way you have a right to legal advice, which is normally free at this stage.','Always take the solicitor. Always. It costs you nothing and it changes the interview.'],
+  ['Interview','Hours','Recorded, with your solicitor present. You will have had a chance to speak to them privately first.','Your solicitor will advise on answering, staying silent, or giving a written statement. Follow that advice.'],
+  ['Released, or charged','Same day, or months later','Either released under investigation or on bail while enquiries continue, or charged and given a court date.','Investigations can take many months. That delay is normal and is not a signal about the outcome.'],
+  ['First hearing','Days to weeks after charge','A short administrative hearing. You enter a plea and the court decides where the case will be heard.','This is not a trial. Nobody gives evidence.'],
+  ['Preparation','Months','The prosecution serves its evidence, the defence its case. Arguments about what evidence is admissible happen here.','Most cases resolve at this stage, in one direction or another.'],
+  ['Trial','Days to weeks','Evidence is called and tested. In serious cases a jury decides the facts and a judge decides the law.','The prosecution must prove it. You do not have to prove anything at all.'],
+  ['Sentence','Same day, or adjourned','Only after conviction or a guilty plea. Reports may be ordered first.','Guilty pleas attract a reduction, and the earlier the plea the larger it usually is.']],
+ fear:['Being investigated is not being charged, and being charged is not being convicted.','Legal advice at the police station is free to you, whatever your income.','Most cases never reach a trial at all.']},
+
+{id:'ombud',t:'An ombudsman complaint',ic:'seal',
+ tag:'A free route against a company or public body',
+ total:'Typically 3 to 12 months, and free',
+ gist:'Ombudsman schemes decide disputes about banks, insurers, energy suppliers, telecoms, housing providers and public services — without lawyers, and at no cost to you. They are the most underused route on this list.',
+ who:'You, in writing, and a case handler. There is usually no hearing at all.',
+ steps:[
+  ['Complain to them first','8 weeks or so','Almost every scheme requires you to have complained to the organisation directly and given them a chance to put it right.','Put it in writing. Keep it factual and short. Ask for a specific outcome.'],
+  ['Deadlock or timeout','Immediately after','Either they issue a final response you reject, or the period passes with no response. Either one opens the door.','Keep their final response letter. You need it to refer the case.'],
+  ['Refer to the scheme','1 day','A form, online or on paper. There is a time limit after the final response — often six months.','Attach your evidence as one clear bundle rather than in pieces.'],
+  ['Investigation','1 to 6 months','A case handler gathers both sides and often proposes an informal resolution first.','Respond promptly. Cases stall mostly because people go quiet.'],
+  ['The decision','Weeks','If you accept the final decision it usually binds the organisation. If you reject it, you keep your right to go to court.','Accepting is normally final. Read what you are giving up before you sign.']],
+ fear:['It costs you nothing, whatever the outcome.','You do not need a lawyer, and using one rarely improves the result.','Rejecting a decision leaves your court rights intact.']},
+
+{id:'family',t:'Separating with children involved',ic:'home',
+ tag:'Arrangements for children after a relationship ends',
+ total:'Weeks if agreed; 6 to 18 months if contested',
+ gist:'Courts in most systems start from the position that arrangements should be agreed between parents, and that a judge should only decide if agreement genuinely is not possible. The child’s welfare, not either parent’s rights, is the test.',
+ who:'You, the other parent, sometimes a mediator, and if it reaches court a judge — often with a welfare officer reporting.',
+ steps:[
+  ['Trying to agree','Weeks','Most systems require or strongly encourage mediation before any application. It is far quicker and cheaper than court.','Agreed arrangements can be recorded formally later if you want them binding.'],
+  ['Mediation','4 to 12 weeks','A neutral third party helps you reach an arrangement. It is confidential, and it is not counselling.','Exemptions exist where there has been abuse. Say so — you do not have to attend.'],
+  ['Application','1 day','If agreement fails, an application asks the court to decide specific questions: where a child lives, and time spent with each parent.','Applications are about specific issues, not about winning generally.'],
+  ['First hearing','6 to 12 weeks','The court identifies what is actually in dispute and tries again to narrow it. Safeguarding checks usually happen first.','Many cases resolve here, once the issues are named precisely.'],
+  ['Reports and findings','3 to 9 months','A welfare officer may report. If there are disputed allegations, a separate hearing may decide what happened before anything else proceeds.','Focus on your child, not on the other parent. Judges notice the difference immediately.'],
+  ['Final hearing','Months in','Evidence, then a decision. Orders are made about arrangements and can be varied later if circumstances change.','Orders are not permanent. They can be revisited as children grow.']],
+ fear:['There is no automatic preference for either parent in most modern systems.','None of this is about punishing anyone. The test is the child’s welfare.','Arrangements you reach yourselves are almost always better than ones imposed on you.']}];
+const PROCSBY=Object.fromEntries(PROCS.map(p=>[p.id,p]));
+
 const SEC=[
 ['start','Welcome','Where would you like to begin?',
- 'Three ways in, depending on why you are here. Nothing asks you to register, and nothing you type leaves your browser.','start',
+ 'Three ways in, depending on why you are here. Nothing asks you to register, and your settings are remembered on this device.','start',
  'A front door. It points you at the right part of the site instead of making you guess.',
  'Anyone arriving for the first time.',
  'Pick whichever card describes you. You can always come back here by clicking the logo.'],
 
+['progress','Your progress','Where You Have Got To',
+ 'What you have already read, played and looked up \u2014 kept on this device, with no account and nothing uploaded.','start',
+ 'A record of the sections, games, documents and processes you have opened, so you can carry on rather than start again.',
+ 'Anyone coming back for a second or third visit.',
+ 'It fills in on its own as you use the site. Clear it whenever you like \u2014 the button is at the bottom.'],
 ['help','Find help','Find Real Help',
  'Every briefing on this site ends by telling you to speak to someone. This page tells you who that someone is, what they cost, and how to reach them.','situation',
  'A signposting page: emergency routes, which kind of organisation handles which problem, and named bodies in 17 jurisdictions.',
@@ -725,6 +1012,16 @@ const SEC=[
  'Twenty-eight common legal questions, answered without jargon and searchable by topic.',
  'Anyone who wants to understand a rule rather than act on one immediately.',
  'Search or filter by topic. Answers marked with a jurisdiction note vary significantly by country — read that part carefully.'],
+['process','What next','What Happens Next',
+ 'The six processes people actually find themselves in, stage by stage \u2014 what happens, in what order, over how long, and who is in the room.','situation',
+ 'Six procedures mapped end to end, with honest timescales and the things people wrongly fear at each stage.',
+ 'Anyone facing a court, tribunal or formal process for the first time.',
+ 'Pick the process closest to yours, then tell it which stage you have reached. It shows what is behind you and what is still ahead.'],
+['docs','This letter','What Does This Mean?',
+ 'A letter arrived and it is written to sound serious. Nine common documents, walked through part by part \u2014 including which date actually matters.','situation',
+ 'Annotated walkthroughs of nine documents people receive: court claims, eviction notices, disciplinary invitations, debt letters and more.',
+ 'Anyone holding a letter they do not understand.',
+ 'Pick the document that looks like yours, then click through its parts. The deadline is called out at the top of every one.'],
 ['letters','Letters','Letter Builder',
  'Twelve letters that people actually need to send \u2014 filled in from a short form, ready to copy or print.','situation',
  'Templates for deposits, repairs, faulty goods, data requests, unpaid wages, grievances and formal legal demands.',
@@ -738,8 +1035,8 @@ const SEC=[
  'Type a jurisdiction, a case name, or a concept. The glossary tab has 47 terms defined without circular definitions.'],
 
 ['lab','Law Lab','The Law Lab',
- 'Twelve games across criminal, corporate, family, contract, data protection, negligence and constitutional law. Each one is a thing you do, not a thing you read.','lab',
- 'Twelve interactive games, each on its own page. You change something and the legal result changes in front of you.',
+ 'Thirteen games across criminal, corporate, family, contract, data protection, negligence, constitutional law and exam technique. Each one is a thing you do, not a thing you read.','lab',
+ 'Thirteen interactive games, each on its own page. You change something and the legal result changes in front of you.',
  'Students, and anyone who learns by doing rather than reading.',
  'Start with the Jury Room. Weighing the same evidence against the civil and criminal standards is the single clearest thing on this site.'],
 
@@ -769,6 +1066,11 @@ const SEC=[
  'Anyone interested in how judicial power is really constrained.',
  'Click a court card to load its full record. Watch how appointment design tracks reputation for independence.'],
 
+['recent','Recent','Recent Decisions',
+ 'The rulings from the last year that actually matter \u2014 split into what changed for ordinary people and what changed the law itself. Updated periodically, every entry linked to its source.','learn',
+ 'Recent significant judgments in two streams, with a plain-English explanation where the judgment has been read and an honest link where it has not.',
+ 'Anyone keeping half an eye on where the law is moving \u2014 and anyone whose own rights may have just changed.',
+ 'Switch between the two streams at the top. Entries marked Explained have been read; the rest are listed with a link so you can check them yourself.'],
 ['caselaw','Case law','Landmark Case Law',
  'Forty-two decisions from Hammurabi to 2026 — what happened, what the court decided, and why it still matters.','learn',
  'A searchable timeline of landmark judgments, plus a network view showing how doctrines connect.',
@@ -869,6 +1171,9 @@ function go(v,params){
   }
   $$('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));
   $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+  if(v!=='progress'&&v!=='start')track('sec',v);   /* the front door is not a destination */
+  pageview(v);
+  if(v==='progress')renderProgress();
   try{ if(history.replaceState)history.replaceState(null,'','#'+v) }catch(e){}
   const t=$('#v-'+v); if(t)t.classList.remove('is-out');
   window.scrollTo({top:0,behavior:'instant'});
@@ -929,40 +1234,93 @@ function tileVal(j){
   return j[mapMetric];
 }
 
+const REGIONS=[
+ ['Americas',1,7,'#c88a4a'],['Europe',8,15,'#6d9cb5'],
+ ['Africa & Middle East',8,17,'#5f9060'],['Asia & Pacific',16,24,'#a58bc4']];
+function regionOf(j){
+  if(j.x<=7)return 'Americas';
+  if(j.x>=16)return 'Asia & Pacific';
+  return j.y<=5?'Europe':'Africa & Middle East';
+}
 function renderAtlas(){
-  const S=30,G=3,cols=24,rows=12;
-  const W=cols*(S+G), H=rows*(S+G);
-  const tiles=J.map(j=>{
-    const x=(j.x-1)*(S+G), y=(j.y-1)*(S+G);
-    return `<g class="tile" data-iso="${j.iso}"><title>${esc(j.name)} · ${esc(String(tileVal(j)))}</title>
-      <rect x="${x}" y="${y}" width="${S}" height="${S}" rx="4" fill="${tileColor(j)}"
-        fill-opacity="${tileOp(j)}" stroke="rgba(0,0,0,.35)" stroke-width=".8"></rect>
-      <text class="tilelbl" x="${x+S/2}" y="${y+S/2+2.4}">${j.iso}</text></g>`;
+  const S=34,G=5,cols=24,rows=12,PAD=26;
+  const W=cols*(S+G)+PAD*2, H=rows*(S+G)+PAD*2+18;
+  const set=JL();
+  const tiles=J.map((j,i)=>{
+    const x=PAD+(j.x-1)*(S+G), y=PAD+(j.y-1)*(S+G);
+    const dim=LENS&&j.trad!==LENS;
+    const v=mapMetric==='trad'?TRAD[j.trad]:mapMetric==='inc'?fmt(j.inc)+' per 100k':j[mapMetric]+' / 100';
+    return `<g class="tile ${dim?'dim':''}" data-iso="${j.iso}" style="animation-delay:${(i%40)*11}ms">
+      <rect x="${x}" y="${y}" width="${S}" height="${S}" rx="9" fill="${tileColor(j)}"></rect>
+      <rect class="tile-hl" x="${x}" y="${y}" width="${S}" height="${S}" rx="9"></rect>
+      <text class="tilelbl" x="${x+S/2}" y="${y+S/2+3.4}">${j.iso}</text>
+      <title>${esc(j.name)} — ${esc(String(v))}</title></g>`;
+  }).join('');
+  const bands=[['Americas',1,7],['Europe / Africa',8,15],['Asia & Pacific',16,24]].map(([n,a,b])=>{
+    const x=PAD+(a-1)*(S+G), w=(b-a+1)*(S+G)-G;
+    return `<g class="band"><line x1="${x}" y1="${PAD-11}" x2="${x+w}" y2="${PAD-11}"></line>
+      <text x="${x+w/2}" y="${PAD-17}" class="bandlbl">${n}</text></g>`;
   }).join('');
   const legend = mapMetric==='trad'
-    ? Object.entries(TRAD).map(([k,v])=>`<span><i style="background:${TRADC[k]}"></i>${v}</span>`).join('')
-    : `<span>Weak</span><div class="scalebar">${[5,20,35,50,65,80,95].map(v=>`<div style="background:${heat(v)}"></div>`).join('')}</div><span>Strong</span>`;
+    ? `<div class="legend">${Object.entries(TRAD).map(([k,v])=>
+        `<span><i style="background:${TRADC[k]}"></i>${v} · ${J.filter(x=>x.trad===k).length}</span>`).join('')}</div>`
+    : `<div class="scalewrap"><span>${mapMetric==='inc'?'fewest imprisoned':'weakest'}</span>
+        <div class="scalebar">${[4,14,26,38,50,62,74,86,96].map(v=>
+          `<div style="background:${heat(mapMetric==='inc'?v:v)}"></div>`).join('')}</div>
+        <span>${mapMetric==='inc'?'most imprisoned':'strongest'}</span></div>`;
+  const rank=[...set].sort((a,b)=>mapMetric==='trad'?a.name.localeCompare(b.name)
+    :mapMetric==='inc'?b.inc-a.inc:b[mapMetric]-a[mapMetric]);
 
   $('#b-atlas').innerHTML=`
+    <div class="howto reveal"><b>How to read this map</b>
+      <p>Every jurisdiction gets one equal square, arranged roughly by geography. Size of country is deliberately
+      ignored — a legal system that governs 300,000 people is drawn exactly as large as one governing a billion,
+      because this is a map of legal systems, not of land or population. Colour is whichever measure you pick below.
+      Hover a square to see the figure, click it for the full record.</p></div>
+
     <div class="panel mb2"><div class="panel-h"><h3>The legal world right now</h3>
       <span class="hint">Read straight off the dataset</span></div>
-      <div class="panel-b" style="font-size:.92rem;color:var(--dim)">${atlasRead()}</div></div>
+      <div class="panel-b" style="font-size:.94rem;color:var(--dim)">${atlasRead()}</div></div>
 
     <div class="ctl">
       <div class="seg" id="mapSeg">${MAPMETRICS.map(([k,l])=>
         `<button data-m="${k}" class="${k===mapMetric?'on':''}">${l}</button>`).join('')}</div>
-      <span style="font-family:var(--mono);font-size:.66rem;color:var(--faint);letter-spacing:.1em">CLICK ANY TILE FOR A FULL REPORT</span>
     </div>
-    <div class="mapbox">
-      <svg viewBox="0 0 ${W} ${H}" class="chart" style="min-width:660px">${tiles}</svg>
-      <div class="legend">${legend}</div>
+
+    <div class="mapbox mapwrap">
+      <svg viewBox="0 0 ${W} ${H}" class="chart worldmap" style="min-width:720px">${bands}${tiles}</svg>
+      <div class="maptip" id="maptip"></div>
+      ${legend}
     </div>
-    <div class="note">Tiles are placed on an approximate geographic grid, not a projection — each jurisdiction gets
-      equal visual weight regardless of land area, which is the point. Population and territory do not determine
-      how much a legal system matters.</div>`;
+
+    <div class="exh"><u>RANKED</u><h3>The same data as a list</h3>
+      <span>because a map is bad at telling you the order</span></div>
+    <div class="ranklist">${rank.slice(0,18).map((j,i)=>{
+      const v=mapMetric==='trad'?TRAD[j.trad]:mapMetric==='inc'?fmt(j.inc):j[mapMetric];
+      const w=mapMetric==='trad'?100:mapMetric==='inc'?clamp(j.inc/620*100,3,100):j[mapMetric];
+      return `<button class="rankrow" data-iso="${j.iso}">
+        <span class="rk">${String(i+1).padStart(2,'0')}</span>
+        <span class="rkn">${esc(j.name)}</span>
+        <span class="rkbar"><i style="width:${w}%;background:${tileColor(j)}"></i></span>
+        <b>${v}</b></button>`}).join('')}</div>
+    <p style="font-size:.82rem;color:var(--faint);margin-top:12px">Showing the top 18 of ${set.length}.
+      The full sortable table lives under Jurisdictions.</p>`;
 
   $('#mapSeg').onclick=e=>{const b=e.target.closest('button');if(!b)return;mapMetric=b.dataset.m;renderAtlas()};
-  $$('#b-atlas .tile').forEach(g=>g.onclick=()=>jurisReport(g.dataset.iso));
+  const tip=$('#maptip');
+  $$('#b-atlas .tile').forEach(g=>{
+    g.onclick=()=>jurisReport(g.dataset.iso);
+    g.onpointerenter=ev=>{ const j=byIso[g.dataset.iso]; if(!j||!tip)return;
+      tip.innerHTML=`<b>${esc(j.name)}</b><span>${TRAD[j.trad]}</span>
+        <div class="tiprow"><span>Rule of law</span><b style="color:${heat(j.rol)}">${j.rol}</b></div>
+        <div class="tiprow"><span>Independence</span><b>${j.jud}</b></div>
+        <div class="tiprow"><span>Imprisoned</span><b>${fmt(j.inc)}/100k</b></div>`;
+      tip.classList.add('on'); };
+    g.onpointermove=ev=>{ if(!tip)return; const r=$('.mapwrap').getBoundingClientRect();
+      tip.style.left=(ev.clientX-r.left+16)+'px'; tip.style.top=(ev.clientY-r.top+14)+'px'; };
+    g.onpointerleave=()=>{ if(tip)tip.classList.remove('on') };
+  });
+  $$('#b-atlas .rankrow').forEach(b=>b.onclick=()=>jurisReport(b.dataset.iso));
   $('#rt-atlas').textContent=MAPMETRICS.find(m=>m[0]===mapMetric)[1];
 }
 
@@ -1046,6 +1404,8 @@ function renderIndex(){
   const quart=n=>q[Math.floor(q.length*n)];
 
   $('#b-index').innerHTML=`
+    <div class="howto reveal"><b>How to read this</b><p>Seven separate measures of how well a legal system works, combined into one number and then broken apart again. The breakdown matters more than the headline: a country can score well because its courts are independent, or because it suppresses disorder efficiently. Those are very different things wearing the same number.</p></div>
+    
    <div class="panel mb2"><div class="panel-h"><h3>Composite Legal Integrity Index</h3>
      <span class="hint">6 dimensions · unweighted mean across ${J.length} jurisdictions</span></div>
      <div class="panel-b">
@@ -1128,6 +1488,8 @@ function renderJuris(){
       <td style="color:var(--dim)">${PROC[j.proc]}</td></tr>`).join('')}</tbody></table></div>`;
 
   $('#b-juris').innerHTML=`
+    <div class="howto reveal"><b>How to read this</b><p>Every jurisdiction in the dataset, with the same seven measures. Use the cards to browse and the table to sort by any column. Click anything to open the full record. Nothing here is a judgement about a country — it is a description of how its legal system is built and how well it functions.</p></div>
+    
     <div class="ctl">
       <input type="search" id="jq" placeholder="Search jurisdictions, courts, traditions…" value="${esc(jSearch)}">
       <div class="seg" id="jViewSeg">
@@ -1184,6 +1546,8 @@ function renderCompare(){
     ['inc','Incarceration /100k']];
 
   $('#b-compare').innerHTML=`
+    <div class="howto reveal"><b>How to read this</b><p>Pick up to six jurisdictions. The radar shows the shape of each system — a wide even shape protects across the board, a spiky one has a specific structural weakness. The bars below rank one measure at a time, and the table gives you the raw facts side by side.</p></div>
+    
    <div class="panel mb2"><div class="panel-h"><h3>Selected jurisdictions</h3>
      <span class="hint">${sel.length}/6 · click to remove, choose below to add</span></div>
      <div class="panel-b">
@@ -1241,11 +1605,16 @@ const M={doc:65,wit:55,proc:70,lim:'ok',asym:0,forum:'GBR',
   conf:50, aim:70,suit:70,nec:50,bal:60};
 
 function slider(key,label,min,max,step,suffix){
-  return `<div style="margin-bottom:15px"><div class="slabel"><span>${label}</span><b>${M[key]}${suffix||''}</b></div>
+  return `<div style="margin-bottom:15px"><div class="slabel"><span>${label}</span><b data-lbl="${key}">${M[key]}${suffix||''}</b></div>
     <input type="range" data-k="${key}" min="${min}" max="${max}" step="${step}" value="${M[key]}"></div>`;
 }
 function bindSliders(root){
-  $$(root+' input[type=range]').forEach(r=>r.oninput=()=>{M[r.dataset.k]=+r.value;renderModels()});
+  $$(root+' input[type=range]').forEach(r=>{
+    r.oninput=()=>{ M[r.dataset.k]=+r.value;
+      liveRefresh(()=>({strength:mStrength,sentence:mSentence,damages:mDamages,limit:mLimit,
+        burden:mBurden,corr:mCorr,prop:mProp}[mTab]()), '#b-models'); };
+    r.onchange=()=>{ M[r.dataset.k]=+r.value; };
+  });
 }
 
 /* ---- 1. CASE STRENGTH ---- */
@@ -1276,7 +1645,7 @@ function mStrength(){
         <select id="forumSel" style="width:100%">${[...J].sort((a,b)=>a.name.localeCompare(b.name))
           .map(j=>`<option value="${j.iso}" ${j.iso===M.forum?'selected':''}>${esc(j.name)} · civil justice ${j.civil}</option>`).join('')}</select></div>
     </div></div>
-    <div class="panel"><div class="panel-h"><h3>Structured estimate</h3><span class="hint">Not a prediction</span></div>
+    <div class="panel" data-live="out"><div class="panel-h"><h3>Structured estimate</h3><span class="hint">Not a prediction</span></div>
       <div class="panel-b">
         <div style="text-align:center;padding:8px 0 18px">
           <div class="gnum" style="color:${band[1]}">${pct}<span style="font-size:1.5rem">%</span></div>
@@ -1318,7 +1687,7 @@ function mSentence(){
           They pull in opposite directions: incapacitation wants long sentences, rehabilitation wants short ones with
           heavy support. Every sentencing system in the world is an unstable compromise between them.</div>
       </div></div>
-    <div class="panel"><div class="panel-h"><h3>Modelled outcome</h3></div><div class="panel-b">
+    <div class="panel" data-live="out"><div class="panel-h"><h3>Modelled outcome</h3></div><div class="panel-b">
       <div style="text-align:center;padding:6px 0 16px">
         <div class="gnum">${yrs?yrs+'y ':''}${mo}m</div>
         <div class="tag b" style="margin-top:10px">${philosophy} profile</div>
@@ -1362,7 +1731,7 @@ function mDamages(){
       ${slider('irate','Interest rate',0,15,0.5,'%')}
       ${slider('iyears','Years to judgment',0,10,0.5,'y')}
     </div></div>
-    <div class="panel"><div class="panel-h"><h3>Assessment</h3><span class="hint">Currency-neutral units</span></div>
+    <div class="panel" data-live="out"><div class="panel-h"><h3>Assessment</h3><span class="hint">Currency-neutral units</span></div>
       <div class="panel-b">
         <div style="text-align:center;padding:6px 0 18px">
           <div class="gnum" style="color:var(--brass)">${Math.round(total).toLocaleString()}</div>
@@ -1425,7 +1794,7 @@ function mLimit(){
         not a technicality — it is a complete defence. It exists because evidence decays, memories fail, and people
         are entitled to eventual certainty that they will not be sued. Miss it and the merits never get heard.</div>
     </div></div>
-    <div class="panel"><div class="panel-h"><h3>Deadlines by jurisdiction</h3><span class="hint">${label}</span></div>
+    <div class="panel" data-live="out"><div class="panel-h"><h3>Deadlines by jurisdiction</h3><span class="hint">${label}</span></div>
       <div class="panel-b"><div class="tbl-wrap" style="border:0"><table style="min-width:0"><tbody>
         ${out.map(([j,d,note,st,dl])=>`<tr style="cursor:default">
           <td style="white-space:normal"><b style="font-size:.85rem">${j}</b>
@@ -1453,7 +1822,7 @@ function mBurden(){
     <span class="hint">Standards are not probabilities — but this is how they are taught</span></div>
     <div class="panel-b">
       ${slider('conf','Strength of the evidence, as you assess it',0,100,1,'%')}
-      <svg viewBox="0 0 ${W} ${H}" class="chart" style="margin-top:10px">
+      <div data-live="out"><svg viewBox="0 0 ${W} ${H}" class="chart" style="margin-top:10px">
         <rect x="0" y="30" width="${W}" height="16" rx="8" fill="var(--bg2)" stroke="var(--line)"></rect>
         <rect x="0" y="30" width="${W*c/100}" height="16" rx="8" fill="${heat(c)}" fill-opacity=".55"></rect>
         ${stds.map(([l,t])=>`<line x1="${W*t/100}" y1="22" x2="${W*t/100}" y2="54"
@@ -1473,6 +1842,7 @@ function mBurden(){
         judges are usually instructed <i>not</i> to quantify reasonable doubt, because doing so invites jurors to
         treat conviction as arithmetic. The percentages here are a teaching device only. What the ordering does show
         correctly is that the same evidence can comfortably win a civil case and fall far short in a criminal one.</div>
+      </div>
     </div></div>`;
 }
 
@@ -1544,7 +1914,7 @@ function mProp(){
           ${slider(k,'Strength of the case at this stage',0,100,1,'%')}
         </div>`).join('')}
     </div></div>
-    <div class="panel"><div class="panel-h"><h3>Verdict</h3></div><div class="panel-b">
+    <div class="panel" data-live="out"><div class="panel-h"><h3>Verdict</h3></div><div class="panel-b">
       <div style="text-align:center;padding:10px 0 20px">
         <div style="font-family:var(--serif);font-size:2.1rem;color:${verdict[1]}">${verdict[0]}</div>
         <div class="tag ${verdict[2]}" style="margin-top:12px">${failIdx===-1?'MEASURE UPHELD':'MEASURE STRUCK DOWN'}</div>
@@ -1564,7 +1934,9 @@ function mProp(){
 function renderModels(){
   const body={strength:mStrength,sentence:mSentence,damages:mDamages,limit:mLimit,
     burden:mBurden,corr:mCorr,prop:mProp}[mTab]();
-  $('#b-models').innerHTML=`<div class="ctl"><div class="seg" id="mSeg">${MTABS.map(([k,l])=>
+  $('#b-models').innerHTML=`
+    <div class="howto reveal"><b>How to read this</b><p>Seven calculators you drive yourself. None of them predicts anything. They exist so you can change an assumption and watch what it does — which is how you learn that a limitation deadline outweighs the strength of your evidence, or that mitigation quietly halves a damages claim.</p></div>
+    <div class="ctl"><div class="seg" id="mSeg">${MTABS.map(([k,l])=>
     `<button data-t="${k}" class="${k===mTab?'on':''}">${l}</button>`).join('')}</div></div>${body}`;
   $('#rt-models').textContent=MTABS.find(t=>t[0]===mTab)[1];
   $('#mSeg').onclick=e=>{const b=e.target.closest('button');if(!b)return;mTab=b.dataset.t;renderModels()};
@@ -1590,6 +1962,8 @@ function renderCourts(){
   const yr=2016;
 
   $('#b-courts').innerHTML=`
+    <div class="howto reveal"><b>How to read this</b><p>Twelve courts that shape law far beyond their own borders. For each one: who sits on it, who chooses them, how long they serve, and crucially what the court can actually strike down. Watch how the courts with the strongest reputations tend to share one design feature — a single non-renewable term.</p></div>
+    
    <div class="grid g3 mb2">${COURTS.map(x=>`
      <div class="jcard ${x.id===courtSel?'sel':''}" data-c="${x.id}"
        style="border-left:3px solid ${x.id===courtSel?'var(--brass)':'var(--line2)'}">
@@ -1693,6 +2067,8 @@ function renderCases(){
         style="font-size:7px;fill:var(--dim)">${esc(c.t.split(' v')[0].split(' ').slice(0,2).join(' ').slice(0,16))}</text></g>`}).join('');
 
   $('#b-caselaw').innerHTML=`
+    <div class="howto reveal"><b>How to read this</b><p>Forty-two decisions in chronological order, each with what happened, what was decided and why it still matters. Switch to the network view to see how doctrines connect — the chain from Entick in 1765 to Riley in 2014 is one continuous argument about searches, restated for general warrants, wiretaps and then smartphones.</p></div>
+    
     <div class="ctl">
       <input type="search" id="cq" placeholder="Search cases, courts, doctrines…" value="${esc(caseQ)}">
       <div class="seg" id="cViewSeg">
@@ -1822,8 +2198,8 @@ let CHAT_VIEW = [];
 
 const CLERK_INTRO = `<h5>The Clerk is listening</h5><p>Ask about a jurisdiction, a case, a practice
   area or a legal term. The Clerk searches this site's own material and shows you what it finds.</p>
-  <p style="font-size:.8rem;color:var(--faint)">Runs entirely in your browser. Nothing you type is
-  sent anywhere. General information, never legal advice.</p>`;
+  <p style="font-size:.8rem;color:var(--faint)">Searches jurisdictions, cases, terms, practice areas, games,
+  qualification routes and help by country. Runs in your browser and is never sent anywhere.</p>`;
 
 function turnHtml(m){
   if(m.role==='user') return `<div class="chat-turn" style="margin-bottom:14px">
@@ -1851,20 +2227,41 @@ window.askClerk=askClerk; window.resetChat=resetChat;
    10 · COUNSEL — local engine grounded in this dataset
    ================================================================== */
 let counselTab='ask', glosQ='';
-const STOP=new Set('the a an of in on for to is are what how do does can i my me and or with about between vs versus tell explain'.split(' '));
+const STOP=new Set('the a an of in on for to is are what how do does can i my me and or with about between vs versus tell explain all any some nothing something anything thing things get got need want know like just really much more most'.split(' '));
 const tok=s=>s.toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(w=>w.length>2&&!STOP.has(w));
 
 function findJur(q){
   const l=q.toLowerCase();
   return J.filter(j=>l.includes(j.name.toLowerCase())||
-    new RegExp('\\b'+j.iso.toLowerCase()+'\\b').test(l)||
-    (j.iso==='USA'&&/\b(us|u\.s\.|america|american)\b/.test(l))||
+    new RegExp('\\b'+j.iso+'\\b').test(q)||          /* uppercase only: CAN, ARE, PER are English words */
+    (j.iso==='USA'&&/\b(u\.s\.|america|american)\b/.test(l))||
     (j.iso==='GBR'&&/\b(uk|britain|british|england)\b/.test(l)));
 }
 function answer(q){
   if(!q.trim()) return '<p style="color:var(--faint)">Ask something to begin.</p>';
   const t=tok(q), lq=q.toLowerCase();
   const jur=findJur(q);
+
+  /* how to qualify */
+  const qr=QROUTE.filter(r=>lq.includes(r.n.toLowerCase())||lq.includes(r.iso.toLowerCase()));
+  if(qr.length&&/qualify|become|lawyer|barrister|solicitor|law school|training|bar exam/.test(lq)){
+    const r=qr[0];
+    return `<h5>Qualifying in ${esc(r.n)}</h5><p>Takes about <b>${esc(r.yrs)} years</b>.</p>
+      <ul>${r.steps.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+      <p><b>What it gates on.</b> ${esc(r.gate)}</p><p>${esc(r.note)}</p>`;
+  }
+
+  /* getting help somewhere */
+  if(/help|lawyer near|legal aid|free advice|who can i|where do i go|afford/.test(lq)){
+    const hj=findJur(q), h=hj.length?HELPJ.find(x=>hj.some(j=>j.iso===x.iso)):null;
+    if(h)return `<h5>Getting help in ${esc(h.n)}</h5>
+      <ul>${h.r.map(r=>`<li><b>${esc(r[0])}</b> — ${esc(r[1])}</li>`).join('')}</ul>
+      <p><a href="situation.html#help">Open Find help →</a></p>`;
+    return `<h5>Finding real help</h5><p>The Find help page lists free routes in ${HELPJ.length} countries, plus the
+      eight kinds of organisation that exist almost everywhere — legal aid, law centres, university clinics, bar
+      referral lines, ombudsman schemes, unions, charities and pro bono schemes.</p>
+      <p><a href="situation.html#help">Open Find help →</a></p>`;
+  }
 
   /* comparison of two or more jurisdictions */
   if(jur.length>=2){
@@ -1905,10 +2302,115 @@ function answer(q){
       ${cs.length?`<p>Landmark decisions in the dataset: ${cs.map(c=>`<b>${esc(c.t)}</b> (${c.y})`).join(', ')}.</p>`:''}`;
   }
 
+  /* recent decisions */
+  if(/recent|latest|newest|this year|2026|what changed|current cases|lately|just decided/.test(lq)){
+    const ex=RCASES.filter(c=>c.sum).sort((a,b)=>b.date.localeCompare(a.date));
+    if(ex.length){
+      const c=ex[0];
+      return `<h5>Most recent decision explained</h5>
+        <p><b>${esc(c.t)}</b> ${esc(c.cite)} \u2014 ${esc(c.court)}, ${rcDate(c.date)}.</p>
+        <p>${esc(c.sum.split('. ').slice(0,2).join('. '))}.</p>
+        <p>Recent Decisions holds ${RCASES.length} judgment${RCASES.length===1?'':'s'} in two streams \u2014 what changed
+        for ordinary people, and what changed the law itself. Every entry links to its source.</p>
+        <p><a href="learn.html#recent">Open Recent Decisions \u2192</a></p>`;
+    }
+    return `<h5>Recent decisions</h5><p>The site tracks recent significant judgments, split into rulings that change
+      what ordinary people can do and rulings that change the law itself.</p>
+      <p><a href="learn.html#recent">Open Recent Decisions \u2192</a></p>`;
+  }
+
+  /* a document someone has been sent.
+     Scored, not first-match: a bare .includes() over the whole record lets a
+     stopword like "this" in one document's prose beat a title word in another. */
+  const docHandles={claim:'sued suing court claim form judgment',
+    evict:'evict eviction landlord tenant leave home possession notice',
+    discip:'disciplinary discipline work employer meeting dismissal sacked',
+    debt:'debt collector collection owe money bailiff creditor',
+    police:'police arrest arrested bail interview custody station',
+    et:'timetable order directions bundle disclosure witness statement tribunal',
+    refuse:'refusal refused appeal visa immigration application rejected',
+    summons:'summons witness subpoena attend give evidence',
+    breachnote:'data breach hacked leak password personal information'};
+  if(/letter|notice|form|summons|received|sent me|got a|claim form|what does this mean|post|envelope|document|evict|bailiff|disciplinar|breach notif/.test(lq)){
+    const best=DOCS.map(x=>{
+      const ti=x.t.toLowerCase(), wh=x.who.toLowerCase(), gi=x.gist.toLowerCase();
+      let sc=0;
+      t.forEach(w=>{ if(w.length<4)return;
+        if(ti.includes(w))sc+=6; if(wh.includes(w))sc+=2; if(gi.includes(w))sc+=1; });
+      (docHandles[x.id]||'').split(' ').forEach(k=>{ if(k&&lq.includes(k))sc+=5 });
+      return {x,sc};
+    }).sort((a,b)=>b.sc-a.sc)[0];
+    const d=best&&best.sc>0?best.x:null;
+    if(d)return `<h5>${esc(d.t)}</h5><p>${esc(d.gist)}</p>
+      <p><b>The deadline that matters.</b> ${esc(d.dl)}</p>
+      <p><b>If you do nothing.</b> ${esc(d.ignore)}</p>
+      <p><a href="situation.html#docs">Walk through it part by part \u2192</a></p>`;
+    return `<h5>Understanding a document you were sent</h5>
+      <p>The site walks through ${DOCS.length} of the documents people most often receive \u2014 court claims, eviction
+      notices, disciplinary invitations, debt letters, police notices, refusals with appeal rights, witness summonses
+      and data breach notices \u2014 part by part, with the deadline called out at the top.</p>
+      <p><a href="situation.html#docs">Open What Does This Mean \u2192</a></p>`;
+  }
+
+  /* what happens next in a process */
+  const procHandles={small:'small claim claims money sue sued suing owed refund deposit back',
+    tribunal:'employment tribunal unfair dismissal sacked fired employer work redundan',
+    possess:'evict eviction evicted possession landlord tenant repossess home bailiff',
+    crim:'criminal police arrest arrested charge charged trial jury prosecution',
+    ombud:'ombudsman complaint complain bank insurer energy regulator free',
+    family:'family child children custody divorce separation contact mediation parent'};
+  if(/what happens|how long|process|procedure|stages|steps|court date|hearing|timeline|tribunal|small claims|ombudsman|evicted|sued|arrested|divorce|separat/.test(lq)){
+    const bestp=PROCS.map(x=>{
+      const ti=x.t.toLowerCase(), tg=x.tag.toLowerCase(), gi=x.gist.toLowerCase();
+      let sc=0;
+      t.forEach(w=>{ if(w.length<4)return;
+        if(ti.includes(w))sc+=6; if(tg.includes(w))sc+=3; if(gi.includes(w))sc+=1; });
+      (procHandles[x.id]||'').split(' ').forEach(k=>{ if(k&&lq.includes(k))sc+=5 });
+      return {x,sc};
+    }).sort((a,b)=>b.sc-a.sc)[0];
+    const pr=bestp&&bestp.sc>0?bestp.x:null;
+    if(pr)return `<h5>${esc(pr.t)}</h5><p>${esc(pr.gist)}</p>
+      <p><b>Typical length.</b> ${esc(pr.total)} across ${pr.steps.length} stages.</p>
+      <p><b>Who is there.</b> ${esc(pr.who)}</p>
+      <p><a href="situation.html#process">See every stage \u2192</a></p>`;
+    return `<h5>What happens next</h5>
+      <p>Six processes are mapped stage by stage with honest timescales: a small money claim, an employment claim,
+      possession proceedings, a criminal case, an ombudsman complaint, and separating with children involved.</p>
+      <p><a href="situation.html#process">Open What Happens Next \u2192</a></p>`;
+  }
+
+  /* what have I already done here */
+  if(/my progress|where was i|what have i|carry on|continue|last time|pick up/.test(lq)){
+    const s=progPct();
+    return `<h5>Where you have got to</h5>
+      <p>You have opened <b>${s.done} of ${s.tot}</b> things on this site \u2014 ${s.sv} sections, ${s.gv} games,
+      ${s.dv} documents and ${s.pv} processes. It is kept on this device only and nothing is uploaded.</p>
+      <p><a href="index.html#progress">Open Your progress \u2192</a></p>`;
+  }
+
   /* glossary term */
   const g=GLOS.find(([term])=>lq.includes(term.toLowerCase().split(' /')[0].toLowerCase()));
   if(g&&(/\bwhat is|\bwhat does|\bdefine|\bmeaning/.test(lq)||t.length<=3)){
     return `<h5>Definition · ${esc(g[0])}</h5><p><span class="tag b">${g[1]}</span></p><p>${g[2]}</p>`;
+  }
+
+  /* law lab games */
+  const gm=GAMES.filter(g=>t.some(w=>(g.t+' '+g.area+' '+g.tag+' '+g.skill).toLowerCase().includes(w)));
+  if(gm.length&&/game|play|lab|jury|sentenc|object|board|custody|contract|breach|causation|precedent/.test(lq)){
+    const g=gm[0];
+    return `<h5>Law Lab · ${esc(g.t)}</h5><p><span class="tag b">${esc(g.area)}</span></p>
+      <p>${esc(g.tag)}</p><p><b>What it teaches:</b> ${esc(g.skill)}.</p>
+      <p><a href="game-${g.id}.html">Open ${esc(g.t)} →</a></p>
+      ${gm.length>1?`<p style="font-size:.82rem;color:var(--faint)">Also matching: ${gm.slice(1,4).map(x=>esc(x.t)).join(', ')}.</p>`:''}`;
+  }
+
+  /* AI exposure by profession */
+  const pf=PROFESSIONS.filter(x=>t.some(w=>x.r.toLowerCase().includes(w)));
+  if(pf.length&&/ai|automat|robot|replace|risk|future/.test(lq)){
+    const x=pf[0];
+    return `<h5>AI exposure · ${esc(x.r)}</h5>
+      <p><b>${x.x}/100</b> — ${STANCE[x.st][0].toLowerCase()}. Most of the day: ${esc(x.mix.toLowerCase())}.</p>
+      <p>${esc(x.n)}</p><p><a href="careers.html#ai">See all ${PROFESSIONS.length} professions →</a></p>`;
   }
 
   /* case lookup */
@@ -1928,7 +2430,7 @@ function answer(q){
       <p>${c.s}</p><p><b>Why it matters.</b> ${c.w}</p>
       ${cs.length>1?`<p style="font-size:.82rem;color:var(--faint)">Also matching: ${cs.slice(1,4).map(x=>esc(x[0].t)).join(', ')}.</p>`:''}`;
   }
-  if(qs.length){
+  if(qs.length&&qs[0][1]>=3){
     const q0=qs[0][0];
     return `<h5>${esc(q0.topic)} · ${esc(q0.level)}</h5>
       <p><b>${q0.q}</b></p>${q0.a.map(p=>`<p>${p}</p>`).join('')}
@@ -1940,14 +2442,20 @@ function answer(q){
     return `<h5>Closest match · ${esc(c.t)}</h5><p>${c.s}</p><p><b>Why it matters.</b> ${c.w}</p>`;}
 
   return `<h5>No grounded answer available</h5>
-    <p>This engine answers only from the dataset on this page — ${J.length} jurisdictions, ${CASES.length} decisions,
-    ${QA.length} explained questions and ${GLOS.length} defined terms. It has nothing on that, and will not invent it.</p>
-    <p>Try naming a jurisdiction, a case, or a legal term.</p>`;
+    <p>The Clerk searches this site only — ${J.length} jurisdictions, ${CASES.length} decisions, ${QA.length} explained
+    questions, ${GLOS.length} terms, ${AREAS.length} practice areas, ${GAMES.length} games, ${DOCS.length} annotated
+    documents, ${PROCS.length} mapped processes, ${QROUTE.length} qualification routes and help routes in
+    ${HELPJ.length} countries. Nothing here matched, and it will not invent an answer.</p>
+    <p>Try naming a country, a case, a legal term or a job — or describe a letter you were sent, or ask what happens
+    next in a process.</p>`;
 }
 
 function renderCounsel(){
   const suggestions=['Rule of law in Morocco','Compare Germany and the United States','What is habeas corpus',
-    'Donoghue v Stevenson','Can I be fired for no reason','Death penalty in Japan','What is proportionality','Riley phone search'];
+    'I received a letter from a debt collector','What happens next at an employment tribunal',
+    'How do I qualify as a lawyer in Ireland','Where can I get free legal help in Kenya',
+    'Is my job at risk from AI as a paralegal','Tell me about the jury game','Can I be fired for no reason',
+    'Donoghue v Stevenson','What is proportionality'];
   const glos=GLOS.filter(([t,c,d])=>!glosQ||(t+c+d).toLowerCase().includes(glosQ))
     .sort((a,b)=>a[0].localeCompare(b[0]));
   $('#b-counsel').innerHTML=`
@@ -2299,6 +2807,43 @@ const AITASK=[
 {t:'Cross-examination',x:6,st:'augment',n:'The least exposed task in the profession. It depends entirely on reading a person in the moment and adapting.'}
 ];
 
+/* ---------- AI exposure by profession ---------- */
+const PROFESSIONS=[
+{r:'Legal secretary / typist',x:88,st:'compress',mix:'Dictation, formatting, filing, correspondence',
+ n:'Almost every core task is generation or formatting, and the work was already shrinking before generative models arrived. The role that survives is the one that becomes case management rather than document production.'},
+{r:'Document review contractor',x:86,st:'compress',mix:'First-pass review, coding for privilege and relevance',
+ n:'The most exposed legal job in existence. Predictive coding was already accepted by courts before generative models; this is displacement that has largely happened rather than displacement to come.'},
+{r:'Conveyancer',x:74,st:'compress',mix:'Title checks, standard forms, searches, routine correspondence',
+ n:'Highly systematised and largely form-driven, which is exactly what automates well. What resists is the judgement call when a search comes back wrong and someone has to decide whether the deal still works.'},
+{r:'Paralegal',x:70,st:'compress',mix:'Bundling, chronologies, research summaries, disclosure',
+ n:'The bulk of the day is preparation rather than judgement. The paralegals who thrive move toward client contact and case management — the parts that require someone to be accountable.'},
+{r:'Junior associate (1–3 years)',x:64,st:'compress',mix:'Due diligence, first drafts, research memos, disclosure review',
+ n:'The profession’s real problem sits here. The tasks being automated are precisely the ones juniors learned judgement on, and nobody has yet answered how you train a senior lawyer without them.'},
+{r:'In-house compliance officer',x:58,st:'amplify',mix:'Monitoring, policy drafting, training, reporting',
+ n:'Automation increases the volume of monitoring an organisation can do, which increases the amount of work requiring a human to interpret and defend it. Demand grows rather than shrinks.'},
+{r:'Legal researcher / knowledge lawyer',x:56,st:'amplify',mix:'Research, current awareness, precedent maintenance',
+ n:'Research got faster, so more of it gets done. The value moved from finding the authority to knowing which authority is load-bearing and which is decoration.'},
+{r:'Tax adviser',x:52,st:'amplify',mix:'Structuring, computation, filings, advisory memos',
+ n:'Computation automates well; structuring does not. And every automated filing eventually needs someone who can defend the position to a revenue authority that disagrees.'},
+{r:'Corporate / transactional lawyer',x:50,st:'augment',mix:'Drafting, negotiation, diligence oversight, closing management',
+ n:'Drafting speeds up substantially, but the value was never in producing the words. It is in knowing which clause the other side will actually fight over and what to trade for it.'},
+{r:'In-house counsel',x:44,st:'augment',mix:'Risk advice, contract review, escalation, board reporting',
+ n:'Reviewing more contracts faster does not reduce the need for someone to own the risk decision. Accountability cannot be delegated to a system that carries none.'},
+{r:'Notary (civil law systems)',x:42,st:'augment',mix:'Authentication, deeds, succession, registration',
+ n:'Drafting automates; the notarial function does not, because the whole point is a specific accountable person attesting that this happened in front of them.'},
+{r:'Family lawyer',x:34,st:'augment',mix:'Client interviewing, negotiation, court advocacy, drafting orders',
+ n:'The documents are formulaic and the work is not. Most of the job is managing people at the worst moment of their lives, which is not a text-generation problem.'},
+{r:'Solicitor advocate / litigator',x:32,st:'augment',mix:'Case strategy, pleadings, disclosure, hearings',
+ n:'Preparation compresses hard; strategy and advocacy do not. Choosing the theory of the case is the part that decides outcomes and the part models are worst at.'},
+{r:'Criminal defence lawyer',x:26,st:'augment',mix:'Police station attendance, client care, cross-examination, plea advice',
+ n:'Among the least exposed roles in law, and among the worst paid — which tells you that exposure to automation and market reward are not the same axis at all.'},
+{r:'Barrister / advocate',x:22,st:'augment',mix:'Advisory opinions, drafting, oral advocacy, cross-examination',
+ n:'The written work compresses; the courtroom does not. Responding to a judge who has just cut across your argument is close to the purest untouched skill in the profession.'},
+{r:'Mediator / arbitrator',x:18,st:'augment',mix:'Facilitating settlement, managing parties, writing awards',
+ n:'The job is reading a room and making people feel heard enough to move. Award drafting speeds up; nothing else does.'},
+{r:'Judge',x:16,st:'augment',mix:'Reading, hearings, fact-finding, judgment writing',
+ n:'Several jurisdictions permit assisted drafting while requiring the judge to own every word. The constraint is legitimacy rather than capability — we do not accept decisions from something that cannot be held responsible.'}];
+
 /* ---------- QUALIFICATION ROUTES ---------- */
 const QROUTE=[
 {iso:'GBR',n:'England & Wales',yrs:'5–6',cost:4,
@@ -2361,7 +2906,67 @@ const QROUTE=[
  alt:'The bar is entered separately by reading and a bar examination in most states.',
  gate:'The eleven prescribed academic areas — the Priestley 11 — are mandatory content.',
  note:'Admission is national in effect through mutual recognition, and the fused-then-split structure varies by state, with some jurisdictions maintaining a formally independent bar and others not.'}
-];
+,
+{iso:'IRL',n:'Ireland',yrs:'5–6',cost:3,
+ steps:['Degree in any subject','FE-1 entrance examinations','Professional Practice Course at Blackhall Place','Two-year training contract','Admission as a solicitor'],
+ alt:'The barrister route runs through King’s Inns and a year of devilling.',
+ gate:'The FE-1s are eight separate examinations sat before training begins.',
+ note:'A small, tightly held profession where the training contract is the real bottleneck. Barristers here “devil” — shadow a senior unpaid for a year — which openly favours those who can afford to.'},
+{iso:'NLD',n:'Netherlands',yrs:'7',cost:2,
+ steps:['Bachelor and master in Dutch law','Traineeship with a law firm for three years','Beroepsopleiding Advocaten alongside the traineeship','Registration as advocaat'],
+ alt:'The judiciary is entered through a separate selective training programme.',
+ gate:'The master’s degree must be in Dutch law specifically — foreign degrees require conversion.',
+ note:'Trainees carry real cases from early on under a supervising patroon, which front-loads responsibility more than most systems.'},
+{iso:'ESP',n:'Spain',yrs:'6',cost:2,
+ steps:['Grado en Derecho, four years','Máster de Acceso a la Abogacía','State examination','Registration with a Colegio de Abogados'],
+ alt:'Judges and prosecutors are selected by a famously long oposición examination.',
+ gate:'The access master’s became compulsory in 2011; before that the degree alone sufficed.',
+ note:'The oposición for the judiciary is measured in years of memorising the code aloud — a route that is either the purest meritocracy or the narrowest, depending on who you ask.'},
+{iso:'ITA',n:'Italy',yrs:'7',cost:2,
+ steps:['Laurea magistrale in giurisprudenza, five years','Eighteen-month praticantato with a lawyer','Esame di Stato — written and oral','Enrolment with the Ordine degli Avvocati'],
+ alt:'The magistratura is entered by a separate national concorso.',
+ gate:'The state examination has historically had low pass rates and regional variation.',
+ note:'Italy has one of the largest bars in Europe by head count, and the practice period is unpaid or barely paid, which shapes who completes it.'},
+{iso:'NGA',n:'Nigeria',yrs:'6',cost:2,
+ steps:['Five-year LLB','Nigerian Law School, one year','Bar Part II examinations','Call to the Bar'],
+ alt:'The same call admits you as both barrister and solicitor.',
+ gate:'Law School is compulsory and centrally run, with limited places.',
+ note:'A fused profession: every Nigerian lawyer is called as barrister and solicitor together, unlike the English split it descends from.'},
+{iso:'KEN',n:'Kenya',yrs:'6',cost:2,
+ steps:['Four-year LLB','Advocates Training Programme at the Kenya School of Law','Bar examinations','Pupillage for six months','Admission as an advocate'],
+ alt:'Paralegal accreditation offers a shorter route into legal support work.',
+ gate:'The Kenya School of Law controls admission to the programme.',
+ note:'Bar examination pass rates have been a running controversy, and the resit backlog is a real feature of the route rather than a footnote.'},
+{iso:'MEX',n:'Mexico',yrs:'5',cost:2,
+ steps:['Licenciatura en Derecho, four to five years','Servicio social','Professional examination or thesis','Cédula profesional issued by the education ministry'],
+ alt:'The judiciary is entered through the Escuela Federal de Formación Judicial.',
+ gate:'Unusually, there is no separate bar examination — the degree and the cédula suffice.',
+ note:'One of the shortest routes to practice anywhere, and the absence of a bar exam is a live reform debate.'},
+{iso:'ARG',n:'Argentina',yrs:'5–6',cost:1,
+ steps:['Abogacía degree at a public or private university','Registration with a provincial colegio de abogados'],
+ alt:'Judicial careers begin as a clerk and progress internally.',
+ gate:'Public universities charge no tuition, which makes this among the cheapest routes in the world.',
+ note:'Free public legal education produces a very large bar. The University of Buenos Aires alone graduates lawyers in numbers most countries produce nationally.'},
+{iso:'POL',n:'Poland',yrs:'8',cost:2,
+ steps:['Five-year master’s in law','Competitive entrance examination for the aplikacja','Three-year apprenticeship as adwokat or radca prawny','Final professional examination'],
+ alt:'Judges and prosecutors train at the National School of Judiciary in Kraków.',
+ gate:'The entrance examination to the apprenticeship is the decisive filter.',
+ note:'Poland has two separate advocate professions — adwokat and radca prawny — whose scopes have converged almost entirely, a distinction now largely historical.'},
+{iso:'SWE',n:'Sweden',yrs:'8',cost:1,
+ steps:['Juristexamen, four and a half years','Practical legal work for three years','Advokatexamen','Membership of the Swedish Bar Association'],
+ alt:'Notarietjänstgöring — a court clerkship — is the traditional route towards the judiciary.',
+ gate:'Only members of the Bar may call themselves advokat, but you may practise law without membership.',
+ note:'Unusually, the protected title is narrower than the activity: much legal work is done by lawyers who are not advokater at all.'},
+{iso:'SGP',n:'Singapore',yrs:'5',cost:4,
+ steps:['Approved law degree','Part B bar examinations','Practice training contract of six months','Admission to the Bar'],
+ alt:'Foreign-qualified lawyers sit Part A before Part B.',
+ gate:'The list of approved overseas universities is short and periodically revised.',
+ note:'A deliberately tight pipeline: the number of approved degrees is managed centrally to match the profession’s size to demand.'},
+{iso:'EGY',n:'Egypt',yrs:'5',cost:1,
+ steps:['Four-year law degree','Registration with the Lawyers Syndicate as a trainee','Two years under supervision','Progressive rights of audience through the court levels'],
+ alt:'The judiciary is entered from graduation through a separate appointment process.',
+ gate:'Rights of audience expand with years of practice rather than by examination.',
+ note:'Seniority rather than examination governs which courts you may appear in — you earn the Court of Cassation by time served.'}];
 
 /* ---------- FIT FINDER ---------- */
 const FITQ=[
@@ -2462,15 +3067,32 @@ function renderAreas(){
   const cats=[...new Set(AREAS.map(a=>a.cat))];
   let rows=AREAS.filter(a=>(!paCat||a.cat===paCat)&&(!paQ||(a.n+a.cat+a.day+a.who+a.tags.join(' ')).toLowerCase().includes(paQ)));
   rows.sort((x,y)=> paSort==='n'?x.n.localeCompare(y.n): paSort==='pay'?y.pay[2]-x.pay[2]: y[paSort]-x[paSort]);
-  const W=1160,H=330,pad=44;
-  const pts=AREAS.map(a=>{
-    const x=pad+(a.ai/100)*(W-pad*2), y=H-pad-(a.d/100)*(H-pad*2);
-    return `<g class="tile" data-a="${esc(a.n)}"><title>${esc(a.n)} · demand ${a.d} · AI exposure ${a.ai}</title>
-      <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(4+a.pay[2]/18).toFixed(1)}"
-        fill="${areaColor(a)}" fill-opacity=".6" stroke="${areaColor(a)}" stroke-width="1.2"></circle>
-      <text x="${x.toFixed(1)}" y="${(y-11).toFixed(1)}" class="axl" text-anchor="middle"
-        style="font-size:6.6px;fill:var(--dim)">${esc(a.n.split(' —')[0].split(' ').slice(0,2).join(' '))}</text></g>`}).join('');
+  const W=1160,H=520,pad=64;
+  const px=v=>pad+(v/100)*(W-pad*2), py=v=>H-pad-(v/100)*(H-pad*2);
+  // spread labels vertically so they never collide
+  const placed=[];
+  const pts=[...AREAS].sort((a,b)=>a.ai-b.ai).map(a=>{
+    const x=px(a.ai), y=py(a.d);
+    let ly=y-14, tries=0;
+    while(placed.some(p=>Math.abs(p.x-x)<132&&Math.abs(p.y-ly)<17)&&tries++<22) ly-=17;
+    placed.push({x,y:ly});
+    const short=a.n.replace('Intellectual Property — ','IP: ').replace(' & ',' & ').slice(0,26);
+    return `<g class="areapt" data-a="${esc(a.n)}">
+      <line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x.toFixed(1)}" y2="${(ly+4).toFixed(1)}"
+        stroke="${areaColor(a)}" stroke-width="1" opacity=".4"/>
+      <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(5+a.pay[2]/26).toFixed(1)}"
+        fill="${areaColor(a)}" fill-opacity=".75" stroke="${areaColor(a)}" stroke-width="1.6"/>
+      <text x="${x.toFixed(1)}" y="${ly.toFixed(1)}" class="areatx" text-anchor="middle">${esc(short)}</text>
+      <title>${esc(a.n)} — demand ${a.d}, AI exposure ${a.ai}</title></g>`;
+  }).join('');
+  const quads=`
+    <rect x="${pad}" y="${pad}" width="${(W-pad*2)/2}" height="${(H-pad*2)/2}" fill="var(--green)" opacity=".05"/>
+    <rect x="${pad+(W-pad*2)/2}" y="${pad+(H-pad*2)/2}" width="${(W-pad*2)/2}" height="${(H-pad*2)/2}" fill="var(--red)" opacity=".05"/>
+    <text x="${pad+14}" y="${pad+22}" class="quadlbl" fill="var(--green)">STRONG DEMAND · HARD TO AUTOMATE</text>
+    <text x="${W-pad-14}" y="${H-pad-14}" class="quadlbl" text-anchor="end" fill="var(--red)">FLAT DEMAND · EASY TO AUTOMATE</text>`;
   $('#b-areas').innerHTML=`
+    <div class="howto reveal"><b>How to read this</b><p>Twenty-nine areas of legal work, scored on demand, automation exposure, how hard they are to enter and what they pay. Start with the scatter plot to see the landscape, then open any card for what the work is actually like on an ordinary Tuesday.</p></div>
+    
     <div class="ctl">
       <input type="search" id="paQ" placeholder="Search areas, tags, employers…" value="${esc(paQ)}">
       <div class="seg" id="paSortSeg">${[['d','Demand'],['ai','AI exposure'],['e','Entry bar'],['adv','Adversarial'],['pay','Pay'],['n','A–Z']]
@@ -2480,18 +3102,25 @@ function renderAreas(){
       ${cats.map(c=>`<button class="chip ${paCat===c?'on':''}" data-c="${esc(c)}">${esc(c)} · ${AREAS.filter(a=>a.cat===c).length}</button>`).join('')}</div>
 
     <div class="exh"><u>EXHIBIT A</u><h3>Demand against automation exposure</h3>
-      <span>bubble size is senior pay · colour is how automation lands</span></div>
+      <span>each dot is one area · bigger dot means better senior pay</span></div>
+    <div class="howto" style="margin-bottom:16px"><b>What you are looking at</b>
+      <p>Across the bottom: how much of the work current AI can already do. Up the side: how much demand there is
+      for the work. So the <b style="color:var(--green)">top left</b> is where the leverage sits — plenty of work,
+      hard to automate. The <b style="color:var(--red)">bottom right</b> is the squeeze. The size of each dot is
+      what the work pays at senior level.</p></div>
     <div class="mapbox">
-      <svg viewBox="0 0 ${W} ${H}" class="chart" style="min-width:660px">
-        ${[0,25,50,75,100].map(p=>{const y=H-pad-(p/100)*(H-pad*2);const x=pad+(p/100)*(W-pad*2);
+      <svg viewBox="0 0 ${W} ${H}" class="chart areachart" style="min-width:780px">
+        ${quads}
+        ${[0,25,50,75,100].map(p=>{const y=py(p),x=px(p);
           return `<line class="gl" x1="${pad}" y1="${y}" x2="${W-pad}" y2="${y}"></line>
-            <text class="axl" x="${pad-7}" y="${y+3}" text-anchor="end">${p}</text>
-            <text class="axl" x="${x}" y="${H-pad+14}" text-anchor="middle">${p}</text>`}).join('')}
-        <text class="axl" x="${W/2}" y="${H-6}" text-anchor="middle" style="font-size:9px">AI EXPOSURE →</text>
-        <text class="axl" x="12" y="${H/2}" text-anchor="middle" transform="rotate(-90 12 ${H/2})" style="font-size:9px">DEMAND →</text>
+            <line class="gl" x1="${x}" y1="${pad}" x2="${x}" y2="${H-pad}"></line>
+            <text class="axl" x="${pad-10}" y="${y+3}" text-anchor="end">${p}</text>
+            <text class="axl" x="${x}" y="${H-pad+18}" text-anchor="middle">${p}</text>`}).join('')}
+        <text class="axl" x="${W/2}" y="${H-16}" text-anchor="middle" style="font-size:12px">HOW MUCH AI CAN ALREADY DO →</text>
+        <text class="axl" x="20" y="${H/2}" text-anchor="middle" transform="rotate(-90 20 ${H/2})" style="font-size:12px">HOW MUCH DEMAND →</text>
         ${pts}</svg>
       <div class="legend">${Object.entries(STANCE).map(([k,v])=>
-        `<span><i style="background:${k==='amplify'?'var(--green)':k==='augment'?'var(--blue)':'var(--red)'}"></i>${v[0]}</span>`).join('')}</div>
+        `<span><i style="background:${k==='amplify'?'var(--green)':k==='augment'?'var(--blue)':'var(--red)'}"></i>${v[0]} — ${v[2].split('.')[0].toLowerCase()}</span>`).join('')}</div>
     </div>
     <div class="note">The top-left quadrant is where the leverage sits: strong demand, work models cannot yet produce.
       <b>AI &amp; Algorithmic Regulation</b>, <b>Environmental &amp; Climate</b> and <b>International Arbitration</b>
@@ -2514,6 +3143,7 @@ function renderAreas(){
   $('#paChips').onclick=e=>{const c=e.target.closest('.chip');if(!c)return;paCat=c.dataset.c;renderAreas()};
   $('#paSortSeg').onclick=e=>{const b=e.target.closest('button');if(!b)return;paSort=b.dataset.s;renderAreas()};
   $$('#b-areas [data-a]').forEach(el=>el.onclick=()=>areaReport(el.dataset.a));
+  $$('#b-areas .areapt').forEach(el=>el.onclick=()=>areaReport(el.dataset.a));
 }
 function areaReport(name){
   const a=AREAS.find(x=>x.n===name); if(!a)return;
@@ -2560,8 +3190,10 @@ window.areaReport=areaReport;
 /* ==================================================================
    14 · AI EXPOSURE
    ================================================================== */
+let aiView='task';
 function renderAIsec(){
   const sorted=[...AITASK].sort((a,b)=>b.x-a.x);
+  const pro=[...PROFESSIONS].sort((a,b)=>b.x-a.x);
   const avg=Math.round(mean(AITASK.map(t=>t.x)));
   const comp=AITASK.filter(t=>t.st==='compress').length;
   const W=1160,H=300,pad=44;
@@ -2573,13 +3205,15 @@ function renderAIsec(){
      <text x="${pad+i*bw+bw/2}" y="${H-pad+10}" class="axl" text-anchor="end"
        transform="rotate(-55 ${pad+i*bw+bw/2} ${H-pad+10})" style="font-size:6px">${esc(a.n.split(' —')[0].slice(0,20))}</text></g>`).join('');
   $('#b-ai').innerHTML=`
+    <div class="howto reveal"><b>How to read this</b><p>Automation does not replace jobs, it replaces tasks — so this is measured at the task level. Read the task list before the practice-area chart. The tasks tell you far more than the job titles, and they explain why the profession's real problem is that the work being automated is the work juniors learned on.</p></div>
+    
     <div class="grid g4 mb2">
-      <div class="panel"><div class="panel-b"><div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--faint)">MEAN TASK EXPOSURE</div>
-        <div style="font-family:var(--serif);font-size:1.9rem;color:${heat(100-avg)};margin-top:6px">${avg}</div>
-        <div style="font-size:.78rem;color:var(--dim);margin-top:4px">Across ${AITASK.length} tasks</div></div></div>
-      <div class="panel"><div class="panel-b"><div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--faint)">TASKS COMPRESSING</div>
-        <div style="font-family:var(--serif);font-size:1.9rem;color:var(--red);margin-top:6px">${comp}</div>
-        <div style="font-size:.78rem;color:var(--dim);margin-top:4px">Volume shrinking, not just speeding up</div></div></div>
+      <div class="panel"><div class="panel-b"><div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--faint)">MOST EXPOSED JOB</div>
+        <div style="font-family:var(--serif);font-size:1.15rem;color:var(--red);margin-top:6px;line-height:1.2">${esc(pro[0].r)}</div>
+        <div style="font-size:.78rem;color:var(--dim);margin-top:4px">${pro[0].x}/100 exposure</div></div></div>
+      <div class="panel"><div class="panel-b"><div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--faint)">SAFEST JOB</div>
+        <div style="font-family:var(--serif);font-size:1.15rem;color:var(--green);margin-top:6px;line-height:1.2">${esc(pro[pro.length-1].r)}</div>
+        <div style="font-size:.78rem;color:var(--dim);margin-top:4px">${pro[pro.length-1].x}/100 exposure</div></div></div>
       <div class="panel"><div class="panel-b"><div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--faint)">MOST EXPOSED</div>
         <div style="font-family:var(--serif);font-size:1.15rem;color:var(--red);margin-top:6px;line-height:1.2">${esc(sorted[0].t)}</div>
         <div style="font-size:.78rem;color:var(--dim);margin-top:4px">${sorted[0].x}/100</div></div></div>
@@ -2588,6 +3222,28 @@ function renderAIsec(){
         <div style="font-size:.78rem;color:var(--dim);margin-top:4px">${sorted[sorted.length-1].x}/100</div></div></div>
     </div>
 
+    <div class="ctl" id="aiSeg"><div class="seg">
+      <button data-v="task" class="${aiView==='task'?'on':''}">By task</button>
+      <button data-v="job" class="${aiView==='job'?'on':''}">By profession</button></div></div>
+
+    ${aiView==='job'?`
+    <div class="exh"><u>EXHIBIT A</u><h3>Which jobs are exposed</h3>
+      <span>a role is just a bundle of tasks — this is that bundle scored</span></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${pro.map(p=>`<div class="panel"><div class="panel-b" style="padding:15px 18px">
+        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:7px">
+          <b style="font-size:.96rem;flex:1;min-width:190px">${esc(p.r)}</b>
+          <span class="tag ${STANCE[p.st][1]}">${STANCE[p.st][0]}</span>
+          <b style="font-family:var(--mono);font-size:.98rem;color:${heat(100-p.x)};width:34px;text-align:right">${p.x}</b></div>
+        <div class="bar" style="margin-bottom:9px"><i style="width:${p.x}%;background:${heat(100-p.x)}"></i></div>
+        <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--faint);margin-bottom:7px">
+          MOST OF THE DAY: ${esc(p.mix.toUpperCase())}</div>
+        <div style="font-size:.87rem;color:var(--dim)">${esc(p.n)}</div></div></div>`).join('')}
+    </div>
+    <div class="note"><b>Read the two views together.</b> A profession's score is just the weighted average of the
+      tasks it is made of. That is why a criminal defence lawyer and a document review contractor sit at opposite
+      ends despite both being "lawyers" — they spend their days doing almost entirely different things.</div>
+    `:`
     <div class="exh"><u>EXHIBIT A</u><h3>Task-level exposure</h3><span>because automation operates on tasks, not job titles</span></div>
     <div style="display:flex;flex-direction:column;gap:8px">
       ${sorted.map(t=>`<div class="panel"><div class="panel-b" style="padding:14px 17px">
@@ -2597,7 +3253,7 @@ function renderAIsec(){
           <b style="font-family:var(--mono);font-size:.95rem;color:${heat(100-t.x)};width:34px;text-align:right">${t.x}</b></div>
         <div class="bar" style="margin-bottom:9px"><i style="width:${t.x}%;background:${heat(100-t.x)}"></i></div>
         <div style="font-size:.85rem;color:var(--dim)">${esc(t.n)}</div></div></div>`).join('')}
-    </div>
+    </div>`}
 
     <div class="exh"><u>EXHIBIT B</u><h3>Exposure by practice area</h3><span>weighted composite of the tasks each area contains</span></div>
     <div class="mapbox"><svg viewBox="0 0 ${W} ${H}" class="chart" style="min-width:700px">
@@ -2614,7 +3270,8 @@ function renderAIsec(){
     <div class="disclaim" style="margin-top:16px"><b>No authoritative dataset exists for this.</b> There is no
       statistical agency measuring legal-task automation. The ordering here is defensible and the individual numbers
       are directional judgement. Read the ranking, not the decimals.</div>`;
-  $('#rt-ai').textContent=`${AITASK.length} tasks`;
+  $('#rt-ai').textContent=aiView==='job'?`${PROFESSIONS.length} professions`:`${AITASK.length} tasks`;
+  const seg=$('#aiSeg'); if(seg)seg.onclick=e=>{const b=e.target.closest('button');if(!b)return;aiView=b.dataset.v;renderAIsec()};
   $$('#b-ai [data-a]').forEach(el=>el.onclick=()=>areaReport(el.dataset.a));
 }
 
@@ -2629,6 +3286,8 @@ function renderQualify(){
   const yrsNum=x=>parseFloat(String(x.yrs).split('–')[0]);
   const maxY=Math.max(...QROUTE.map(yrsNum));
   $('#b-qualify').innerHTML=`
+    <div class="howto reveal"><b>How to read this</b><p>How you actually become a lawyer in twelve countries. The routes differ enormously — from five years in India to eight in Germany. Watch for the structural split: civil law systems usually train the whole profession together and divide into judges, prosecutors and advocates afterwards.</p></div>
+    
     <div class="ctl" id="qrChips">${QROUTE.map(x=>
       `<button class="chip ${x.iso===qrSel?'on':''}" data-q="${x.iso}">${esc(x.n)}</button>`).join('')}</div>
 
@@ -2748,6 +3407,8 @@ function renderFit(){
    ================================================================== */
 function renderMethod(){
   $('#b-method').innerHTML=`
+    <div class="howto reveal"><b>How to read this</b><p>Every figure on this site, labelled by how much weight it can carry. Measured means counted or pulled from a live feed. Modelled means constructed to be consistent with something measured. Editorial means my judgement. Check the label before you cite anything.</p></div>
+    
     <div class="exh" style="margin-top:0;border:0;padding-top:0"><u>SCH. A</u><h3>What each number means</h3>
       <span>and how much weight it can carry</span></div>
     <p style="color:var(--dim);font-size:.92rem;margin-bottom:18px;max-width:78ch">Not every figure here is the same
@@ -2820,13 +3481,13 @@ function renderMethod(){
 /* ==================================================================
    GIMMICKS · lens, ticker, docket block, terminal, analyst dock
    ================================================================== */
-let LENS='';
+let LENS=storeGet('lens','');
 function JL(){return LENS?J.filter(j=>j.trad===LENS):J}
 function tileOp(j){return (!LENS||j.trad===LENS) ? 0.84 : 0.12}
 
 $('#lensSel').onclick=e=>{
   const b=e.target.closest('button'); if(!b)return;
-  LENS=b.dataset.l;
+  LENS=b.dataset.l; saveStore({lens:LENS});
   $$('#lensSel button').forEach(x=>x.classList.toggle('on',x===b));
   const set=JL();
   const bar=$('#lensBar');
@@ -3046,6 +3707,27 @@ function termRun(raw){
 /* ==================================================================
    00 · START HERE
    ================================================================== */
+/* A returning visitor should not be shown a front door they have already
+   walked through. If anything is remembered, offer the way back in first. */
+function startResume(){
+  const p=progressAll(), s=progPct();
+  if(!s.done)return '';
+  const last=Object.entries(p).map(([k,v])=>{
+    const kind=k.slice(0,k.indexOf(':')), id=k.slice(k.indexOf(':')+1);
+    if(kind==='sec'&&SECBY[id]&&id!=='start')return {l:SECBY[id][2].replace(/&amp;/g,'&'),h:GROUP_PAGE[SECBY[id][4]]+'#'+id,v};
+    if(kind==='game'&&GAMEBY[id])return {l:GAMEBY[id].t,h:'game-'+id+'.html',v};
+    if(kind==='doc'&&DOCSBY[id])return {l:DOCSBY[id].t,h:'situation.html#docs',v};
+    if(kind==='proc'&&PROCSBY[id])return {l:PROCSBY[id].t,h:'situation.html#process',v};
+    return null;
+  }).filter(Boolean).sort((a,b)=>b.v.last-a.v.last)[0];
+  if(!last)return '';
+  return `<div class="resume">
+    <div class="resumeL"><span class="resk">Welcome back</span>
+      <b>You were last reading <a href="${last.h}">${esc(last.l)}</a></b>
+      <i>${progWhen(last.v.last)} \u00b7 you have opened ${s.done} of ${s.tot} things here</i></div>
+    <div class="resumeR"><a class="btn sm" href="${last.h}">Carry on \u2192</a>
+      <button class="btn sm ghost" data-go="progress">See everything</button></div></div>`;
+}
 function renderStart(){
   const cards=[
     ['guide','⚖','I have a legal problem right now',
@@ -3053,7 +3735,9 @@ function renderStart(){
     ['atlas','◉','I want to understand how law works',
      'How courts differ between countries, which decisions shaped the modern world, and what terms like precedent, proportionality and habeas corpus actually mean. Built for students and the plainly curious.','Open the atlas'],
     ['areas','◈','I am thinking about a career in law',
-     'What each area of practice is really like day to day, how exposed it is to automation, how you qualify in twelve different countries, and a short questionnaire that points at areas worth looking into.','Explore practice areas']];
+     'What each area of practice is really like day to day, how exposed it is to automation, how you qualify in twelve different countries, and a short questionnaire that points at areas worth looking into.','Explore practice areas'],
+    ['docs','✉','I have been sent something I do not understand',
+     'A court form, an eviction notice, a letter from a debt collector, an invitation to a disciplinary meeting. Nine of them walked through part by part — including which date is the one that actually matters.','Read my letter']];
   const tour=GROUPS.filter(g=>g[0]!=='start').map(([g,l])=>{
     const list=sectionsIn(g);
     return [l,list.map(x=>x[1]).join(' · '),list[0][0],list[0][5]];
@@ -3069,7 +3753,8 @@ function renderStart(){
       <button class="btn" data-go="help" style="flex-shrink:0">Find help now →</button>
     </div></div>
     <svg class="biglogo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><polygon points="32,3 61,32 32,61 3,32" fill="var(--brass)" opacity=".22"/><rect x="10" y="9" width="44" height="44" fill="none" stroke="var(--brass)" stroke-width="3.2"/><polygon points="24.56,21.05 33.05,12.56 35.88,15.39 27.39,23.88" fill="var(--ink)"/><polygon points="28.45,24.94 36.94,16.45 51.44,30.95 42.95,39.44" fill="var(--ink)"/><polygon points="38.71,26.71 35.88,23.88 21.74,38.02 24.56,40.85" fill="var(--ink)"/><polygon points="21.31,37.60 24.99,41.27 16.79,45.80" fill="var(--brass)"/><path d="M16.79 45.80 L20.32 42.26" stroke="var(--panel)" stroke-width="1.1" stroke-linecap="round"/><circle cx="24.21" cy="38.37" r="1" fill="var(--panel)"/></svg>
-    <div class="grid g3 mb2">${cards.map(([to,ic,h,p,cta])=>
+    ${startResume()}
+    <div class="grid g4 mb2">${cards.map(([to,ic,h,p,cta])=>
       `<div class="startcard" data-go="${to}"><div class="ic">${ic}</div>
         <h3>${h}</h3><p>${p}</p><div class="go">${cta} →</div></div>`).join('')}</div>
 
@@ -3088,8 +3773,8 @@ function renderStart(){
             <p style="font-size:.92rem;color:var(--dim);margin-bottom:14px">Three things worth knowing:</p>
             <div class="tourrow"><span class="n">01</span><div><b>This is not legal advice</b>
               <p>It explains how law generally works. It cannot tell you what to do about your specific situation, and it is not a substitute for a lawyer where you live.</p></div></div>
-            <div class="tourrow"><span class="n">02</span><div><b>Nothing you type leaves this page</b>
-              <p>There is no account, no tracking and no server. Everything — the walkthrough, the calculators, the letter builder, the Law Lab and the search — runs inside your own browser.</p></div></div>
+            <div class="tourrow"><span class="n">02</span><div><b>Everything stays on your device</b>
+              <p>There is no account and no server. The walkthrough, the calculators, the letter builder, the Law Lab and the search all run inside your own browser. Your theme, text size and progress are saved on this device so they are still here when you come back — and they are never sent anywhere.</p></div></div>
             <div class="tourrow"><span class="n">03</span><div><b>Not every figure is the same kind of fact</b>
               <p>Some numbers are measured, some are editorial judgement. The Method page labels every one of them, and you should check before citing anything.</p></div></div>
           </div></div>
@@ -3116,13 +3801,13 @@ const THEMES=[
  {k:'dark', n:'Night',   d:'Low light, muted contrast, easy on the eyes.',sw:['#0d1016','#161c27','#d3ab35']},
  {k:'court',n:'Courtroom',d:'Oak, brass and green baize.',sw:['#1d1712','#2c231b','#d8b04a']},
  {k:'contract',n:'Contract',d:'Cream stock, serif type, a ruled margin.',sw:['#f2eee2','#fffdf6','#1e3a68']}];
-let THEME='court';
-function setTheme(k){
+let THEME=storeGet('theme','court');
+function setTheme(k,quiet){
   if(!THEMES.find(t=>t.k===k))return;
-  THEME=k; document.documentElement.setAttribute('data-theme',k);
-  paintThemeMenu();
+  THEME=k; document.documentElement.setAttribute('data-theme',k); saveStore({theme:k});
+  paintThemeMenu(); if(typeof paintMore==='function')paintMore();
   const t=THEMES.find(x=>x.k===k);
-  toast('Theme: '+t.n);
+  if(!quiet)toast('Theme: '+t.n);
   if($('#b-atlas'))renderAtlas();
   if($('#b-index'))renderIndex();
 }
@@ -3144,7 +3829,7 @@ $('#thmBtn').onclick=e=>{e.stopPropagation();
 /* ---------- more menu: ticker, console, sync ---------- */
 $('#moreBtn').insertAdjacentHTML('afterend','<div class="thmmenu" id="moreMenu" style="right:0"></div>');
 $('#moreBtn').parentElement.style.position='relative';
-let tickerOn=false, consoleOn=false;
+let tickerOn=storeGet('ticker',false), consoleOn=storeGet('console',false);
 function paintMore(){
   $('#moreMenu').innerHTML=`<h6>Optional extras</h6>
     <button class="thmopt ${tickerOn?'on':''}" data-m="ticker">
@@ -3161,6 +3846,10 @@ function paintMore(){
       `<button data-mt="${t.k}" class="${THEME===t.k?'on':''}">${t.n}</button>`).join('')}</div>
     <div class="sizerow" id="moreSize">${SIZES.map(z=>
       `<button data-ms="${z[0]}" class="${textSize===z[0]?'on':''}">${z[1]}</button>`).join('')}</div>
+    <h6 style="border-top:1px solid var(--line);margin-top:6px;padding-top:12px">Help</h6>
+    <button class="thmopt" data-m="tour">
+      <span class="sw"><i style="background:var(--violet)"></i></span>
+      <span><b style="font-weight:600">Show the introduction</b><small>The five-card tour you get on a first visit</small></span></button>
     <h6 style="border-top:1px solid var(--line);margin-top:6px;padding-top:12px">Jurisdiction lens</h6>
     <div class="sizerow" id="moreLens">${[['','All'],['CM','Common'],['CV','Civil'],['MX','Mixed']].map(([k,l])=>
       `<button data-ml="${k}" class="${LENS===k?'on':''}">${l}</button>`).join('')}</div>`;
@@ -3170,10 +3859,11 @@ function paintMore(){
     const t=$('#lensSel button[data-l="'+b.dataset.ml+'"]'); if(t)t.click(); paintMore();});
   $$('#moreMenu .thmopt').forEach(b=>b.onclick=()=>{
     const m=b.dataset.m;
-    if(m==='ticker'){tickerOn=!tickerOn;$('#ticker').classList.toggle('on',tickerOn);}
-    else if(m==='console'){consoleOn=!consoleOn;$('#term').classList.toggle('avail',consoleOn);document.body.classList.toggle('console-on',consoleOn);
+    if(m==='ticker'){tickerOn=!tickerOn;saveStore({ticker:tickerOn});$('#ticker').classList.toggle('on',tickerOn);}
+    else if(m==='console'){consoleOn=!consoleOn;saveStore({console:consoleOn});$('#term').classList.toggle('avail',consoleOn);document.body.classList.toggle('console-on',consoleOn);
       if(!consoleOn)$('#term').classList.remove('open'); else toast('Console added at the bottom of the page');}
     else if(m==='sync'){$('#syncBtn').click();$('#moreMenu').classList.remove('on');return}
+    else if(m==='tour'){$('#moreMenu').classList.remove('on');tourShow(true);return}
     paintMore();
   });
 }
@@ -3303,7 +3993,87 @@ const HELPJ=[
 {iso:'BGD',n:'Bangladesh',
  r:[['National Legal Aid Services Organization','Government legal aid body under the Ministry of Law, with district committees.','nlaso.gov.bd'],
     ['BLAST','Bangladesh Legal Aid and Services Trust — free representation and strategic litigation.','blast.org.bd'],
-    ['Ain o Salish Kendra','Legal aid and human rights organisation with a long track record.','askbd.org']]}];
+    ['Ain o Salish Kendra','Legal aid and human rights organisation with a long track record.','askbd.org']]},
+{iso:'IRL',n:'Ireland',
+ r:[['Citizens Information','Free public service giving information on rights and entitlements, in person and by phone.','citizensinformation.ie'],
+    ['Legal Aid Board','State civil legal aid through law centres, means-tested with a modest contribution.','legalaidboard.ie'],
+    ['FLAC','Free Legal Advice Centres — volunteer-run evening clinics nationwide.','flac.ie'],
+    ['Threshold','National housing charity advising tenants on eviction and deposits.','threshold.ie']]},
+{iso:'POL',n:'Poland',
+ r:[['Nieodpłatna pomoc prawna','Free legal aid points in every district, open to anyone who declares they cannot afford a lawyer.','np.ms.gov.pl'],
+    ['Rzecznik Praw Obywatelskich','The Ombudsman receives complaints about public authorities free of charge.','brpo.gov.pl'],
+    ['Okręgowa Rada Adwokacka','Regional bar councils run free consultation days.','—']]},
+{iso:'SWE',n:'Sweden',
+ r:[['Rättshjälp','State legal aid where you have no legal expenses insurance, applied for through the court.','—'],
+    ['Rättsskydd','Most Swedish home insurance includes legal expenses cover — check this first, it is the usual route.','—'],
+    ['Juridiska föreningar','University law student advice bureaux offer free guidance in the main cities.','—'],
+    ['Diskrimineringsombudsmannen','The Equality Ombudsman investigates discrimination complaints at no cost.','do.se']]},
+{iso:'PRT',n:'Portugal',
+ r:[['Apoio judiciário','Legal aid applied for through Segurança Social, covering fees and a lawyer.','seg-social.pt'],
+    ['Ordem dos Advogados','The bar assigns lawyers under the legal aid scheme and runs information sessions.','oa.pt'],
+    ['DECO','Consumer protection association handling disputes for members and non-members.','deco.pt']]},
+{iso:'MEX',n:'Mexico',
+ r:[['Defensoría Pública Federal','Federal public defenders in criminal and some civil matters, free of charge.','—'],
+    ['PROFECO','Consumer protection agency that mediates disputes and can impose penalties.','profeco.gob.mx'],
+    ['CNDH','National Human Rights Commission receives complaints against authorities.','cndh.org.mx'],
+    ['Bufetes jurídicos universitarios','University legal clinics offering free representation.','—']]},
+{iso:'ARG',n:'Argentina',
+ r:[['Defensoría General','Public defenders covering criminal and civil matters for those who cannot pay.','mpd.gov.ar'],
+    ['Centros de Acceso a Justicia','Walk-in justice access centres in neighbourhoods across the country.','—'],
+    ['Defensoría del Pueblo','Ombudsman handling complaints against public bodies.','—']]},
+{iso:'CHL',n:'Chile',
+ r:[['Corporación de Asistencia Judicial','Free legal assistance offices nationwide, the main civil legal aid route.','cajmetro.cl'],
+    ['Defensoría Penal Pública','Public criminal defence, free for anyone who cannot afford a lawyer.','dpp.cl'],
+    ['SERNAC','Consumer protection service mediating disputes with businesses.','sernac.cl']]},
+{iso:'COL',n:'Colombia',
+ r:[['Defensoría del Pueblo','Ombudsman providing public defenders and receiving rights complaints.','defensoria.gov.co'],
+    ['Consultorios jurídicos','Compulsory university law clinics — a major source of free representation.','—'],
+    ['Acción de tutela','A fast constitutional remedy any person can file without a lawyer, decided within ten days.','—']]},
+{iso:'EGY',n:'Egypt',
+ r:[['Lawyers Syndicate','The bar operates a legal aid committee and free consultation days.','—'],
+    ['National Council for Human Rights','Receives complaints and provides legal support in rights cases.','nchr.eg'],
+    ['University legal clinics','Law faculties run clinics offering free advice.','—']]},
+{iso:'GHA',n:'Ghana',
+ r:[['Legal Aid Commission','Statutory body providing free representation in criminal and family matters.','legalaid.gov.gh'],
+    ['CHRAJ','Commission on Human Rights and Administrative Justice — free complaints against public bodies.','chraj.gov.gh'],
+    ['Legal Resources Centre','NGO providing advice and paralegal support.','—']]},
+{iso:'TZA',n:'Tanzania',
+ r:[['Legal Services Facility','Funds paralegal centres providing free advice across the country.','lsftz.org'],
+    ['Legal and Human Rights Centre','Free legal aid clinics and rights litigation.','humanrights.or.tz'],
+    ['TAWLA','Women lawyers association offering free assistance in family matters.','—']]},
+{iso:'PHL',n:'Philippines',
+ r:[['Public Attorney’s Office','Free representation in criminal and civil cases for the indigent.','pao.gov.ph'],
+    ['Integrated Bar of the Philippines','Legal aid offices in every chapter across the country.','ibp.ph'],
+    ['Commission on Human Rights','Investigates rights violations and provides legal assistance.','chr.gov.ph']]},
+{iso:'IDN',n:'Indonesia',
+ r:[['Bantuan Hukum','State-funded legal aid delivered through accredited organisations.','—'],
+    ['LBH','Legal Aid Institute offices providing free representation, particularly in rights cases.','—'],
+    ['Ombudsman Republik Indonesia','Free complaints about maladministration by public services.','ombudsman.go.id']]},
+{iso:'MYS',n:'Malaysia',
+ r:[['Legal Aid Department','Government legal aid for family, criminal and some civil matters.','jbg.gov.my'],
+    ['Bar Council Legal Aid Centre','Free legal clinics run by volunteer lawyers in each state.','—'],
+    ['SUHAKAM','Human rights commission receiving complaints free of charge.','suhakam.org.my']]},
+{iso:'PAK',n:'Pakistan',
+ r:[['Legal Aid and Justice Authority','Federal body funding legal representation for those who cannot pay.','—'],
+    ['District Legal Empowerment Committees','Provide funds for lawyers in each district.','—'],
+    ['AGHS Legal Aid Cell','Long-established free legal aid organisation.','—']]},
+{iso:'TUR',n:'Türkiye',
+ r:[['Adli yardım','Legal aid administered by the bar associations, covering fees and a lawyer.','—'],
+    ['Baro','Provincial bar associations operate legal aid bureaux and consultation days.','—'],
+    ['Kamu Denetçiliği Kurumu','The Ombudsman Institution examines complaints about public administration.','ombudsman.gov.tr']]},
+{iso:'NZL',n:'New Zealand',
+ r:[['Legal Aid','Government-funded lawyer for criminal, family and civil matters, repayable in some cases.','justice.govt.nz'],
+    ['Community Law Centres','Free legal help nationwide, no means test for initial advice.','communitylaw.org.nz'],
+    ['Citizens Advice Bureau','Free information and referral on any problem.','cab.org.nz'],
+    ['Tenancy Services','Free dispute resolution for landlords and tenants.','tenancy.govt.nz']]},
+{iso:'PSE',n:'Palestine',
+ r:[['Palestinian Bar Association','Operates legal aid committees and free consultation.','—'],
+    ['Independent Commission for Human Rights','National human rights institution receiving individual complaints.','ichr.ps'],
+    ['Legal aid NGOs','Several organisations provide free representation, particularly in family and detention matters.','—']]},
+{iso:'ARE',n:'United Arab Emirates',
+ r:[['Legal aid on request','Courts may appoint a lawyer at the state’s expense in serious criminal cases.','—'],
+    ['Ministry of Justice consultation','Free legal consultation services offered through ministry channels.','moj.gov.ae'],
+    ['Labour dispute mediation','Free mediation through the labour ministry before a case reaches court.','mohre.gov.ae']]}];
 
 const HELPEU=[
 ['European e-Justice Portal','Explains how to find a lawyer, legal aid and cross-border procedures in every EU member state.','e-justice.europa.eu'],
@@ -3778,6 +4548,8 @@ let helpJ='GBR';
 function renderHelp(){
   const j=HELPJ.find(x=>x.iso===helpJ)||HELPJ[0];
   $('#b-help').innerHTML=`
+    <div class="howto reveal"><b>How to read this</b><p>Every briefing on this site ends by telling you to speak to someone. This page is that someone. If it is urgent, read the red panel first. Otherwise match your problem in step one and find your country in step two.</p></div>
+    
     <div class="panel mb2" style="border-left:4px solid var(--red)">
       <div class="panel-h"><h3>If this is urgent</h3><span class="hint">Read this first</span></div>
       <div class="panel-b" style="padding-top:8px">
@@ -3873,7 +4645,7 @@ function renderLetters(){
         <div class="panel mb"><div class="panel-b">
           <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--brass)">USE THIS WHEN</div>
           <p style="font-size:.9rem;color:var(--dim);margin-top:6px">${esc(L.when)}</p></div></div>
-        <div class="exh"><u>STEP 2</u><h3>Fill in the blanks</h3><span>runs in your browser \u2014 nothing is sent anywhere</span></div>
+        <div class="exh"><u>STEP 2</u><h3>Fill in the blanks</h3><span>runs in your browser \u00b7 nothing is sent anywhere</span></div>
         <div class="panel"><div class="panel-b">
           ${defs.map(([k,label,type,ph])=>{
             const v=esc(((letVals[L.id]||{})[k])||'');
@@ -4044,9 +4816,9 @@ document.addEventListener('keydown',e=>{
    TEXT SIZE
    ================================================================== */
 const SIZES=[['s','Small',15],['m','Default',16],['l','Large',18],['xl','Larger',20]];
-let textSize='m';
+let textSize=storeGet('textSize','m');
 function setTextSize(k){ const s=SIZES.find(x=>x[0]===k); if(!s)return;
-  textSize=k;
+  textSize=k; saveStore({textSize:k});
   document.documentElement.style.fontSize=s[2]+'px';   /* rem scales from :root */
   document.body.style.fontSize=s[2]+'px';
   paintThemeMenu(); paintMore(); toast('Text size: '+s[1]); }
@@ -4199,7 +4971,75 @@ const REALFAKE=[
 /* ==================================================================
    LAW LAB v2 — registry
    ================================================================== */
+/* ==================================================================
+   34 · ISSUE SPOTTER — the exam skill
+   Fact patterns marked up as {{phrase|issueId}}. An empty issueId
+   means the phrase is a decoy: real-sounding, legally irrelevant.
+   ================================================================== */
+const SPOTS=[
+{id:'sale',t:'The second-hand van',area:'Contract',level:'Foundation',
+ setup:'Priya is buying a van from Dan, who runs a small garage.',
+ text:`Dan advertised a van online for 6,000. Priya visited on {{a wet Tuesday afternoon||}} and asked whether the van had ever been in an accident. {{Dan said it had never been damaged, though he knew it had been rebuilt after a front-end collision|misrep}}. Priya said she would take it, and {{Dan replied that he would hold it for her until Friday|offer}}. On Thursday {{Dan sold the van to someone else for 6,400|offer}}, having heard nothing further from Priya. When Priya complained, Dan pointed to {{a line on the back of his invoice excluding all liability for the condition or history of any vehicle|excl}}. Priya had {{not read the invoice|excl}}. She now says the engine is failing. {{Dan's garage has four employees||}} and {{Priya paid a 500 deposit in cash|consid}}.`,
+ issues:[
+  {id:'misrep',n:'Misrepresentation',why:'A false statement of fact, made before the contract, that induced Priya to enter it. Knowing it was untrue makes it fraudulent rather than merely negligent, which affects the remedy.',ord:1},
+  {id:'offer',n:'Offer, acceptance and revocation',why:'Was there a binding contract at all? A promise to hold an offer open is generally not binding without something given for it — which is why the deposit matters.',ord:2},
+  {id:'consid',n:'Consideration',why:'The deposit may be the consideration that makes the promise to hold the van until Friday enforceable. Without it, Dan was free to sell.',ord:3},
+  {id:'excl',n:'Exclusion clauses and incorporation',why:'A term on the back of an invoice handed over after the deal is very unlikely to be incorporated, and an attempt to exclude liability for fraud fails in almost every system regardless.',ord:4}],
+ decoys:['The weather on the day of the visit tells you nothing about any legal relationship.','The number of employees would matter for some employment or consumer questions, but not for this dispute.'],
+ plan:'Deal with formation first — if there was no contract, nothing else arises. Then the misrepresentation, because fraud affects which remedies are open. The exclusion clause comes last, since it is a defence to liability you have already established.'},
+
+{id:'slip',t:'The supermarket floor',area:'Negligence',level:'Foundation',
+ setup:'Marcus slipped in a supermarket aisle and broke his wrist.',
+ text:`A carton of yoghurt had split in aisle four. {{A member of staff walked past the spill twice in the twenty minutes before Marcus fell|breach}}. {{The store's own policy requires aisle checks every fifteen minutes|breach}}. Marcus {{was looking at his phone as he walked|contrib}} and {{was wearing shoes with worn soles|contrib}}. {{The store had recently changed its floor tiles to a cheaper, glossier finish||}}. He broke his wrist, and because {{he is a self-employed piano tuner he lost four months of income|damage}}. {{Two weeks later, while his wrist was still in plaster, he tripped on his own front step and broke the same wrist again|remote}}. {{The supermarket is part of a chain with 200 branches||}}. Marcus had {{shopped there every week for six years||}}.`,
+ issues:[
+  {id:'breach',n:'Breach of duty',why:'Duty is not seriously in issue — an occupier owes visitors a duty. The argument is about breach: staff passing the spill twice, and the store failing its own standard, are the strongest facts Marcus has.',ord:1},
+  {id:'damage',n:'Damage and loss',why:'Lost earnings for a self-employed claimant are recoverable but need proving. The nature of his work makes the loss foreseeable and quantifiable.',ord:2},
+  {id:'remote',n:'Intervening cause',why:'The second injury raises whether the chain of causation broke. Courts often treat a subsequent injury caused by the weakened state as still flowing from the original wrong — but not always.',ord:3},
+  {id:'contrib',n:'Contributory negligence',why:'The phone and the worn soles do not defeat the claim but can reduce damages by a percentage the court sets.',ord:4}],
+ decoys:['The tiles are a tempting fact but nothing suggests they fell below any standard, and the spill is the cause in any event.','The size of the chain and his loyalty as a customer are irrelevant to liability.'],
+ plan:'Establish breach before anything else — without it there is no claim. Then causation and damage. Contributory negligence is a partial defence and belongs at the end, after liability is settled, because it only reduces what is owed.'},
+
+{id:'fight',t:'Outside the takeaway',area:'Criminal',level:'Intermediate',
+ setup:'Two men, an argument in a queue, and one of them ends up in hospital.',
+ text:`Callum was queuing when Reece {{pushed past him and swore at him|prov}}. Callum {{turned and pushed Reece in the chest|ar}}. Reece {{raised his fist|selfd}}, and Callum {{punched him once, hard, in the jaw|ar}}. Reece fell, {{struck his head on the kerb and suffered a bleed on the brain|caus}}. Callum {{had drunk four pints|intox}}. He says {{he thought Reece was about to hit him|selfd}} and that {{he only meant to make him back off|mr}}. {{Callum has one previous conviction for shoplifting||}}. {{The takeaway had a CCTV camera that was not working||}}. Reece {{recovered after surgery|caus}}.`,
+ issues:[
+  {id:'ar',n:'The act itself',why:'Two separate applications of force. Each is potentially an offence, and they may be charged differently — the push and the punch are not the same act.',ord:1},
+  {id:'mr',n:'Intention or recklessness',why:'What Callum meant to do determines which offence. Intending only to make someone back off is a very different mental state from intending serious harm, even where the harm is serious.',ord:2},
+  {id:'caus',n:'Causation and the resulting harm',why:'The serious injury came from the kerb, not the punch. Whether Callum is responsible for it turns on whether that consequence was a foreseeable result of the punch — usually it is.',ord:3},
+  {id:'selfd',n:'Self-defence',why:'Raised by the fist and by his stated belief. The questions are whether the belief was honestly held and whether the force used was reasonable in the circumstances he believed them to be.',ord:4},
+  {id:'intox',n:'Intoxication',why:'Voluntary intoxication generally cannot be relied on to support a mistaken belief in the need for self-defence, which makes the four pints a fact working against him.',ord:5},
+  {id:'prov',n:'Provocation and its limits',why:'Being sworn at rarely justifies force. It is relevant to sentence far more often than to liability.',ord:6}],
+ decoys:['A shoplifting conviction is not relevant to whether this assault occurred.','The broken camera is an evidential problem, not a legal issue.'],
+ plan:'Take the offences in order of seriousness, and within each one work through act, then mental state, then causation. Only then turn to defences — self-defence first, since it is a complete defence, and intoxication after it, because here it operates on the self-defence argument rather than standing alone.'},
+
+{id:'dismiss',t:'The restructure',area:'Employment',level:'Intermediate',
+ setup:'Aisha was dismissed six weeks after telling her manager something he did not want to hear.',
+ text:`Aisha had worked at the firm for {{four years|qual}}. In March she {{reported to her manager that the company was billing a client for work it had not done|whistle}}. Her manager {{told her to leave it alone|whistle}}. In April {{she told HR she was pregnant|disc}}. In May she was told her role was {{redundant in a restructure, though a colleague was hired into a near-identical role two weeks later|sham}}. {{She was given one week's notice|notice}}. {{The company has 40 staff||}}. {{Her performance reviews had been consistently good|sham}}. {{She had recently changed her working hours to start at ten|disc}}. {{The office moved to a new building in February||}}.`,
+ issues:[
+  {id:'qual',n:'Qualifying service',why:'Ordinary unfair dismissal usually requires a minimum period of service. Four years clears it in most systems — but the point of the question is that the other claims below do not need any qualifying period at all.',ord:1},
+  {id:'sham',n:'Whether the redundancy was genuine',why:'Hiring into a near-identical role immediately afterwards is the classic indicator of a sham redundancy. Good reviews undercut any suggestion of performance.',ord:2},
+  {id:'whistle',n:'Whistleblowing detriment',why:'A protected disclosure about wrongdoing, followed closely by dismissal, raises automatically unfair dismissal — which normally needs no qualifying service and is often uncapped.',ord:3},
+  {id:'disc',n:'Pregnancy discrimination',why:'Dismissal because of pregnancy is direct discrimination in most systems, needs no qualifying period, and the change of hours may separately raise a failure to accommodate.',ord:4},
+  {id:'notice',n:'Notice period',why:'One week after four years is very likely short of the statutory or contractual minimum. A small, separate, easily-proved claim.',ord:5}],
+ decoys:['Company size can matter for some procedural duties but does not decide any of these claims.','The office move is background noise.'],
+ plan:'Start with the claims that need no qualifying service — whistleblowing and discrimination — because they are the strongest and the least technical. Ordinary unfair dismissal comes next, and the notice claim last: it is small, but it is nearly always winnable and costs nothing to add.'},
+
+{id:'landlord',t:'The flat with the leak',area:'Housing',level:'Foundation',
+ setup:'Tomas has been renting the same flat for two years.',
+ text:`Water has been {{coming through the bathroom ceiling for five months|repair}} and Tomas has {{reported it in writing four times|repair}}. His landlord {{has not responded|repair}}. Last week the landlord {{let himself in while Tomas was at work to show the flat to a buyer|quiet}}, having {{given no notice|quiet}}. He also {{turned off the hot water for two days to encourage Tomas to leave|harass}}. Tomas {{paid a deposit of two months' rent at the start|dep}} and {{has never been told where it is held|dep}}. {{The flat is on the third floor||}}. Tomas {{is two weeks behind on rent because of the disruption|arrears}}. {{His neighbour has the same landlord||}}.`,
+ issues:[
+  {id:'repair',n:'Repairing obligations',why:'A landlord is normally responsible for the structure and for water installations. Five months and four written reports establish both the disrepair and the notice needed to trigger liability.',ord:1},
+  {id:'quiet',n:'Quiet enjoyment and entry',why:'Entering without notice, and for the landlord’s own purposes, breaches the tenant’s right to occupy without interference in most systems.',ord:2},
+  {id:'harass',n:'Harassment and unlawful eviction',why:'Cutting off a utility to make someone leave is a criminal offence in many countries, not merely a breach of contract. This is the most serious fact here.',ord:3},
+  {id:'dep',n:'Deposit protection',why:'Many systems require deposits to be held in a scheme and the tenant to be told where. Failing to do so often carries a fixed penalty and can block a landlord from ending the tenancy.',ord:4},
+  {id:'arrears',n:'Rent arrears and set-off',why:'The arrears are a genuine risk, but disrepair can sometimes be set off against rent. It should be raised as an answer, not ignored.',ord:5}],
+ decoys:['The floor the flat is on is not a legal issue.','What happens to the neighbour is not part of this claim, though it may be evidence of a pattern.'],
+ plan:'Lead with harassment, because it is the only fact here that may be a criminal offence and the only one that could need an emergency application. Then disrepair, which is the ongoing harm. Deposit and entry are strong, self-contained points. Address the arrears last, but do address them — the other side certainly will.'}];
+
 const GAMES=[
+{id:'spot',t:'Issue Spotter',area:'Exam technique',acc:'#7d8fc4',
+ tag:'A messy set of facts with the law hidden inside it. Find what matters, ignore what does not, then put the issues in the order a marker expects.',
+ skill:'Issue spotting \u00b7 relevance \u00b7 answer structure'},
 {id:'jury',t:'The Jury Room',area:'Criminal & civil procedure',acc:'#c0574a',
  tag:'Weigh the evidence, argue with eleven other jurors, and watch the verdict flip when the standard of proof changes.',
  skill:'Standards of proof · burden · deliberation'},
@@ -4238,16 +5078,26 @@ const GAMES=[
  skill:'Doctrinal instinct · reading judgments'}];
 const GAMEBY=Object.fromEntries(GAMES.map(g=>[g.id,g]));
 
-/* ---------- 1 · JURY ROOM (belief weighting + deliberation) ---------- */
+/* ---------- 1 · JURY ROOM (plain language rebuild) ---------- */
 const JURORS=['Foreperson','Juror 2','Juror 3','Juror 4','Juror 5','Juror 6',
   'Juror 7','Juror 8','Juror 9','Juror 10','Juror 11'];
 const JUROR_LEANS=[.12,-.22,.30,-.10,.05,.24,-.30,.16,-.06,.20,-.16];
-let juryCase='shop', juryBelief={}, juryStd='brd', juryPhase=0, juryRule='unan';
+const BELIEF=[['no','I don’t believe this',0],['unsure','I’m not sure',50],['yes','I believe this',100]];
+let juryCase='shop', juryBelief={}, juryStd='brd', juryPhase=0, juryRule='maj';
 function jbelief(){ return juryBelief[juryCase]||(juryBelief[juryCase]={}) }
 function juryScore(){
   const c=JURY_CASES.find(x=>x.id===juryCase), b=jbelief();
-  let sum=0; c.ev.forEach((e,i)=>{ const w=(b[i]===undefined?70:b[i])/100; sum+=e[1]*w });
+  let sum=0; c.ev.forEach((e,i)=>{ const w=(b[i]===undefined?50:b[i])/100; sum+=e[1]*w });
   return clamp(Math.round(50+sum*0.95),0,100);
+}
+function sureWord(c){
+  if(c>=95)return 'Certain';
+  if(c>=85)return 'Almost certain';
+  if(c>=70)return 'Quite sure';
+  if(c>=55)return 'Leaning towards guilty';
+  if(c>=45)return 'Genuinely torn';
+  if(c>=30)return 'Leaning towards not guilty';
+  return 'Not convinced at all';
 }
 function jurorVotes(conf){
   const std=STANDARDS.find(x=>x[0]===juryStd)[1];
@@ -4256,191 +5106,226 @@ function jurorVotes(conf){
 function renderJury(){
   const c=JURY_CASES.find(x=>x.id===juryCase), b=jbelief();
   const conf=juryScore(), std=STANDARDS.find(x=>x[0]===juryStd), met=conf>=std[1];
-  const votes=jurorVotes(conf), yes=votes.filter(Boolean).length+(met?1:0), total=12;
+  const votes=jurorVotes(conf), yes=votes.filter(Boolean).length+(met?1:0);
   const need=juryRule==='unan'?12:10;
-  const hung=yes<need && (total-yes)<need;
-  const outcome=yes>=need?'convict':(total-yes)>=need?'acquit':'hung';
+  const outcome=yes>=need?'convict':(12-yes)>=need?'acquit':'hung';
+  const answered=c.ev.filter((_,i)=>b[i]!==undefined).length;
+  const crim=c.kind==='Criminal';
+
   return `<div class="game-wrap">
-  <div class="phases">${['The evidence','Deliberation','The verdict'].map((p,i)=>
-    `<button class="phase ${i===juryPhase?'on':''} ${i<juryPhase?'done':''}" data-ph="${i}">
-      <span>${i+1}</span>${p}</button>`).join('')}</div>
+  <div class="phases">${['1. Read the case','2. Weigh the evidence','3. Decide'].map((p,i)=>
+    `<button class="phase ${i===juryPhase?'on':''} ${i<juryPhase?'done':''}" data-ph="${i}"><span>${i+1}</span>${p.slice(3)}</button>`).join('')}</div>
 
   ${juryPhase===0?`
-  <div class="grid g2">
-    <div class="panel"><div class="panel-h"><h3>${esc(c.t)}</h3><span class="tag b">${c.kind}</span></div>
-      <div class="panel-b">
-        <div class="ctl" id="juryPick">${JURY_CASES.map(x=>
-          `<button class="chip ${x.id===juryCase?'on':''}" data-j="${x.id}">${esc(x.t.split(' v')[0])}</button>`).join('')}</div>
-        <p style="font-size:.9rem;color:var(--dim)"><b style="color:var(--ink)">${esc(c.charge)}.</b> ${esc(c.facts)}</p>
-        <div class="note"><b>Your job is not to decide what happened.</b> It is to decide whether the party carrying
-          the burden has proved it to the required standard. Those are different questions, and the difference is
-          the whole of criminal procedure.</div>
-      </div></div>
-    <div class="panel"><div class="panel-h"><h3>Weigh each piece</h3>
-      <span class="hint">How much do you believe it?</span></div>
-      <div class="panel-b">
-        ${c.ev.map((e,i)=>{const v=b[i]===undefined?70:b[i];
-          return `<div class="ev-row ${e[2]==='p'?'pros':'def'}">
-            <div class="ev-head"><span class="ev-side">${e[2]==='p'?'PROSECUTION':'DEFENCE'}</span>
-              <span class="ev-txt">${esc(e[0])}</span></div>
-            <input type="range" data-bel="${i}" min="0" max="100" value="${v}">
-            <div class="ev-foot"><span>disbelieve</span>
-              <b style="color:${heat(v)}">${v===0?'disregarded':v+'% credible'}</b><span>accept fully</span></div>
-          </div>`}).join('')}
-        <button class="btn" style="margin-top:16px" data-ph="1">Take it to deliberation →</button>
-      </div></div>
-  </div>`:''}
+  <div class="panel" style="max-width:760px;margin:0 auto"><div class="panel-b">
+    <div class="ctl" id="juryPick">${JURY_CASES.map(x=>
+      `<button class="chip ${x.id===juryCase?'on':''}" data-j="${x.id}">${esc(x.t.split(' v')[0])}</button>`).join('')}</div>
+    <div class="casecard">
+      <div class="casecard-h"><span class="tag ${crim?'r':'bl'}">${crim?'A criminal trial':'A civil claim'}</span>
+        <b>${esc(c.charge)}</b></div>
+      <p>${esc(c.facts)}</p>
+    </div>
+    <div class="plainbox">
+      <b>Your job, in one sentence</b>
+      <p>You are not deciding what you think probably happened. You are deciding whether
+      <b>${crim?'the prosecution':'the person bringing the claim'}</b> has proved it —
+      and ${crim?'in a criminal trial they have to prove it to a very high level':'in a civil claim they only have to show it is more likely than not'}.
+      If they fall short, you must say ${crim?'not guilty':'not liable'}, even if you suspect they did it.</p>
+    </div>
+    <button class="btn big" style="margin-top:18px" data-ph="1">Look at the evidence →</button>
+  </div></div>`:''}
 
   ${juryPhase===1?`
-  <div class="grid g2">
-    <div class="panel"><div class="panel-h"><h3>The jury room</h3><span class="hint">Twelve of you, one room</span></div>
-      <div class="panel-b">
-        <div class="jurybox">
-          <div class="juror you ${met?'convict':'acquit'}"><span>YOU</span><i></i></div>
-          ${JURORS.map((n,i)=>`<div class="juror ${votes[i]?'convict':'acquit'}" style="animation-delay:${i*45}ms">
-            <span>${n.replace('Juror ','J')}</span><i></i></div>`).join('')}
-        </div>
-        <div class="tally"><div class="tally-bar"><i class="cv" style="width:${yes/12*100}%"></i></div>
-          <div class="tally-lbl"><b style="color:var(--red)">${yes} to convict</b>
-            <b style="color:var(--green)">${12-yes} to acquit</b></div></div>
-        <div class="ctl" id="juryRule" style="margin-top:16px">
-          <button class="chip ${juryRule==='unan'?'on':''}" data-r="unan">Unanimous verdict required</button>
-          <button class="chip ${juryRule==='maj'?'on':''}" data-r="maj">Majority of 10 accepted</button></div>
-        <div class="note"><b>This is why the rule matters.</b> England and Wales will accept 10–2 after a period of
-          deliberation; many US states require all twelve on a felony. The same twelve people, the same evidence, and
-          a different answer depending only on the counting rule.</div>
-      </div></div>
-    <div class="panel"><div class="panel-h"><h3>What they are saying</h3></div><div class="panel-b">
-      ${c.ev.slice(0,4).map((e,i)=>{const bel=b[i]===undefined?70:b[i];
-        const speaker=JURORS[(i*3)%JURORS.length];
-        const view=bel>=60?(e[2]==='p'?'leans on it heavily':'finds it convincing')
-          :bel>=30?'is not sure what to make of it':'does not accept it at all';
-        return `<div class="say" style="animation-delay:${i*90}ms"><b>${speaker}</b> ${view}: “${esc(e[0].toLowerCase())}”.</div>`}).join('')}
-      <div class="ctl" style="margin-top:18px">
-        <button class="btn ghost" data-ph="0">← Reweigh the evidence</button>
-        <button class="btn" data-ph="2">Return a verdict →</button></div>
-    </div></div>
-  </div>`:''}
+  <div class="panel" style="max-width:820px;margin:0 auto"><div class="panel-h">
+    <h3>What do you make of each piece?</h3><span class="hint">${answered} of ${c.ev.length} decided</span></div>
+    <div class="panel-b">
+      <p class="plainlead">There are no right answers here. Juries disagree about exactly this.
+        Pick what <i>you</i> think about each piece of evidence.</p>
+      ${c.ev.map((e,i)=>{const v=b[i];
+        return `<div class="ev2 ${e[2]==='p'?'pros':'def'}">
+          <div class="ev2-top">
+            <span class="ev2-side">${e[2]==='p'?'Against the accused':'For the accused'}</span>
+            <span class="ev2-txt">${esc(e[0])}</span></div>
+          <div class="ev2-opts">${BELIEF.map(([k,lbl,val])=>
+            `<button class="ev2-b ${v===val?'on '+k:''}" data-bel="${i}" data-v="${val}">${lbl}</button>`).join('')}</div>
+        </div>`}).join('')}
+      <div class="ctl" style="margin-top:20px">
+        <button class="btn ghost" data-ph="0">← Back to the case</button>
+        <button class="btn" data-ph="2">I’ve decided →</button></div>
+    </div></div>`:''}
 
   ${juryPhase===2?`
-  <div class="panel" style="max-width:760px;margin:0 auto"><div class="panel-h"><h3>Verdict</h3>
-    <span class="hint">${std[2]} · ${juryRule==='unan'?'unanimous':'10 of 12'}</span></div>
-    <div class="panel-b">
-      <div class="ctl" id="juryStd">${STANDARDS.map(x=>
+  <div class="grid g2">
+    <div class="panel"><div class="panel-h"><h3>How sure are you?</h3></div><div class="panel-b" data-live="sure">
+      <div class="sureword" style="color:${heat(conf)}">${sureWord(conf)}</div>
+      <div class="surebar"><i style="width:${conf}%;background:${heat(conf)}"></i>
+        <span class="surepin" style="left:${std[1]}%"><b>${crim?'the line for a criminal case':'the line for a civil case'}</b></span></div>
+      <p class="plainlead" style="margin-top:34px">
+        ${crim?`To convict someone of a crime you must be <b>almost certain</b>. Not just fairly confident —
+          almost certain. That is what “beyond reasonable doubt” means in ordinary words.`
+              :`To win a civil claim you only need to show it is <b>more likely than not</b>. Fifty-one percent is enough.`}
+        You are currently <b style="color:${heat(conf)}">${sureWord(conf).toLowerCase()}</b>, and the line sits at ${std[1]}%.</p>
+      <div class="ctl" id="juryStd" style="margin-top:16px">${STANDARDS.map(x=>
         `<button class="chip ${x[0]===juryStd?'on':''}" data-s="${x[0]}">${x[2]}</button>`).join('')}</div>
-      <div class="meter" style="margin-top:8px"><div class="meter-fill" style="width:${conf}%;background:${heat(conf)}"></div>
-        ${STANDARDS.map(x=>`<i class="meter-mark" style="left:${x[1]}%;background:${x[0]===juryStd?'var(--brass)':'var(--line2)'}"></i>`).join('')}</div>
+      <p style="font-size:.8rem;color:var(--faint);margin-top:8px">Switch the standard to see the same evidence judged a different way.</p>
+      <div class="ctl" style="margin-top:16px"><button class="btn ghost" data-ph="1">← Change my mind</button></div>
+    </div></div>
+    <div class="panel"><div class="panel-h"><h3>The other eleven jurors</h3>
+      <span class="hint">They saw the same evidence</span></div><div class="panel-b" data-live="verdict">
+      <div class="jurybox">
+        <div class="juror you ${met?'convict':'acquit'}"><span>YOU</span><i></i></div>
+        ${JURORS.map((n,i)=>`<div class="juror ${votes[i]?'convict':'acquit'}" style="animation-delay:${i*40}ms">
+          <span>${n.replace('Juror ','J')}</span><i></i></div>`).join('')}
+      </div>
+      <div class="tally"><div class="tally-bar"><i class="cv" style="width:${yes/12*100}%"></i></div>
+        <div class="tally-lbl"><b style="color:var(--red)">${yes} say ${crim?'guilty':'liable'}</b>
+          <b style="color:var(--green)">${12-yes} say ${crim?'not guilty':'not liable'}</b></div></div>
+      <div class="ctl" id="juryRule" style="margin-top:16px">
+        <button class="chip ${juryRule==='unan'?'on':''}" data-r="unan">All 12 must agree</button>
+        <button class="chip ${juryRule==='maj'?'on':''}" data-r="maj">10 out of 12 is enough</button></div>
       <div class="verdict-wrap"><div class="stamp ${outcome==='convict'?'guilty':outcome==='acquit'?'not':'hung'}" key="${conf}-${juryStd}-${juryRule}">
-        ${outcome==='convict'?(c.kind==='Criminal'?'GUILTY':'LIABLE')
-          :outcome==='acquit'?(c.kind==='Criminal'?'NOT GUILTY':'NOT LIABLE'):'HUNG JURY'}</div></div>
-      <p style="text-align:center;font-size:.9rem;color:var(--dim)">
-        ${yes} of 12 would ${c.kind==='Criminal'?'convict':'find for the claimant'}; ${need} are needed.
-        Your own confidence sits at <b style="color:${heat(conf)}">${conf}</b> against a threshold of <b>${std[1]}</b>.</p>
-      <div class="note"><b>The same evidence, three answers.</b>
-        ${STANDARDS.filter(x=>x[0]!==juryStd).map(x=>`On <b>${x[2].toLowerCase()}</b> you personally would ${conf>=x[1]?'convict':'acquit'}.`).join(' ')}
-        That is exactly how someone is acquitted of a crime and still loses the civil claim on identical facts.</div>
-      <div class="ctl" style="margin-top:18px"><button class="btn ghost" data-ph="0">Try another case</button></div>
-      <div class="disclaim" style="margin-top:16px"><b>A teaching device.</b> Real juries are warned not to reduce
-        doubt to a number, precisely because it invites treating conviction as arithmetic. The weights are
-        illustrative; the ordering of the standards, and the effect of the counting rule, are real.</div>
-    </div></div>`:''}
+        ${outcome==='convict'?(crim?'GUILTY':'LIABLE'):outcome==='acquit'?(crim?'NOT GUILTY':'NOT LIABLE'):'NO VERDICT'}</div></div>
+      <p class="plainlead" style="text-align:center">${outcome==='hung'
+        ? 'The jury cannot agree, so there is no verdict at all. In real life the case may be tried again with a new jury.'
+        : outcome==='convict' ? `Enough jurors were sure enough. ${need} were needed and ${yes} agreed.`
+        : `Not enough jurors were sure. That is not the same as deciding they are innocent — it means the case was not proved.`}</p>
+      <div class="plainbox" style="margin-top:16px"><b>Why this matters</b>
+        <p>Try switching between the criminal and civil standards without changing anything else. The same evidence,
+        the same twelve people, and a different answer — which is exactly how someone can be found not guilty of a
+        crime and still lose a civil case about the very same events.</p></div>
+    </div></div>
+  </div>`:''}
   </div>`;
 }
 function wireJury(){
   $$('#b-lab [data-ph]').forEach(b=>b.onclick=()=>{juryPhase=+b.dataset.ph;paintLab()});
   const pk=$('#juryPick'); if(pk)pk.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;
     juryCase=b.dataset.j;juryPhase=0;paintLab()};
-  const st=$('#juryStd'); if(st)st.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;juryStd=b.dataset.s;paintLab()};
-  const rl=$('#juryRule'); if(rl)rl.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;juryRule=b.dataset.r;paintLab()};
-  $$('#b-lab [data-bel]').forEach(r=>r.oninput=()=>{jbelief()[+r.dataset.bel]=+r.value;paintLab()});
+  const st=$('#juryStd'); if(st)st.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;
+    juryStd=b.dataset.s;liveRefresh(renderJury)};
+  const rl=$('#juryRule'); if(rl)rl.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;
+    juryRule=b.dataset.r;liveRefresh(renderJury)};
+  $$('#b-lab [data-bel]').forEach(b=>b.onclick=()=>{
+    jbelief()[+b.dataset.bel]=+b.dataset.v; paintLab(); });
 }
 
-/* ---------- 2 · SENTENCING BENCH (plea + appeal) ---------- */
-let sentOff='burg', sentOn={}, sentPlea='none', sentStage=0;
-const PLEAS=[['none','No plea — convicted after trial',1],
-  ['late','Guilty plea at the door of the court',0.9],
-  ['early','Guilty plea at the first opportunity',0.667]];
+/* ---------- 2 · SENTENCING BENCH (plain language rebuild) ---------- */
+let sentOff='burg', sentOn={}, sentPlea='none', sentStage=0, sentMaths=false;
+const PLEAS=[['none','They pleaded not guilty and were convicted at trial',1,'No reduction'],
+  ['late','They admitted it on the morning of the trial',0.9,'A small reduction — about a tenth off'],
+  ['early','They admitted it straight away, at the first hearing',0.667,'The full reduction — about a third off']];
+function plainLen(m){
+  if(m<1)return 'no custody';
+  if(m<12)return m+' month'+(m===1?'':'s');
+  const y=Math.floor(m/12), r=m%12;
+  return y+' year'+(y===1?'':'s')+(r?' and '+r+' month'+(r===1?'':'s'):'');
+}
 function sentResult(){
   const o=SENT_OFFENCES.find(x=>x[0]===sentOff);
   let m=o[2];
   SENT_FACTORS.forEach((f,i)=>{ if(sentOn[i]) m*=f[2] });
-  const preplea=m;
+  const preplea=Math.round(m);
   m*=PLEAS.find(p=>p[0]===sentPlea)[2];
-  return {base:o[2],preplea:Math.round(preplea),months:Math.max(0,Math.round(m)),o};
+  return {base:o[2],preplea,months:Math.max(0,Math.round(m)),o};
 }
 function appealOutcome(r){
-  const lo=r.base*0.35, hi=r.base*2.6;
-  if(r.months>hi)return['Manifestly excessive','var(--red)',
-    `The Court of Appeal substitutes ${Math.round(hi)} months. A sentence far above the range for the offence is quashed even if every factor you applied was real — proportionality is itself a ground of appeal.`];
-  if(r.months<lo&&r.base>=12)return['Unduly lenient','var(--amber)',
-    `Referred by the Attorney General and increased to ${Math.round(lo)} months. Prosecutors can appeal a sentence downwards-gone-wrong in serious cases, which surprises most people.`];
-  return['Sentence upheld','var(--green)',
-    'Within the range a reasonable judge could reach. Appellate courts correct sentences that are outside the bracket, not sentences they would merely have pitched differently.'];
+  const lo=Math.round(r.base*0.35), hi=Math.round(r.base*2.6);
+  if(r.months>hi)return['Too harsh','var(--red)',
+    `The appeal judges reduce it to ${plainLen(hi)}. Even where every factor you applied was real, a sentence far above what similar cases get is cut back — consistency between defendants matters as much as the individual case.`];
+  if(r.months<lo&&r.base>=12)return['Too lenient','var(--amber)',
+    `The sentence is increased to ${plainLen(lo)}. In serious cases prosecutors can appeal a sentence for being too soft, which surprises most people — appeals do not only run one way.`];
+  return['Sentence stands','var(--green)',
+    'This is within the range a reasonable judge could reach. Appeal courts only step in when a sentence falls outside the bracket — not when they would simply have chosen a different number.'];
 }
 function renderBench(){
-  const r=sentResult(), max=200, ap=appealOutcome(r);
-  const yrs=Math.floor(r.months/12), mo=r.months%12;
+  const r=sentResult(), ap=appealOutcome(r), max=200;
+  const heavier=SENT_FACTORS.filter((f,i)=>f[0]==='agg'&&sentOn[i]).length;
+  const lighter=SENT_FACTORS.filter((f,i)=>f[0]==='mit'&&sentOn[i]).length;
   return `<div class="game-wrap">
-  <div class="phases">${['The offence','Plea','Sentence & appeal'].map((p,i)=>
+  <div class="phases">${['The crime','What happened','The plea','Your sentence'].map((p,i)=>
     `<button class="phase ${i===sentStage?'on':''} ${i<sentStage?'done':''}" data-sg="${i}"><span>${i+1}</span>${p}</button>`).join('')}</div>
-  ${sentStage===0?`<div class="grid g2">
-    <div class="panel"><div class="panel-h"><h3>The offence</h3></div><div class="panel-b">
-      <div class="ctl" id="benchOff">${SENT_OFFENCES.map(o=>
-        `<button class="chip ${o[0]===sentOff?'on':''}" data-o="${o[0]}">${esc(o[1])}</button>`).join('')}</div>
-      <p style="font-size:.88rem;color:var(--dim)">${esc(r.o[3])} Starting point <b style="color:var(--ink)">${r.base} months</b>.</p>
-      <div class="note">Guidelines start from a typical case of the offence, then move up and down. They multiply — they
-        do not add — which is why the same mitigation is worth far more on a serious charge.</div></div></div>
-    <div class="panel"><div class="panel-h"><h3>Factors</h3><span class="hint">Toggle what the facts support</span></div>
-      <div class="panel-b">
-        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--red);margin-bottom:9px">AGGRAVATING</div>
-        <div class="fac-wrap">${SENT_FACTORS.map((f,i)=>f[0]!=='agg'?'':
-          `<button class="fac agg ${sentOn[i]?'on':''}" data-f="${i}">${esc(f[1])}<b>×${f[2]}</b></button>`).join('')}</div>
-        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--green);margin:18px 0 9px">MITIGATING</div>
-        <div class="fac-wrap">${SENT_FACTORS.map((f,i)=>f[0]!=='mit'?'':
-          `<button class="fac mit ${sentOn[i]?'on':''}" data-f="${i}">${esc(f[1])}<b>×${f[2]}</b></button>`).join('')}</div>
-        <button class="btn" style="margin-top:18px" data-sg="1">Hear the plea →</button>
-      </div></div></div>`:''}
-  ${sentStage===1?`<div class="panel" style="max-width:720px;margin:0 auto"><div class="panel-h">
-      <h3>How did the defendant plead?</h3><span class="hint">Applied last, to whatever the factors produced</span></div>
+
+  ${sentStage===0?`<div class="panel" style="max-width:760px;margin:0 auto"><div class="panel-b">
+    <p class="plainlead">You are the judge. Someone has been convicted and you must decide what happens to them.
+      Start by choosing the crime.</p>
+    <div class="offlist">${SENT_OFFENCES.map(o=>
+      `<button class="offrow ${o[0]===sentOff?'on':''}" data-o="${o[0]}">
+        <b>${esc(o[1])}</b><p>${esc(o[3])}</p>
+        <span>Typical starting point: <b>${plainLen(o[2])}</b></span></button>`).join('')}</div>
+    <div class="plainbox"><b>What a “starting point” means</b>
+      <p>Judges do not begin from zero. Every offence has a published starting point for an ordinary example of that
+      crime, and the judge moves up or down from there. It keeps sentences roughly consistent between courts.</p></div>
+    <button class="btn big" style="margin-top:18px" data-sg="1">Next: what happened →</button>
+  </div></div>`:''}
+
+  ${sentStage===1?`<div class="panel" style="max-width:800px;margin:0 auto"><div class="panel-h">
+      <h3>What makes this case worse or better?</h3>
+      <span class="hint">Starting point: ${plainLen(r.base)}</span></div>
     <div class="panel-b">
-      <p style="font-size:.9rem;color:var(--dim);margin-bottom:16px">Before the plea, the factors put this at
-        <b style="color:var(--brass)">${r.preplea} months</b>.</p>
-      ${PLEAS.map(p=>`<button class="opt ${sentPlea===p[0]?'right':''}" data-pl="${p[0]}">
-        <span class="optn">${Math.round((1-p[2])*100)}%</span>
-        <span>${esc(p[1])}<em>${p[2]===1?'No reduction':'Reduces the sentence by '+Math.round((1-p[2])*100)+'%'}</em></span></button>`).join('')}
-      <div class="note"><b>Why the discount exists at all.</b> It is not mercy. It saves the court's time and spares
-        witnesses from testifying, and it shrinks the earlier you offer it — which is precisely why it is largest at
-        the first hearing and nearly gone by the door of the court.</div>
+      <p class="plainlead">Tick anything the facts support. Nothing here is compulsory — this is the judgement part.</p>
+      <div class="facgroup worse"><h4>Makes it worse</h4>
+        <div class="fac-wrap">${SENT_FACTORS.map((f,i)=>f[0]!=='agg'?'':
+          `<button class="fac agg ${sentOn[i]?'on':''}" data-f="${i}">${esc(f[1])}
+            ${sentMaths?`<b>×${f[2]}</b>`:''}</button>`).join('')}</div></div>
+      <div class="facgroup better"><h4>Makes it better</h4>
+        <div class="fac-wrap">${SENT_FACTORS.map((f,i)=>f[0]!=='mit'?'':
+          `<button class="fac mit ${sentOn[i]?'on':''}" data-f="${i}">${esc(f[1])}
+            ${sentMaths?`<b>×${f[2]}</b>`:''}</button>`).join('')}</div></div>
+      <div class="runsum" data-live="run">
+        <span>${heavier} thing${heavier===1?'':'s'} making it worse · ${lighter} making it better</span>
+        <b>Now at ${plainLen(r.preplea)}</b></div>
+      <label class="mathstoggle"><input type="checkbox" id="sentMaths" ${sentMaths?'checked':''}> Show me the arithmetic</label>
       <div class="ctl" style="margin-top:16px"><button class="btn ghost" data-sg="0">← Back</button>
-        <button class="btn" data-sg="2">Pass sentence →</button></div>
+        <button class="btn" data-sg="2">Next: the plea →</button></div>
     </div></div>`:''}
-  ${sentStage===2?`<div class="grid g2">
+
+  ${sentStage===2?`<div class="panel" style="max-width:720px;margin:0 auto"><div class="panel-h">
+      <h3>Did they admit it?</h3><span class="hint">Currently ${plainLen(r.preplea)}</span></div>
+    <div class="panel-b">
+      <p class="plainlead">This is applied last, to whatever number the rest of the case produced.</p>
+      ${PLEAS.map(p=>`<button class="opt ${sentPlea===p[0]?'right':''}" data-pl="${p[0]}">
+        <span class="optn">${p[2]===1?'—':'−'+Math.round((1-p[2])*100)+'%'}</span>
+        <span>${esc(p[1])}<em>${esc(p[3])}</em></span></button>`).join('')}
+      <div class="plainbox"><b>Why admitting it earns a discount</b>
+        <p>It is not mercy. An early admission spares witnesses from giving evidence and saves weeks of court time,
+        so the law rewards it — and the reward shrinks the longer someone waits, which is why it is largest at the
+        very first hearing and nearly gone by the morning of the trial.</p></div>
+      <div class="ctl" style="margin-top:16px"><button class="btn ghost" data-sg="1">← Back</button>
+        <button class="btn" data-sg="3">Pass sentence →</button></div>
+    </div></div>`:''}
+
+  ${sentStage===3?`<div class="grid g2">
     <div class="panel"><div class="panel-h"><h3>Your sentence</h3></div><div class="panel-b">
       <div class="sent-num"><span class="gavel">⚖</span>
-        <div><b>${yrs?yrs+'y ':''}${mo}m</b><u>${r.months>=6?'custodial':'community order or fine'}</u></div></div>
-      <div class="meter" style="margin-top:20px"><div class="meter-fill" style="width:${clamp(r.months/max*100,1,100)}%;background:var(--brass)"></div>
-        <i class="meter-mark" style="left:${clamp(r.base/max*100,1,100)}%;background:var(--ink)"></i>
-        <i class="meter-mark" style="left:${clamp(r.base*0.35/max*100,1,100)}%;background:var(--green)"></i>
-        <i class="meter-mark" style="left:${clamp(r.base*2.6/max*100,1,100)}%;background:var(--red)"></i></div>
-      <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:.6rem;color:var(--faint);margin-top:7px">
-        <span>lenient bound</span><span>starting point</span><span>excessive bound</span></div>
-      <div class="ctl" style="margin-top:18px"><button class="btn ghost" data-sg="0">Sentence another</button></div>
+        <div><b>${plainLen(r.months)}</b><u>${r.months>=6?'in prison':r.months>0?'a short sentence or community order':'a fine or community order'}</u></div></div>
+      <div class="sentline">
+        <div class="sentline-bar"><i style="width:${clamp(r.months/max*100,1,100)}%"></i>
+          <span class="sl-mark start" style="left:${clamp(r.base/max*100,1,100)}%"></span>
+          <span class="sl-zone" style="left:${clamp(r.base*0.35/max*100,0,100)}%;width:${clamp((r.base*2.6-r.base*0.35)/max*100,2,100)}%"></span></div>
+        <div class="sl-key"><span>too soft</span><span>the usual range</span><span>too harsh</span></div>
+      </div>
+      <div class="plainbox"><b>How you got here</b>
+        <p>Started at ${plainLen(r.base)} for this offence. ${heavier?`${heavier} thing${heavier===1?'':'s'} made it worse. `:''}${lighter?`${lighter} made it better. `:''}
+        That gave ${plainLen(r.preplea)}. ${sentPlea==='none'?'No credit for a plea, so that is the final figure.'
+          :`Then the discount for admitting it brought it to ${plainLen(r.months)}.`}</p></div>
+      <div class="ctl" style="margin-top:16px"><button class="btn ghost" data-sg="0">Sentence someone else</button></div>
     </div></div>
-    <div class="panel appeal"><div class="panel-h"><h3>Court of Appeal</h3><span class="hint">Criminal Division</span></div>
+    <div class="panel appeal"><div class="panel-h"><h3>They appeal</h3><span class="hint">The Court of Appeal reviews it</span></div>
       <div class="panel-b">
         <div class="appeal-stamp" style="color:${ap[1]}" key="${r.months}">${ap[0]}</div>
-        <p style="font-size:.9rem;color:var(--dim);margin-top:14px">${esc(ap[2])}</p>
-        <div class="disclaim" style="margin-top:18px"><b>Illustrative.</b> Real starting points and multipliers come
-          from published guidelines that differ by jurisdiction and offence. Nothing here predicts any actual sentence.</div>
+        <p class="plainlead" style="margin-top:14px">${esc(ap[2])}</p>
+        <div class="disclaim" style="margin-top:18px"><b>Illustrative only.</b> Real starting points come from
+          published guidelines that differ by country and offence. Nothing here predicts an actual sentence.</div>
       </div></div>
   </div>`:''}
   </div>`;
 }
 function wireBench(){
   $$('#b-lab [data-sg]').forEach(b=>b.onclick=()=>{sentStage=+b.dataset.sg;paintLab()});
-  const seg=$('#benchOff'); if(seg)seg.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;sentOff=b.dataset.o;paintLab()};
+  $$('#b-lab [data-o]').forEach(b=>b.onclick=()=>{sentOff=b.dataset.o;paintLab()});
   $$('#b-lab [data-f]').forEach(b=>b.onclick=()=>{const i=+b.dataset.f;sentOn[i]=!sentOn[i];paintLab()});
   $$('#b-lab [data-pl]').forEach(b=>b.onclick=()=>{sentPlea=b.dataset.pl;paintLab()});
+  const m=$('#sentMaths'); if(m)m.onchange=()=>{sentMaths=m.checked;paintLab()};
 }
 
 /* ---------- 3 · OBJECTION! (judge patience) ---------- */
@@ -4602,18 +5487,18 @@ function renderCustody(){
       <span class="hint">Weight what matters here</span></div><div class="panel-b">
       <div style="margin-bottom:20px">
         <div class="slabel"><span><b style="color:var(--ink)">The child is ${custAge}</b><br>
-          <span style="font-size:.78rem">Their wishes carry ${r.wishWeight<0.3?'very little':r.wishWeight<0.6?'modest':r.wishWeight<1?'substantial':'near-decisive'} weight at this age</span></span><b>${custAge}</b></div>
+          <span data-lbl="agew" style="font-size:.78rem">Their wishes carry ${r.wishWeight<0.3?'very little':r.wishWeight<0.6?'modest':r.wishWeight<1?'substantial':'near-decisive'} weight at this age</span></span><b data-lbl="age">${custAge}</b></div>
         <input type="range" data-age min="3" max="16" value="${custAge}">
-        <div class="agebar"><i style="width:${(custAge-3)/13*100}%"></i></div></div>
+        <div class="agebar"><i data-livestyle="agebar" style="width:${(custAge-3)/13*100}%"></i></div></div>
       ${CUST_FACTORS.map(f=>`<div style="margin-bottom:16px">
-        <div class="slabel"><span><b style="color:var(--ink)">${esc(f[1])}</b><br><span style="font-size:.78rem">${esc(f[2])}</span></span><b>${custW[f[0]]}</b></div>
+        <div class="slabel"><span><b style="color:var(--ink)">${esc(f[1])}</b><br><span style="font-size:.78rem">${esc(f[2])}</span></span><b data-lbl="cf${f[0]}">${custW[f[0]]}</b></div>
         <input type="range" data-cf="${f[0]}" min="0" max="100" value="${custW[f[0]]}"></div>`).join('')}
       <div class="slabel" style="margin-top:22px"><span><b style="color:var(--ink)">Which parent do the facts favour?</b></span></div>
       <input type="range" data-par min="0" max="100" value="${custParent}">
       <div style="display:flex;justify-content:space-between;font-size:.76rem;color:var(--faint)"><span>Parent A</span><span>evenly balanced</span><span>Parent B</span></div>
     </div></div>
     <div class="panel"><div class="panel-h"><h3>The order</h3><span class="hint">How a court would frame it</span></div>
-      <div class="panel-b">
+      <div class="panel-b" data-live="out">
         <div class="split"><div class="split-a" style="width:${r.a}%"><span>A · ${r.a}%</span></div>
           <div class="split-b" style="width:${r.b}%"><span>${r.b}% · B</span></div></div>
         <div class="order-stamp" key="${r.a}-${custAge}">${shared?'SHARED LIVING ARRANGEMENT'
@@ -4632,9 +5517,10 @@ function renderCustody(){
       </div></div></div></div>`;
 }
 function wireCustody(){
-  $$('#b-lab [data-cf]').forEach(r=>r.oninput=()=>{custW[r.dataset.cf]=+r.value;paintLab()});
-  const a=$('#b-lab [data-age]'); if(a)a.oninput=()=>{custAge=+a.value;paintLab()};
-  const p=$('#b-lab [data-par]'); if(p)p.oninput=()=>{custParent=+p.value;paintLab()};
+  const up=()=>liveRefresh(renderCustody);
+  $$('#b-lab [data-cf]').forEach(r=>r.oninput=()=>{custW[r.dataset.cf]=+r.value;up()});
+  const a=$('#b-lab [data-age]'); if(a)a.oninput=()=>{custAge=+a.value;up()};
+  const p=$('#b-lab [data-par]'); if(p)p.oninput=()=>{custParent=+p.value;up()};
 }
 
 /* ---------- 6 · CONTRACT FORGE ---------- */
@@ -4935,14 +5821,14 @@ function renderPow(){
            ['leg','Legislature','Parliament or congress — makes and scrutinises law'],
            ['jud','Judiciary','Courts able to rule against the other two']].map(([k,l,d])=>
           `<div style="margin-bottom:20px">
-            <div class="slabel"><span><b style="color:var(--ink)">${l}</b><br><span style="font-size:.78rem">${d}</span></span><b>${POW[k]}</b></div>
+            <div class="slabel"><span><b style="color:var(--ink)">${l}</b><br><span style="font-size:.78rem">${d}</span></span><b data-lbl="pw${k}">${POW[k]}</b></div>
             <input type="range" data-pw="${k}" min="0" max="100" value="${POW[k]}">
-            <div class="branch-bar"><i style="width:${POW[k]}%"></i></div></div>`).join('')}
+            <div class="branch-bar"><i data-livestyle="pw${k}" style="width:${POW[k]}%"></i></div></div>`).join('')}
         <div class="note" style="margin-top:6px"><b>The measure that matters.</b> Not whether a country has courts —
           all do — but whether the government loses in them. That is why judicial power is weighted against executive
           power here rather than counted on its own.</div>
       </div></div>
-    <div class="panel"><div class="panel-h"><h3>What you built</h3></div><div class="panel-b">
+    <div class="panel"><div class="panel-h"><h3>What you built</h3></div><div class="panel-b" data-live="out">
       <div class="gauge-wrap">
         <div style="text-align:center;min-width:130px">
           <div class="gnum" style="color:${heat(sc)}">${sc}</div>
@@ -4960,7 +5846,7 @@ function renderPow(){
     </div></div></div>`;
 }
 function wirePow(){
-  $$('#b-lab [data-pw]').forEach(r=>r.oninput=()=>{POW[r.dataset.pw]=+r.value;paintLab()});
+  $$('#b-lab [data-pw]').forEach(r=>r.oninput=()=>{POW[r.dataset.pw]=+r.value;liveRefresh(renderPow)});
   $$('#b-lab [data-jr]').forEach(b=>b.onclick=()=>jurisReport(b.dataset.jr));
 }
 
@@ -5010,17 +5896,233 @@ function wireRF(){
 }
 
 
+
+/* ---------- per-game instructions ---------- */
+const HOWPLAY={
+spot:['You are handed a set of facts, like an exam question.',
+ ['Read it once for the story. Then click every phrase that raises a legal issue. Some facts are put there to look important and are not \u2014 marking those costs you.',
+  'Check your spotting. You will see what you found, what you missed, and what each relevant fact actually raises.',
+  'Then put the issues in the order you would deal with them. Order carries real marks, because some issues only arise depending on how an earlier one is answered.'],
+ 'What it teaches: the skill law students are actually graded on. Knowing the law is assumed \u2014 the marks are in seeing which law the facts have put in play, and in what sequence.'],
+
+jury:['You are a juror in a real-shaped case.',
+ ['Read the charge, then rate how much you believe each piece of evidence. Prosecution evidence is marked red, defence blue.',
+  'Go through to deliberation. Eleven other jurors have their own leanings and their votes shift as your assessment does.',
+  'Choose the counting rule and the standard of proof, then return a verdict.'],
+ 'What it teaches: that “proved” is a threshold, not a feeling — and that the same evidence returns a different verdict depending on which threshold and which counting rule apply.'],
+bench:['You are the judge passing sentence.',
+ ['Pick the offence. Every offence has a published starting point for a typical case.',
+  'Toggle the aggravating and mitigating factors the facts support. They multiply the starting point rather than adding months to it.',
+  'Hear the plea — the discount applies last — then pass sentence and see whether the Court of Appeal lets it stand.'],
+ 'What it teaches: sentencing is a structured calculation, not an instinct, and appellate courts correct sentences outside the bracket rather than ones they would merely have pitched differently.'],
+obj:['You are counsel, and a witness is being examined.',
+ ['Read each question. If it is improper, object and name the fault. If it is proper, say so.',
+  'Watch the judge’s patience. Objecting to a perfectly good question costs you far more than missing a bad one.',
+  'Every answer explains why, so getting it wrong is the useful part.'],
+ 'What it teaches: most improper questions fail on their form, not their subject — and leading questions are forbidden in chief but the whole point of cross-examination.'],
+boardroom:['You are a director sitting on a board.',
+ ['Seven items come before you. Each one is a real decision with a duty hiding inside it.',
+  'Choose an action. You are scored against the core duties directors actually owe.',
+  'At the end you get a record of what you upheld and what you breached.'],
+ 'What it teaches: most breaches are not dishonesty. They are deciding something you should have declared an interest in, or voting on a paper you had no time to read.'],
+custody:['You are deciding where a child lives.',
+ ['Set the child’s age. It changes how much their own wishes weigh.',
+  'Move each factor on the welfare checklist to reflect how much it matters here.',
+  'Point the balance toward whichever parent the facts favour, and read the resulting order.'],
+ 'What it teaches: the checklist is a structure for reasoning, not a scoreboard. Risk of harm can override everything else at once, and a teenager’s wishes become close to decisive.'],
+forge:['You are drafting an agreement.',
+ ['Pick clauses from the library to build your contract.',
+  'Run the enforceability audit.',
+  'Read why the struck-out clauses fail.'],
+ 'What it teaches: writing a term down does not make it binding. Courts strike clauses that punish rather than compensate, exclude what cannot be excluded, or bind one side only.'],
+breach:['You are handling a data breach, and the clock is running.',
+ ['Six decisions, in order. Each one costs hours you cannot get back.',
+  'The 72-hour notification deadline starts from the moment of discovery, not from when you finish investigating.',
+  'You are judged on the decisions and the record, not on speed alone.'],
+ 'What it teaches: breach response is mostly administrative rather than technical, and the most common failure is waiting for a complete picture before notifying anyone.'],
+causation:['You are testing whether a negligence claim holds.',
+ ['Read the facts.',
+  'The chain has six links: duty, breach, factual causation, legal causation, remoteness, damage.',
+  'Click the link you think fails.'],
+ 'What it teaches: negligence is a chain where every link must hold, and claims usually fail at causation, remoteness or mitigation rather than on whether someone was careless.'],
+prec:['You are building an argument from authority.',
+ ['Read the proposition you need to establish.',
+  'Pick the cases that establish it, clicking them in the order the argument runs.',
+  'Test the chain.'],
+ 'What it teaches: a case that is merely famous, or merely about the same subject, does not carry an argument. Each authority must license the step the next one takes.'],
+guess:['You are identifying a legal system from its features.',
+ ['Read the clue. Guess now for the most points.',
+  'Ask for another clue if you need it — each one costs a point.',
+  'Six clues in total, from tradition down to the raw scores.'],
+ 'What it teaches: legal systems have fingerprints. Whether trials are adversarial, whether lay people sit, and how the apex court is composed tell you an enormous amount.'],
+pow:['You are designing a state from scratch.',
+ ['Give each branch its share of power.',
+  'Read the consequences and the warnings as the balance shifts.',
+  'See which real jurisdictions score where you landed.'],
+ 'What it teaches: the measure that matters is not whether a country has courts — all do — but whether the government loses in them.'],
+rf:['You are separating real case law from invention.',
+ ['Read the case.',
+  'Decide whether it is a genuine decision or one I made up.',
+  'Every answer explains the tell.'],
+ 'What it teaches: the fakes read perfectly well. What gives them away is that the rule does no sensible work — real doctrine solves a problem.']};
+function howPlay(id){
+  const h=HOWPLAY[id]; if(!h)return '';
+  return `<details class="howplay" open><summary><span>How to play</span><i></i></summary>
+    <div class="howplay-b">
+      <p class="hp-lead">${esc(h[0])}</p>
+      <ol>${h[1].map(x=>`<li>${esc(x)}</li>`).join('')}</ol>
+      <p class="hp-teach">${esc(h[2])}</p>
+    </div></details>`;
+}
+
 /* ---------- shell: index grid + single-game pages ---------- */
-const GAME_RENDER={jury:renderJury,bench:renderBench,obj:renderObj,boardroom:renderBoardroom,
+/* ---------- ISSUE SPOTTER ---------- */
+let spI=0, spPhase=1, spPicked={}, spOrder=[], spDone=false;
+function spParse(txt){
+  const out=[]; let last=0, re=/\{\{([^|]+)\|([a-z]*)\}\}/g, m, k=0;
+  while((m=re.exec(txt))){
+    if(m.index>last)out.push({p:txt.slice(last,m.index)});
+    out.push({c:k++,txt:m[1],iss:m[2]||''});
+    last=m.index+m[0].length;
+  }
+  if(last<txt.length)out.push({p:txt.slice(last)});
+  return out;
+}
+function spScen(){ return SPOTS[spI] }
+function renderSpot(){
+  const s=spScen(), toks=spParse(s.text);
+  const clues=toks.filter(t=>t.c!==undefined);
+  const real=clues.filter(c=>c.iss), fake=clues.filter(c=>!c.iss);
+  const hit=real.filter(c=>spPicked[c.c]).length;
+  const wrong=fake.filter(c=>spPicked[c.c]).length;
+  const pct=real.length?Math.round(hit/real.length*100):0;
+  const foundIss=[...new Set(real.filter(c=>spPicked[c.c]).map(c=>c.iss))];
+  const allIss=s.issues.slice().sort((a,b)=>a.ord-b.ord);
+
+  return `<div class="spwrap">
+    <div class="spbar">
+      <div class="spsel">
+        ${SPOTS.map((x,i)=>`<button class="spchip ${i===spI?'on':''}" data-sc="${i}">${esc(x.area)}</button>`).join('')}
+      </div>
+      <div class="spphase">
+        ${[1,2,3].map(n=>`<span class="spdot ${spPhase===n?'on':spPhase>n?'done':''}">${n}</span>`).join('<i></i>')}
+      </div>
+    </div>
+
+    <div class="sphead">
+      <div><span class="tag b">${esc(s.area)}</span> <span class="tag">${esc(s.level)}</span></div>
+      <h3>${esc(s.t)}</h3>
+      <p class="splede">${esc(s.setup)}</p>
+    </div>
+
+    ${spPhase===1?`
+    <div class="spstep"><b>Step 1 of 3 · Spot</b> — Read it once, then click every phrase that raises a legal issue.
+      Some are there to look important and are not. You are marking facts, not answers.</div>
+    <div class="sptext" id="spText">
+      ${toks.map(t=>t.c===undefined?esc(t.p):
+        `<button class="spc ${spPicked[t.c]?'on':''}" data-c="${t.c}">${esc(t.txt)}</button>`).join('')}
+    </div>
+    <div class="spfoot">
+      <span class="spcount">${Object.keys(spPicked).filter(k=>spPicked[k]).length} phrase(s) marked</span>
+      <button class="btn" id="spCheck">Check my spotting →</button>
+    </div>`:''}
+
+    ${spPhase===2?`
+    <div class="spstep"><b>Step 2 of 3 · Review</b> — Here is what was actually in the facts.</div>
+    <div class="spscore">
+      <div class="spsc"><b>${hit}<span>/${real.length}</span></b><i>Relevant facts found</i></div>
+      <div class="spsc ${wrong?'bad':''}"><b>${wrong}</b><i>Red herrings marked</i></div>
+      <div class="spsc"><b>${pct}%</b><i>Coverage</i></div>
+    </div>
+    <div class="sptext ok">
+      ${toks.map(t=>{ if(t.c===undefined)return esc(t.p);
+        const cl=t.iss?(spPicked[t.c]?'got':'miss'):(spPicked[t.c]?'red':'quiet');
+        return `<mark class="spm ${cl}">${esc(t.txt)}</mark>`}).join('')}
+    </div>
+    <div class="splegend">
+      <span><i class="k got"></i> you found it</span><span><i class="k miss"></i> you missed it</span>
+      <span><i class="k red"></i> red herring you marked</span><span><i class="k quiet"></i> red herring you left alone</span>
+    </div>
+    <h4 class="spsec">The issues buried in those facts</h4>
+    <div class="spissues">
+      ${allIss.map(is=>`<div class="spis ${foundIss.includes(is.id)?'found':''}">
+        <div class="spisT"><b>${esc(is.n)}</b>${foundIss.includes(is.id)?'<span class="spok">spotted</span>':'<span class="spno">missed</span>'}</div>
+        <p>${esc(is.why)}</p></div>`).join('')}
+    </div>
+    ${s.decoys.length?`<div class="spdec"><h4>Why the others do not matter</h4>
+      <ul>${s.decoys.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+    <div class="spfoot"><button class="btn ghost" id="spBack1">← Try spotting again</button>
+      <button class="btn" id="spNext2">Now structure the answer →</button></div>`:''}
+
+    ${spPhase===3?`
+    <div class="spstep"><b>Step 3 of 3 · Structure</b> — Spotting is half the mark. Click the issues in the order you would
+      deal with them in an answer. Order matters because some issues only arise if an earlier one is answered a particular way.</div>
+    <div class="sporder">
+      <div class="sppool"><h5>The issues</h5>
+        <div class="sppoolb" id="spPool">
+          ${allIss.filter(i=>!spOrder.includes(i.id)).map(i=>
+            `<button class="spob" data-o="${i.id}">${esc(i.n)}</button>`).join('')||'<span class="spempty">All placed.</span>'}
+        </div></div>
+      <div class="spslots"><h5>Your answer plan</h5>
+        <ol class="spslotb" id="spSlots">
+          ${spOrder.map((id,i)=>{const it=s.issues.find(x=>x.id===id);
+            const right=spDone?(it.ord===i+1):null;
+            return `<li class="spsl ${right===true?'good':right===false?'off':''}">
+              <span class="spn">${i+1}</span><b>${esc(it.n)}</b>
+              ${spDone?`<span class="spmk">${right?'✓':'should be '+it.ord}</span>`:
+                `<button class="spx" data-x="${id}">✕</button>`}</li>`}).join('')
+            ||'<li class="spplace">Click an issue on the left to place it first.</li>'}
+        </ol></div>
+    </div>
+    ${spDone?`<div class="spmodel"><h4>How a marker would order it</h4>
+      <p>${esc(s.plan)}</p></div>
+      <div class="spfinal"><b>${spOrder.filter((id,i)=>s.issues.find(x=>x.id===id).ord===i+1).length}
+        of ${allIss.length}</b> in the right place, and <b>${hit} of ${real.length}</b> facts spotted.</div>
+      <div class="spfoot"><button class="btn ghost" id="spReset">Play this one again</button>
+        <button class="btn" id="spNextS">Next fact pattern →</button></div>`:
+      `<div class="spfoot"><button class="btn ghost" id="spBack2">← Back to the review</button>
+        <button class="btn" id="spMark"${spOrder.length<allIss.length?' disabled':''}>Mark my plan</button></div>`}`:''}
+  </div>`;
+}
+function wireSpot(){
+  const s=spScen();
+  const sel=$('#b-lab .spsel'); if(sel)sel.onclick=e=>{const b=e.target.closest('[data-sc]');if(!b)return;
+    spI=+b.dataset.sc;spPhase=1;spPicked={};spOrder=[];spDone=false;paintLab()};
+  const t=$('#spText'); if(t)t.onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;
+    const k=b.dataset.c; spPicked[k]=!spPicked[k]; b.classList.toggle('on',!!spPicked[k]);
+    const c=$('#b-lab .spcount');
+    if(c)c.textContent=Object.keys(spPicked).filter(x=>spPicked[x]).length+' phrase(s) marked'};
+  const chk=$('#spCheck'); if(chk)chk.onclick=()=>{spPhase=2;paintLab();scrollTo_('b-lab','start')};
+  const b1=$('#spBack1'); if(b1)b1.onclick=()=>{spPhase=1;paintLab()};
+  const n2=$('#spNext2'); if(n2)n2.onclick=()=>{spPhase=3;paintLab();scrollTo_('b-lab','start')};
+  const b2=$('#spBack2'); if(b2)b2.onclick=()=>{spPhase=2;paintLab()};
+  const pool=$('#spPool'); if(pool)pool.onclick=e=>{const b=e.target.closest('[data-o]');if(!b)return;
+    spOrder.push(b.dataset.o);paintLab()};
+  const slots=$('#spSlots'); if(slots)slots.onclick=e=>{const b=e.target.closest('[data-x]');if(!b)return;
+    spOrder=spOrder.filter(x=>x!==b.dataset.x);paintLab()};
+  const mk=$('#spMark'); if(mk)mk.onclick=()=>{
+    spDone=true;
+    const right=spOrder.filter((id,i)=>s.issues.find(x=>x.id===id).ord===i+1).length;
+    /* store as a percentage: fact patterns have different issue counts, so raw
+       scores are not comparable and "best" would be meaningless. */
+    track('game','spot',{score:Math.round(right/s.issues.length*100),of:100});
+    track('spot',s.id,{score:Math.round(right/s.issues.length*100),of:100});
+    paintLab();scrollTo_('b-lab','start')};
+  const rs=$('#spReset'); if(rs)rs.onclick=()=>{spPhase=1;spPicked={};spOrder=[];spDone=false;paintLab();scrollTo_('b-lab','start')};
+  const ns=$('#spNextS'); if(ns)ns.onclick=()=>{spI=(spI+1)%SPOTS.length;spPhase=1;spPicked={};spOrder=[];spDone=false;
+    paintLab();scrollTo_('b-lab','start')};
+}
+
+const GAME_RENDER={spot:renderSpot,jury:renderJury,bench:renderBench,obj:renderObj,boardroom:renderBoardroom,
   custody:renderCustody,forge:renderForge,breach:renderBreach,causation:renderCausation,
   prec:renderPrec,guess:renderGuess,pow:renderPow,rf:renderRF};
-const GAME_WIRE={jury:wireJury,bench:wireBench,obj:wireObj,boardroom:wireBoardroom,
+const GAME_WIRE={spot:wireSpot,jury:wireJury,bench:wireBench,obj:wireObj,boardroom:wireBoardroom,
   custody:wireCustody,forge:wireForge,breach:wireBreach,causation:wireCausation,
   prec:wirePrec,guess:wireGuess,pow:wirePow,rf:wireRF};
 let labTab='jury';
 function paintLab(){
   const host=$('#b-lab'); if(!host)return;
-  host.innerHTML=GAME_RENDER[labTab]();
+  host.innerHTML=howPlay(labTab)+GAME_RENDER[labTab]();
   (GAME_WIRE[labTab]||function(){})();
   const rt=$('#rt-lab'); if(rt)rt.textContent=(GAMEBY[labTab]||{}).t||'';
   if(typeof revealScan==='function')revealScan();
@@ -5044,6 +6146,12 @@ function renderLab(){
 /* ---------- per-game card art ---------- */
 function gameArt(id){
   const A={
+  spot:`<svg viewBox="0 0 200 110"><g fill="currentColor">
+    <rect x="18" y="16" width="118" height="78" rx="5" opacity=".13"/>
+    ${Array.from({length:7},(_,i)=>`<rect x="30" y="${26+i*9}" width="${[92,74,86,60,90,70,50][i]}" height="4" rx="2" opacity="${[.3,.85,.3,.85,.3,.3,.85][i]}"/>`).join('')}
+    <circle cx="150" cy="52" r="26" fill="none" stroke="currentColor" stroke-width="5"/>
+    <path d="M169 71 L188 90" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="150" cy="52" r="26" opacity=".1"/></g></svg>`,
   jury:`<svg viewBox="0 0 200 110"><g fill="currentColor">
     ${Array.from({length:6},(_,i)=>`<circle cx="${28+i*29}" cy="34" r="9"/><rect x="${20+i*29}" y="46" width="16" height="18" rx="5"/>`).join('')}
     ${Array.from({length:5},(_,i)=>`<circle cx="${42+i*29}" cy="74" r="9"/><rect x="${34+i*29}" y="86" width="16" height="18" rx="5"/>`).join('')}
@@ -5093,11 +6201,458 @@ function gameArt(id){
   return A[id]||A.jury;
 }
 
+/* --- renderer: what does this mean --------------------------------- */
+let docSel='', docPart=0;
+const URGW=[[1,'Not urgent','ok'],[2,'Time-limited','warn'],[3,'Act now','hot']];
+function docIcon(id){
+  const P={claim:'M14 8h24l10 10v34H14z M38 8v10h10',evict:'M32 10 L52 26v26H12V26z M26 52V38h12v14',
+    discip:'M16 10h32v44H16z M24 22h16 M24 30h16 M24 38h10',debt:'M12 18h40v28H12z M12 28h40 M40 38h8',
+    police:'M32 8 L52 16v16c0 12-9 19-20 24-11-5-20-12-20-24V16z',et:'M12 12h40v40H12z M20 22h24 M20 30h24 M20 38h14',
+    refuse:'M16 10h32v44H16z M25 25l14 14 M39 25l-14 14',summons:'M12 14h40v36H12z M22 26h20 M22 34h12 M44 44l6 8',
+    breachnote:'M32 10 L54 50H10z M32 26v12 M32 43v2'};
+  return `<svg viewBox="0 0 64 64" class="dcico" aria-hidden="true"><path d="${P[id]||P.claim}" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+}
+function renderDocs(){
+  const host=$('#b-docs'); if(!host)return;
+  if(!docSel){
+    host.innerHTML=`
+      <div class="howto"><b>What this page is.</b> A letter arrives and it is written to sound serious. This page takes the
+        documents people most often receive, and walks through them line by line — what each part means, which date is the one
+        that actually matters, and what really happens if you do nothing. Pick whichever looks like yours.</div>
+      <div class="dcgrid">
+        ${DOCS.map(d=>{const u=URGW[d.urg-1];
+          return `<button class="dccard u-${u[2]}" data-d="${d.id}">
+            <div class="dchd">${docIcon(d.id)}<span class="uband ${u[2]}">${u[1]}</span></div>
+            <h4>${d.t}</h4><p class="dcwho">From: ${esc(d.who)}</p>
+            <p class="dcgist">${esc(d.gist.split('.')[0])}.</p>
+            <span class="dcgo">Open this →</span></button>`}).join('')}
+      </div>
+      <div class="note" style="margin-top:20px"><b>Not sure which one you have?</b> Look at who sent it. A court, a landlord,
+        an employer, a debt collector and a government department all send very different things, and the sender tells you more
+        than the wording does.</div>`;
+    host.querySelector('.dcgrid').onclick=e=>{const b=e.target.closest('[data-d]');if(!b)return;
+      docSel=b.dataset.d;docPart=0;renderDocs();scrollTo_('b-docs','start');track('doc',docSel)};
+    if($('#rt-docs'))$('#rt-docs').textContent=DOCS.length+' documents';
+    return;
+  }
+  const d=DOCSBY[docSel], u=URGW[d.urg-1], p=d.parts[docPart];
+  host.innerHTML=`
+    <div class="dcback"><button class="btn ghost sm" id="dcBack">← All documents</button>
+      <span class="uband ${u[2]}">${u[1]}</span></div>
+    <h3 class="dctitle">${d.t}</h3>
+    <p class="dcfrom">Sent by ${esc(d.who)}</p>
+    <div class="dcdl"><span class="dcdlk">The deadline that matters</span><b>${esc(d.dl)}</b></div>
+    <div class="dcrow">
+      <div class="dcwhat"><h4>What this actually is</h4><p>${esc(d.gist)}</p></div>
+      <div class="dccalm"><h4>Before you panic</h4><p>${esc(d.calm)}</p></div>
+    </div>
+
+    <h4 class="dcsec">The document, part by part</h4>
+    <p class="dchint">Click any numbered part of the document to see what it means. Documents look different in every country —
+      this is the shape they share.</p>
+    <div class="dcwrap">
+      <div class="dcpaper" id="dcPaper">
+        <div class="dcstamp">${esc(d.t.toUpperCase())}</div>
+        ${d.parts.map((x,i)=>`<button class="dcband ${i===docPart?'on':''}" data-p="${i}" aria-pressed="${i===docPart}">
+          <span class="dcnum">${i+1}</span>
+          <span class="dclab">${esc(x[0])}</span>
+          <span class="dclines">${'<i></i>'.repeat(2+(i%3))}</span></button>`).join('')}
+      </div>
+      <div class="dcexp">
+        <div class="dcexpn">${docPart+1}</div>
+        <h5 data-live="dcT">${esc(p[0])}</h5>
+        <p data-live="dcB">${esc(p[1])}</p>
+        <div class="dcnav"><button class="btn ghost sm" id="dcPrev"${docPart===0?' disabled':''}>← Previous</button>
+          <span class="dccount">${docPart+1} of ${d.parts.length}</span>
+          <button class="btn sm" id="dcNext"${docPart===d.parts.length-1?' disabled':''}>Next part →</button></div>
+      </div>
+    </div>
+
+    <div class="dcrow2">
+      <div class="dcign"><h4>If you do nothing</h4><p>${esc(d.ignore)}</p></div>
+      <div class="dcdo"><h4>What to do now</h4>
+        <ol class="dclist">${d.act.map((a,i)=>`<li><label><input type="checkbox" data-ck="${i}"> <span>${esc(a)}</span></label></li>`).join('')}</ol>
+        <p class="dcnote">Ticking these is just for you. Nothing is sent anywhere.</p></div>
+    </div>
+    <div class="dcask"><h4>Three questions worth answering before you reply</h4>
+      <ul>${d.ask.map(q=>`<li>${esc(q)}</li>`).join('')}</ul></div>
+    <div class="dcfoot">
+      <p>This describes the general shape of these documents. The exact rules, forms and time limits differ by country and
+        sometimes by region — check yours, and get advice if a deadline is close.</p>
+      <div class="dcfl"><a class="btn sm" href="situation.html#help">Find free help near you</a>
+        <a class="btn sm ghost" href="situation.html#process">See what happens next →</a>
+        <a class="btn sm ghost" href="situation.html#letters">Write a reply</a></div>
+    </div>`;
+  $('#dcBack').onclick=()=>{docSel='';renderDocs();scrollTo_('b-docs','start')};
+  $('#dcPaper').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;docPart=+b.dataset.p;renderDocs()};
+  $('#dcPrev').onclick=()=>{if(docPart>0){docPart--;renderDocs()}};
+  $('#dcNext').onclick=()=>{if(docPart<d.parts.length-1){docPart++;renderDocs()}};
+  if($('#rt-docs'))$('#rt-docs').textContent=d.t;
+}
+
+/* --- renderer: what happens next ----------------------------------- */
+let prcSel='', prcStep=-1;
+function prcIcon(ic){
+  const P={coin:'M32 12a20 20 0 100 40 20 20 0 100-40 M32 20v24 M26 26h9a5 5 0 010 10h-9',
+    scale:'M32 12v40 M14 22h36 M14 22l-7 14h14z M50 22l-7 14h14z M22 52h20',
+    door:'M18 12h28v40H18z M39 32v3',gavel:'M18 40l16-16 M28 18l12 12 M36 26l12 12 M14 46l10 4',
+    seal:'M32 10l6 12 13 2-9 10 2 13-12-6-12 6 2-13-9-10 13-2z',
+    home:'M32 12L54 30v22H10V30z M26 52V38h12v14'};
+  return `<svg viewBox="0 0 64 64" class="prico" aria-hidden="true"><path d="${P[ic]||P.scale}" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+function renderProcs(){
+  const host=$('#b-process'); if(!host)return;
+  if(!prcSel){
+    host.innerHTML=`
+      <div class="howto"><b>What this page is.</b> Most of the fear in a legal process is fear of the unknown — not knowing
+        what happens, in what order, over how long, or who will be in the room. These are the six processes people most often
+        find themselves in, laid out stage by stage with honest timescales.</div>
+      <div class="prgrid">
+        ${PROCS.map(p=>`<button class="prcard" data-p="${p.id}">
+          ${prcIcon(p.ic)}<h4>${p.t}</h4><p class="prtag">${esc(p.tag)}</p>
+          <div class="prmeta"><span>${p.steps.length} stages</span><span>${esc(p.total)}</span></div>
+          <span class="dcgo">Walk through it →</span></button>`).join('')}
+      </div>
+      <div class="note" style="margin-top:20px"><b>Timescales are typical, not promised.</b> Court backlogs vary enormously
+        between countries and even between cities. Treat these as the shape of the thing, not a schedule.</div>`;
+    host.querySelector('.prgrid').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;
+      prcSel=b.dataset.p;prcStep=-1;renderProcs();scrollTo_('b-process','start');track('proc',prcSel)};
+    if($('#rt-process'))$('#rt-process').textContent=PROCS.length+' processes';
+    return;
+  }
+  const p=PROCSBY[prcSel], n=p.steps.length;
+  const done=prcStep>=0?prcStep:-1, pct=prcStep>=0?Math.round(((prcStep+1)/n)*100):0;
+  host.innerHTML=`
+    <div class="dcback"><button class="btn ghost sm" id="prBack">← All processes</button>
+      <span class="uband ok">${esc(p.total)}</span></div>
+    <h3 class="dctitle">${p.t}</h3>
+    <p class="dcfrom">${esc(p.tag)}</p>
+    <div class="dcrow">
+      <div class="dcwhat"><h4>How this works</h4><p>${esc(p.gist)}</p></div>
+      <div class="dccalm"><h4>Who is actually there</h4><p>${esc(p.who)}</p></div>
+    </div>
+
+    <div class="prwhere"><h4>Where are you in this?</h4>
+      <p class="dchint">Tell it which stage you have reached and it shows you what is behind you and what is still ahead.</p>
+      <div class="prsteps" id="prSteps">
+        <button class="prchip ${prcStep<0?'on':''}" data-s="-1">Not started</button>
+        ${p.steps.map((s,i)=>`<button class="prchip ${prcStep===i?'on':''}" data-s="${i}">${i+1}. ${esc(s[0])}</button>`).join('')}
+      </div>
+      ${prcStep>=0?`<div class="prbar"><i style="width:${pct}%"></i></div>
+        <p class="prpct">Roughly <b>${pct}%</b> of the way through — ${n-prcStep-1} stage${n-prcStep-1===1?'':'s'} still ahead.</p>`:''}
+    </div>
+
+    <ol class="prtl">
+      ${p.steps.map((s,i)=>{
+        const st=done<0?'':(i<done?'past':i===done?'now':'ahead');
+        return `<li class="prtli ${st}">
+          <div class="prdot">${i<done?'✓':i+1}</div>
+          <div class="prbody">
+            <div class="prtop"><h5>${esc(s[0])}</h5><span class="prtime">${esc(s[1])}</span></div>
+            <p>${esc(s[2])}</p>
+            <div class="prtip"><b>Worth knowing.</b> ${esc(s[3])}</div>
+          </div></li>`}).join('')}
+    </ol>
+
+    <div class="prfear"><h4>Three things people worry about that are not true</h4>
+      <ul>${p.fear.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></div>
+    <div class="dcfoot">
+      <p>Procedure differs by country, and sometimes within one. The stages and their order are broadly shared; the names,
+        forms and exact timescales are not.</p>
+      <div class="dcfl"><a class="btn sm" href="situation.html#help">Find free help near you</a>
+        <a class="btn sm ghost" href="situation.html#docs">Understand a letter you received</a>
+        <a class="btn sm ghost" href="situation.html#guide">Start the walkthrough</a></div>
+    </div>`;
+  $('#prBack').onclick=()=>{prcSel='';renderProcs();scrollTo_('b-process','start')};
+  $('#prSteps').onclick=e=>{const b=e.target.closest('[data-s]');if(!b)return;prcStep=+b.dataset.s;renderProcs()};
+  if($('#rt-process'))$('#rt-process').textContent=p.t;
+}
+
+/* ==================================================================
+   35 · YOUR PROGRESS
+   ================================================================== */
+function progPct(){
+  const p=progressAll();
+  const secs=SEC.filter(s=>s[0]!=='start'&&s[0]!=='progress');
+  const sv=secs.filter(s=>p['sec:'+s[0]]).length;
+  const gv=GAMES.filter(g=>p['game:'+g.id]).length;
+  const dv=DOCS.filter(d=>p['doc:'+d.id]).length;
+  const pv=PROCS.filter(x=>p['proc:'+x.id]).length;
+  const tot=secs.length+GAMES.length+DOCS.length+PROCS.length;
+  return {sv,gv,dv,pv,secs:secs.length,tot,done:sv+gv+dv+pv,
+    pct:Math.round((sv+gv+dv+pv)/tot*100)};
+}
+function progWhen(ts){
+  if(!ts)return '';
+  const m=Math.floor((Date.now()-ts)/60000);
+  if(m<2)return 'just now'; if(m<60)return m+' minutes ago';
+  const h=Math.floor(m/60); if(h<24)return h+' hour'+(h===1?'':'s')+' ago';
+  const d=Math.floor(h/24); if(d<31)return d+' day'+(d===1?'':'s')+' ago';
+  return 'a while ago';
+}
+function shareText(){
+  const s=progPct(), p=progressAll();
+  const best=GAMES.map(g=>({g,r:p['game:'+g.id]})).filter(x=>x.r&&x.r.best!==undefined)
+    .sort((a,b)=>(b.r.best/(b.r.of||1))-(a.r.best/(a.r.of||1)))[0];
+  let t='I have explored '+s.pct+'% of LawOrchard — '+s.gv+' of '+GAMES.length+' law games';
+  if(best)t+=', best run '+best.r.best+(best.r.of===100?'%':'/'+best.r.of)+' on '+best.g.t;
+  return t+'. Free, no account needed: https://laworchard.com';
+}
+function renderProgress(){
+  const host=$('#b-progress'); if(!host)return;
+  const p=progressAll(), s=progPct(), any=s.done>0;
+  const recent=Object.entries(p).map(([k,v])=>{
+    const [kind,id]=[k.slice(0,k.indexOf(':')),k.slice(k.indexOf(':')+1)];
+    let label='',href='';
+    if(kind==='sec'&&SECBY[id]){label=SECBY[id][2].replace(/&amp;/g,'&');href=GROUP_PAGE[SECBY[id][4]]+'#'+id}
+    else if(kind==='game'&&GAMEBY[id]){label=GAMEBY[id].t;href='game-'+id+'.html'}
+    else if(kind==='doc'&&DOCSBY[id]){label=DOCSBY[id].t;href='situation.html#docs'}
+    else if(kind==='proc'&&PROCSBY[id]){label=PROCSBY[id].t;href='situation.html#process'}
+    return label?{label,href,kind,v}:null;
+  }).filter(Boolean).sort((a,b)=>b.v.last-a.v.last).slice(0,6);
+
+  host.innerHTML=`
+    <div class="howto"><b>What this is.</b> A record of what you have looked at on this site, kept on this device only.
+      Nothing is uploaded, there is no account, and clearing it removes it for good. It exists so you can pick up where you
+      left off rather than wondering which parts you have already read.</div>
+
+    ${!any?`<div class="pgempty">
+      <div class="pgring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="pgbg"/></svg><b>0%</b></div>
+      <h4>Nothing tracked yet</h4>
+      <p>Read a section, play a game or open a document and it will appear here.</p>
+      <div class="dcfl"><a class="btn" href="situation.html#guide">Start the walkthrough</a>
+        <a class="btn ghost" href="lab.html">Open the Law Lab</a></div></div>`:`
+
+    <div class="pgtop">
+      <div class="pgring">
+        <svg viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="52" class="pgbg"/>
+          <circle cx="60" cy="60" r="52" class="pgfg" style="stroke-dasharray:${(s.pct/100*326.7).toFixed(1)} 326.7"/>
+        </svg><b>${s.pct}%</b></div>
+      <div class="pgsum">
+        <h4>You have opened ${s.done} of ${s.tot} things here</h4>
+        <p>There is no order you are meant to go in and no reason to finish it. This is a map of where you have been,
+          not a checklist you owe anybody.</p>
+        <div class="pgstats">
+          <div><b>${s.sv}<span>/${s.secs}</span></b><i>Sections</i></div>
+          <div><b>${s.gv}<span>/${GAMES.length}</span></b><i>Games</i></div>
+          <div><b>${s.dv}<span>/${DOCS.length}</span></b><i>Documents</i></div>
+          <div><b>${s.pv}<span>/${PROCS.length}</span></b><i>Processes</i></div>
+        </div>
+      </div>
+    </div>
+
+    ${recent.length?`<h4 class="pgh">Pick up where you left off</h4>
+    <div class="pgrec">${recent.map(r=>`<a class="pgr" href="${r.href}">
+      <span class="pgk">${r.kind==='sec'?'Section':r.kind==='game'?'Game':r.kind==='doc'?'Document':'Process'}</span>
+      <b>${esc(r.label)}</b>
+      <i>${progWhen(r.v.last)}${r.v.n>1?' · '+r.v.n+' visits':''}${r.v.best!==undefined?' · best '+r.v.best+(r.v.of===100?'%':'/'+r.v.of):''}</i>
+      </a>`).join('')}</div>`:''}
+
+    <h4 class="pgh">The Law Lab</h4>
+    <div class="pggames">${GAMES.map(g=>{const r=p['game:'+g.id];
+      return `<a class="pgg ${r?'on':''}" href="game-${g.id}.html" style="--acc:${g.acc}">
+        <span class="pggd"></span><b>${esc(g.t)}</b>
+        <i>${r?(r.best!==undefined?'best '+r.best+(r.of===100?'%':'/'+r.of):'played'):'not played'}</i></a>`}).join('')}</div>
+
+    <div class="pgshare">
+      <h4>Share where you have got to</h4>
+      <p>Copies a line of text you can paste anywhere. It contains no personal information — just the percentage and your best game score.</p>
+      <div class="pgsharebox" id="pgShareBox">${esc(shareText())}</div>
+      <div class="dcfl"><button class="btn" id="pgCopy">Copy this</button>
+        <button class="btn ghost" id="pgClear">Clear my history</button></div>
+    </div>`}`;
+
+  const cp=$('#pgCopy');
+  if(cp)cp.onclick=()=>{const t=shareText();
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(()=>toast('Copied.'),()=>toast('Could not copy — select the text instead.'));
+    } else toast('Select the text above and copy it.');};
+  const cl=$('#pgClear');
+  if(cl)cl.onclick=()=>{
+    if(!confirm('Clear everything this site remembers on this device — progress, theme and text size?'))return;
+    clearStore(); toast('Cleared.'); renderProgress();};
+}
+
+/* ==================================================================
+   36 · FIRST RUN TOUR
+   Five cards on a first visit. Remembered, skippable, and re-openable
+   from the More menu. Never shown to anyone who has been here before.
+   ================================================================== */
+const TOUR=[
+ ['Welcome to LawOrchard',
+  'This is a free site that explains how law works to people who are not lawyers. No account, no sign-up, nothing to pay.',
+  'Three kinds of people use it: someone dealing with a legal problem right now, a student learning how systems work, and someone who is simply curious. You can be any of them, on different days.','◈'],
+ ['Start with why you are here',
+  'The front page has four doors. Pick the one that sounds like you and it takes you straight there rather than making you hunt through menus.',
+  'If something is urgent — an arrest, an eviction today, a deadline this week — there is a red panel at the top that skips everything else and goes to real help.','⚖'],
+ ['Make it comfortable to read',
+  'Four looks live under Theme in the top bar: bright daylight, low light, a warm courtroom, and one that reads like a printed contract.',
+  'Under More you can also change the text size. Both are remembered on this device, so you only set them once.','◐'],
+ ['Everything stays on your device',
+  'There is no server and no account. The walkthrough, the calculators, the letter builder, the games and the search all run inside your own browser.',
+  'Your theme, text size and what you have read are saved locally so the site remembers you. You can wipe all of it from Your progress whenever you want.','▣'],
+ ['One last thing',
+  'Press ⌘K, Ctrl+K or the slash key anywhere on the site to search everything at once — a country, a case, a legal term, or a problem in your own words.',
+  'And the important caveat: this explains how law generally works. It is not advice about your situation, and it does not replace a lawyer where you live.','⌕']];
+
+let tourAt=0;
+function tourShow(force){
+  if(!force&&storeGet('seenTour',false))return;
+  if(!force&&PAGE!=='start')return;
+  tourAt=0; tourPaint();
+}
+function tourPaint(){
+  const t=TOUR[tourAt], last=tourAt===TOUR.length-1;
+  let ov=$('#tourOv');
+  if(!ov){ ov=document.createElement('div'); ov.id='tourOv'; ov.className='tourov';
+    document.body.appendChild(ov); }
+  ov.innerHTML=`<div class="tourbox" role="dialog" aria-modal="true" aria-label="Introduction">
+    <button class="tourx" id="tourX" aria-label="Close">✕</button>
+    <div class="touric">${t[3]}</div>
+    <h3>${esc(t[0])}</h3>
+    <p>${esc(t[1])}</p>
+    <p class="toursub">${esc(t[2])}</p>
+    <div class="tourdots">${TOUR.map((_,i)=>
+      `<button class="tourd ${i===tourAt?'on':''}" data-td="${i}" aria-label="Step ${i+1}"></button>`).join('')}</div>
+    <div class="tourfoot">
+      <button class="btn ghost sm" id="tourSkip">${last?'':'Skip this'}</button>
+      <div class="tournav">
+        ${tourAt>0?'<button class="btn ghost sm" id="tourPrev">← Back</button>':''}
+        <button class="btn" id="tourNext">${last?'Start looking around':'Next →'}</button>
+      </div></div></div>`;
+  requestAnimationFrame(()=>ov.classList.add('on'));
+  document.body.style.overflow='hidden';
+  const close=()=>{ ov.classList.remove('on'); document.body.style.overflow='';
+    saveStore({seenTour:true}); setTimeout(()=>{ if(ov.parentNode)ov.parentNode.removeChild(ov) },260); };
+  $('#tourX').onclick=close;
+  $('#tourSkip').onclick=close;
+  $('#tourNext').onclick=()=>{ if(tourAt===TOUR.length-1)return close(); tourAt++; tourPaint(); };
+  const pv=$('#tourPrev'); if(pv)pv.onclick=()=>{ tourAt--; tourPaint(); };
+  ov.querySelector('.tourdots').onclick=e=>{ const b=e.target.closest('[data-td]'); if(!b)return;
+    tourAt=+b.dataset.td; tourPaint(); };
+  ov.onclick=e=>{ if(e.target===ov)close(); };
+  document.addEventListener('keydown',function esc(ev){
+    if(!document.getElementById('tourOv')){document.removeEventListener('keydown',esc);return}
+    if(ev.key==='Escape')close();
+    if(ev.key==='ArrowRight'&&tourAt<TOUR.length-1){tourAt++;tourPaint()}
+    if(ev.key==='ArrowLeft'&&tourAt>0){tourAt--;tourPaint()}
+  });
+}
+window.tourShow=tourShow;
+
+/* ==================================================================
+   37 · RECENT DECISIONS
+   Fed from cases-recent.js, which loads BEFORE this file. If that
+   file is missing or broken the page still works — it just shows
+   nothing. That is deliberate: the automatic update writes only to
+   that file, so it can never take the site down.
+   ================================================================== */
+const RCASES = (typeof RECENT!=='undefined' && Array.isArray(RECENT)) ? RECENT : [];
+const RPEND  = (typeof PENDING!=='undefined' && Array.isArray(PENDING)) ? PENDING : [];
+const RUPD   = (typeof RECENT_UPDATED!=='undefined') ? RECENT_UPDATED : '';
+let rcStream='people', rcOpen='';
+
+function rcDate(iso){
+  const M=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const d=new Date(iso+'T00:00:00Z'); if(isNaN(d))return iso;
+  return d.getUTCDate()+' '+M[d.getUTCMonth()]+' '+d.getUTCFullYear();
+}
+function rcAgo(iso){
+  const d=new Date(iso+'T00:00:00Z'); if(isNaN(d))return '';
+  const days=Math.floor((Date.now()-d.getTime())/86400000);
+  if(days<1)return 'today'; if(days<14)return days+' days ago';
+  if(days<60)return Math.floor(days/7)+' weeks ago';
+  if(days<730)return Math.floor(days/30)+' months ago';
+  return Math.floor(days/365)+' years ago';
+}
+function renderRecent(){
+  const host=$('#b-recent'); if(!host)return;
+  const mine=RCASES.filter(c=>c.stream===rcStream).sort((a,b)=>b.date.localeCompare(a.date));
+  const explained=mine.filter(c=>c.sum), listed=mine.filter(c=>!c.sum);
+  const nPeople=RCASES.filter(c=>c.stream==='people').length;
+  const nMark=RCASES.filter(c=>c.stream==='landmark').length;
+
+  host.innerHTML=`
+    <div class="howto"><b>What this page is.</b> Courts hand down hundreds of decisions a week and almost none of them
+      matter to anyone outside the case. These are the ones that do — split into rulings that change what an ordinary
+      person can actually do, and rulings that change the law itself. Every entry links to the judgment so you can check
+      it rather than take our word for it.</div>
+
+    <div class="rcstreams" id="rcStreams">
+      <button class="rcs ${rcStream==='people'?'on':''}" data-s="people">
+        <b>What changed for you</b><i>${nPeople} ruling${nPeople===1?'':'s'}</i>
+        <span>Decisions that change your rights at work, at home, with the police or with your money.</span></button>
+      <button class="rcs ${rcStream==='landmark'?'on':''}" data-s="landmark">
+        <b>Landmark rulings</b><i>${nMark} ruling${nMark===1?'':'s'}</i>
+        <span>Decisions that change the law itself — overruled precedents, new tests, constitutional questions.</span></button>
+    </div>
+
+    ${explained.length?`<div class="rclist">
+      ${explained.map(c=>`<article class="rcard ${rcOpen===c.id?'open':''}" id="rc-${c.id}">
+        <button class="rchead" data-o="${c.id}">
+          <div class="rcmeta"><span class="rcct">${esc(c.court)}</span>
+            <span class="rcdt">${rcDate(c.date)} · ${rcAgo(c.date)}</span></div>
+          <h4>${esc(c.t)}</h4>
+          <div class="rctags"><span class="tag b">${esc(c.area)}</span>
+            <span class="tag">${esc(c.cite)}</span>
+            <span class="rcexp">Explained</span></div>
+          <span class="rcchev">${rcOpen===c.id?'−':'+'}</span>
+        </button>
+        <div class="rcbody">
+          <h5>What the court decided</h5><p>${esc(c.sum)}</p>
+          ${c.why?`<h5>Why it matters to you</h5><p>${esc(c.why)}</p>`:''}
+          <a class="rcsrc" href="${esc(c.src)}" target="_blank" rel="noopener noreferrer">
+            Read the source — ${esc(c.srcName||'official page')} ↗</a>
+        </div></article>`).join('')}
+    </div>`:'<div class="empty">NOTHING EXPLAINED IN THIS STREAM YET</div>'}
+
+    ${listed.length?`
+    <h4 class="rch">Also decided — listed, not yet summarised</h4>
+    <p class="dchint">We know these were decided and what they were about, but nobody has read the full judgment to
+      write it up. Rather than guess at the outcome, they are listed with a link. That is the honest version.</p>
+    <div class="rclisted">
+      ${listed.map(c=>`<a class="rcl" href="${esc(c.src)}" target="_blank" rel="noopener noreferrer">
+        <span class="rcldt">${rcDate(c.date)}</span>
+        <b>${esc(c.t)}</b>
+        <span class="rclmeta">${esc(c.cite)} · ${esc(c.area)} ↗</span></a>`).join('')}
+    </div>`:''}
+
+    ${RPEND.length?`
+    <h4 class="rch">Argued but not yet decided</h4>
+    <div class="rcpend">
+      ${RPEND.map(p=>`<div class="rcp">
+        <div class="rcmeta"><span class="rcct">${esc(p.court)}</span><span class="rcdt">${esc(p.stage)}</span></div>
+        <h4>${esc(p.t)}</h4>
+        <p>${esc(p.what)}</p>
+        <a class="rcsrc" href="${esc(p.src)}" target="_blank" rel="noopener noreferrer">${esc(p.srcName||'Source')} ↗</a>
+      </div>`).join('')}
+    </div>`:''}
+
+    <div class="rcfoot">
+      <div><b>Last reviewed ${RUPD?rcDate(RUPD):'—'}</b>
+        <p>New decisions are added periodically. Every entry carries a link to the judgment or an official court page —
+          if an entry has no source it does not go in. Coverage is currently strongest for the United Kingdom and will
+          widen; it is not, and will never be, a complete record of what courts decided.</p></div>
+      <div class="dcfl"><a class="btn sm ghost" href="learn.html#caselaw">The 42 landmark cases →</a>
+        <a class="btn sm ghost" href="about.html#method">How we label confidence →</a></div>
+    </div>`;
+
+  $('#rcStreams').onclick=e=>{const b=e.target.closest('[data-s]');if(!b)return;
+    rcStream=b.dataset.s; rcOpen=''; renderRecent(); track('sec','recent')};
+  host.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{
+    rcOpen=rcOpen===b.dataset.o?'':b.dataset.o; renderRecent();
+    if(rcOpen)track('case',rcOpen);
+  });
+  if($('#rt-recent'))$('#rt-recent').textContent=RCASES.length+' decisions';
+}
+
 /* ==================================================================
    BOOT
    ================================================================== */
 const RENDERERS={start:()=>renderStart(),help:()=>renderHelp(),guide:()=>renderGuide(),
   qa:()=>renderQA(),letters:()=>renderLetters(),counsel:()=>renderCounsel(),lab:()=>renderLab(),
+  docs:()=>renderDocs(),process:()=>renderProcs(),progress:()=>renderProgress(),recent:()=>renderRecent(),
   atlas:()=>renderAtlas(),index:()=>renderIndex(),juris:()=>renderJuris(),compare:()=>renderCompare(),
   courts:()=>renderCourts(),caselaw:()=>renderCases(),brief:()=>renderBrief(),quiz:()=>renderQuiz(),
   models:()=>renderModels(),areas:()=>renderAreas(),ai:()=>renderAIsec(),qualify:()=>renderQualify(),
@@ -5106,7 +6661,7 @@ function renderAll(){
   if($('#kpis'))renderKpis();
   if(GAME){ setupGamePage(); paintLab(); }
   MYSEC.forEach(x=>{ const f=RENDERERS[x[0]]; if(f&&$('#b-'+x[0]))f(); });
-  buildTicker();buildDocket();paintThemeMenu();paintMore();
+  buildTicker();paintThemeMenu();paintMore();
 }
 newQuiz();
 renderAll();
@@ -5116,16 +6671,29 @@ function setupGamePage(){
     <div class="shead reveal"><div class="kicker">${g.area}</div><h2>${g.t}</h2>
       <p class="lede">${g.tag}</p><div class="right" id="rt-lab"></div></div>
     <div id="b-lab"></div>
-    <div class="backlab"><a class="btn ghost" href="lab.html">← All twelve games</a></div>
+    <div class="backlab"><a class="btn ghost" href="lab.html">← All thirteen games</a></div>
   </section>`;
   document.documentElement.style.setProperty('--game-acc',g.acc);
+  track('game',g.id);
+}
+function applySaved(){
+  const st=loadStore();
+  if(st.theme)document.documentElement.setAttribute('data-theme',st.theme);
+  if(st.textSize){const z=SIZES.find(x=>x[0]===st.textSize);
+    if(z){document.documentElement.style.fontSize=z[2]+'px';document.body.style.fontSize=z[2]+'px'}}
+  if(st.ticker){$('#ticker').classList.add('on')}
+  if(st.console){$('#term').classList.add('avail');document.body.classList.add('console-on')}
+  if(st.lens){ const b=$('#lensSel button[data-l="'+st.lens+'"]');
+    if(b){$$('#lensSel button').forEach(x=>x.classList.toggle('on',x===b));} }
 }
 (function boot(){
+  applySaved();
   if(GAME){ document.body.classList.add('booted');
     if(typeof initFX==='function')initFX(); return; }
   const hash=(location.hash||'').replace('#','');
   const first=MYSEC.length?MYSEC[0][0]:'start';
   go(MYSEC.some(x=>x[0]===hash)?hash:first);
+  setTimeout(()=>{ try{ tourShow() }catch(e){} },700);
   const q=new URLSearchParams(location.search);
   if(q.get('j')&&byIso[q.get('j')])setTimeout(()=>jurisReport(q.get('j')),120);
   if(q.get('a')&&AREAS.some(a=>a.n===q.get('a')))setTimeout(()=>areaReport(q.get('a')),120);
