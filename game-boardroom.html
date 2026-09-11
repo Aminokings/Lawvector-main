@@ -21,31 +21,41 @@
 <meta name="twitter:description" content="You sit on a board. Seven decisions, each one a chance to breach a duty you did not know you had.">
 <meta name="twitter:image" content="https://laworchard.com/og-image.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2064%2064%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20aria-hidden%3D%22true%22%3E%3Cpolygon%20points%3D%2232%2C3%2061%2C32%2032%2C61%203%2C32%22%20fill%3D%22%23b8983c%22%20opacity%3D%22.22%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%229%22%20width%3D%2244%22%20height%3D%2244%22%20fill%3D%22none%22%20stroke%3D%22%23b8983c%22%20stroke-width%3D%223.2%22%2F%3E%3Cpolygon%20points%3D%2224.56%2C21.05%2033.05%2C12.56%2035.88%2C15.39%2027.39%2C23.88%22%20fill%3D%22%233b1c0e%22%2F%3E%3Cpolygon%20points%3D%2228.45%2C24.94%2036.94%2C16.45%2051.44%2C30.95%2042.95%2C39.44%22%20fill%3D%22%233b1c0e%22%2F%3E%3Cpolygon%20points%3D%2238.71%2C26.71%2035.88%2C23.88%2021.74%2C38.02%2024.56%2C40.85%22%20fill%3D%22%233b1c0e%22%2F%3E%3Cpolygon%20points%3D%2221.31%2C37.60%2024.99%2C41.27%2016.79%2C45.80%22%20fill%3D%22%23b8983c%22%2F%3E%3Cpath%20d%3D%22M16.79%2045.80%20L20.32%2042.26%22%20stroke%3D%22%23faf9f5%22%20stroke-width%3D%221.1%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2224.21%22%20cy%3D%2238.37%22%20r%3D%221%22%20fill%3D%22%23faf9f5%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="lab" data-game="boardroom">
 
 <a class="skip" href="#main">Skip to content</a>
-<div class="topbar">
-  <div class="wrap tb-main">
-    <a class="brand" href="index.html"><svg class="logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><polygon points="32,3 61,32 32,61 3,32" fill="var(--brass)" opacity=".22"/><rect x="10" y="9" width="44" height="44" fill="none" stroke="var(--brass)" stroke-width="3.2"/><polygon points="24.56,21.05 33.05,12.56 35.88,15.39 27.39,23.88" fill="var(--ink)"/><polygon points="28.45,24.94 36.94,16.45 51.44,30.95 42.95,39.44" fill="var(--ink)"/><polygon points="38.71,26.71 35.88,23.88 21.74,38.02 24.56,40.85" fill="var(--ink)"/><polygon points="21.31,37.60 24.99,41.27 16.79,45.80" fill="var(--brass)"/><path d="M16.79 45.80 L20.32 42.26" stroke="var(--panel)" stroke-width="1.1" stroke-linecap="round"/><circle cx="24.21" cy="38.37" r="1" fill="var(--panel)"/></svg><b>LawOrchard</b><i>LAW, EXPLAINED</i></a>
-    <div class="tb-tools">
-      <div class="lens" id="lensSel">
-        <button data-l="" class="on">ALL</button><button data-l="CM">COMMON</button>
-        <button data-l="CV">CIVIL</button><button data-l="MX">MIXED</button></div>
-      <button class="iconbtn" id="searchBtn" aria-label="Search the site">⌕ Search</button>
-      <div class="thmwrap">
-        <button class="iconbtn" id="thmBtn">◐ Theme</button>
+<div class="lo-bar" id="bar">
+  <div class="lo-pill">
+    <a class="lo-brand" href="index.html"><svg class="logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="10" y="9" width="44" height="44" rx="3" fill="none" stroke="var(--brass)" stroke-width="4"/><polygon points="24.56,21.05 33.05,12.56 35.88,15.39 27.39,23.88" fill="var(--ink)"/><polygon points="28.45,24.94 36.94,16.45 51.44,30.95 42.95,39.44" fill="var(--ink)"/><polygon points="38.71,26.71 35.88,23.88 21.74,38.02 24.56,40.85" fill="var(--ink)"/><polygon points="21.31,37.60 24.99,41.27 16.79,45.80" fill="var(--brass)"/></svg><b>LawOrchard</b></a>
+    <button class="lo-ib" id="menuBtn" aria-expanded="false" aria-controls="menu">Menu</button>
+    <button class="lo-ib" id="searchBtn" aria-label="Search the site">Search</button>
+    <a class="lo-ib lo-cta" href="situation.html#help">Find help</a>
+  </div>
+</div>
+
+<div class="lo-menu" id="menu" role="dialog" aria-modal="true" aria-label="Navigation">
+  <button class="lo-close" id="menuX">Close</button>
+  <div class="wrap lo-mwrap">
+    <div class="lo-mcol">
+      <span class="lo-mlbl">Sections</span>
+      <div class="grow" id="gnav"></div>
+    </div>
+    <div class="lo-mcol lo-mcol2">
+      <span class="lo-mlbl">On this page</span>
+      <div class="srow" id="nav"></div>
+      <div class="lo-mtools">
+        <span class="lo-mlbl">Appearance</span>
         <div class="thmmenu" id="thmMenu"></div>
+        <button class="lo-ib" id="moreBtn">More options</button>
+        <div class="lo-more" id="moreMenu"></div>
       </div>
-      <button class="iconbtn" id="moreBtn">··· More</button>
-      <span class="clock" id="clock"></span>
     </div>
   </div>
-  <div class="groupnav"><div class="wrap"><div class="grow" id="gnav"></div></div></div>
-  <div class="subnav" id="subnav"><div class="wrap"><div class="srow" id="nav"></div></div></div>
-  <div class="ticker" id="ticker"><span class="tk-lbl">LIVE</span><div class="tk-track" id="tkTrack"></div></div>
-  <div class="lensbar" id="lensBar"><div class="wrap"></div></div>
 </div>
 
 <div class="hero">

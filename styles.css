@@ -2,47 +2,56 @@
 /* ==================================================================
    THEMES
    ================================================================== */
-:root,[data-theme="light"]{
-  --bg:#f6f5f1; --bg2:#efede7; --panel:#ffffff; --panel2:#faf9f5;
-  --line:#e2dfd6; --line2:#cdc8ba;
-  --ink:#1b1d23; --dim:#575d69; --faint:#8a8f9b;
-  --brass:#8a6a1c; --brass-d:#b39344; --brass-glow:rgba(138,106,28,.08);
-  --blue:#2c6cb0; --blue-d:#8fb4dc; --green:#2c7a55; --amber:#a8761b;
-  --red:#a63a2e; --violet:#63509c;
-  --shadow:0 1px 2px rgba(27,29,35,.04), 0 10px 30px rgba(27,29,35,.05);
+:root,/* Daylight — repitched: true paper, ink, and a saturated oxblood
+   instead of the beige-and-brass that read as machine-made. */
+[data-theme="light"]{
+  --bg:#FBFAF8; --bg2:#FFFFFF; --panel:#FFFFFF; --panel2:#F3F1EC;
+  --line:#E4E0D8; --line2:#CBC5B8;
+  --ink:#14130F; --dim:#514D44; --faint:#847F74;
+  --brass:#A8422F; --brass-d:#C96A52; --brass-glow:rgba(168,66,47,.08);
+  --blue:#2C5D8F; --blue-d:#6E96BE; --green:#2F6B43; --amber:#B4730F;
+  --red:#A8422F; --violet:#6A4C93;
+  --shadow:0 1px 2px rgba(20,19,15,.05), 0 12px 34px rgba(20,19,15,.07);
   --glow:none;
 }
+
+/* Night — repitched: lifted off black, cooler, brighter accent. */
 [data-theme="dark"]{
-  --bg:#0d1016; --bg2:#131822; --panel:#161c27; --panel2:#1c2330;
-  --line:#242c3a; --line2:#333d4e;
-  --ink:#e9ecf2; --dim:#98a2b3; --faint:#69738a;
-  --brass:#d3ab35; --brass-d:#8f7318; --brass-glow:rgba(211,171,53,.11);
-  --blue:#5aa2f0; --blue-d:#2b5c94; --green:#4bb98a; --amber:#e0a33a;
-  --red:#e4695c; --violet:#a78be6;
-  --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 34px rgba(0,0,0,.28);
-  --glow:none;
+  --bg:#12151C; --bg2:#171B24; --panel:#1C212C; --panel2:#232936;
+  --line:#2B3242; --line2:#3D465A;
+  --ink:#F0F3F8; --dim:#A8B1C2; --faint:#6F7889;
+  --brass:#7FA6E8; --brass-d:#4A73B8; --brass-glow:rgba(127,166,232,.12);
+  --blue:#7FA6E8; --blue-d:#4A73B8; --green:#57BE84; --amber:#E8B45C;
+  --red:#F0736A; --violet:#B098E8;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 16px 42px rgba(0,0,0,.44);
+  --glow:0 0 34px rgba(127,166,232,.13);
 }
+
+/* Courtroom — repitched: oak lifted out of the mud, lamplight orange
+   in place of brass, so it reads warm rather than sepia. */
 [data-theme="court"]{
-  --bg:#1d1712; --bg2:#261e17; --panel:#2c231b; --panel2:#362a20;
-  --line:#42341f; --line2:#5a472c;
-  --ink:#f3ebdc; --dim:#c0ad8b; --faint:#93826a;
-  --brass:#d8b04a; --brass-d:#9c7c26; --brass-glow:rgba(216,176,74,.11);
-  --blue:#6d9cb5; --blue-d:#3f6376; --green:#5f9060; --amber:#dda43e;
-  --red:#c0574a; --violet:#a58bc4;
-  --shadow:0 1px 2px rgba(0,0,0,.34), 0 14px 36px rgba(0,0,0,.3);
-  --glow:none;
+  --bg:#231C16; --bg2:#2C241C; --panel:#342A21; --panel2:#3F3328;
+  --line:#4B3C2D; --line2:#66523D;
+  --ink:#F7F1E7; --dim:#CBBBA3; --faint:#9B8A73;
+  --brass:#E08A3C; --brass-d:#A95F21; --brass-glow:rgba(224,138,60,.13);
+  --blue:#79A8C4; --blue-d:#4A7690; --green:#6FA871; --amber:#E8B24C;
+  --red:#D2685A; --violet:#B99BD4;
+  --shadow:0 1px 2px rgba(0,0,0,.32), 0 16px 40px rgba(0,0,0,.34);
+  --glow:0 0 30px rgba(224,138,60,.12);
 }
+
+/* Contract — repitched: ruled stock, red ink, brighter page. */
 html[data-theme="contract"]{
-  --bg:#f2eee2; --bg2:#e9e4d4; --panel:#fffdf6; --panel2:#f8f5ea;
-  --line:#dcd5c1; --line2:#c2b99f;
-  --ink:#16140f; --dim:#4b463b; --faint:#7d7666;
-  --brass:#1e3a68; --brass-d:#6d86ad; --brass-glow:rgba(30,58,104,.07);
-  --blue:#1e3a68; --blue-d:#8399ba; --green:#3a6647; --amber:#8a6a1c;
-  --red:#95291f; --violet:#5a4780;
-  --shadow:0 1px 2px rgba(22,20,15,.05), 0 8px 24px rgba(22,20,15,.06);
+  --bg:#F8F5EC; --bg2:#FFFDF6; --panel:#FFFDF6; --panel2:#F0EBDC;
+  --line:#DED6C2; --line2:#C2B79C;
+  --ink:#171410; --dim:#544E42; --faint:#877F6E;
+  --brass:#B0342B; --brass-d:#D0645A; --brass-glow:rgba(176,52,43,.08);
+  --blue:#1E3A68; --blue-d:#5C7CA8; --green:#2E6B47; --amber:#A8710C;
+  --red:#B0342B; --violet:#63457F;
+  --shadow:0 1px 2px rgba(23,20,16,.05), 0 12px 32px rgba(23,20,16,.08);
   --glow:none;
-  --sans:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
 }
+
 :root{
   --mono:'SF Mono',SFMono-Regular,ui-monospace,'Cascadia Mono','Roboto Mono',Menlo,Consolas,monospace;
   --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
@@ -838,10 +847,10 @@ footer b{color:var(--dim)}
 /* ==================================================================
    SCENE, MOTION AND THE RESTYLE
    ================================================================== */
-:root{--sc-col:#3a2c1e;--sc-flute:rgba(0,0,0,.28);--sc-fig:#241a11;--sc-line:rgba(255,255,255,.045);--sc-glow:#d8b04a}
-[data-theme="light"]{--sc-col:#ddd6c6;--sc-flute:rgba(0,0,0,.07);--sc-fig:#c2b8a2;--sc-line:rgba(0,0,0,.035);--sc-glow:#d8b04a}
-[data-theme="dark"]{--sc-col:#1b2230;--sc-flute:rgba(0,0,0,.34);--sc-fig:#141a26;--sc-line:rgba(255,255,255,.04);--sc-glow:#d3ab35}
-[data-theme="contract"]{--sc-col:#ddd6c2;--sc-flute:rgba(0,0,0,.06);--sc-fig:#c6bda4;--sc-line:rgba(0,0,0,.03);--sc-glow:#1e3a68}
+:root{--sc-col:#463628;--sc-flute:rgba(0,0,0,.24);--sc-fig:#2C2016;--sc-line:rgba(255,255,255,.06);--sc-glow:#E08A3C}
+[data-theme="light"]{--sc-col:#E6E1D5;--sc-flute:rgba(0,0,0,.06);--sc-fig:#CDC5B4;--sc-line:rgba(0,0,0,.04);--sc-glow:#A8422F}
+[data-theme="dark"]{--sc-col:#222A3A;--sc-flute:rgba(0,0,0,.3);--sc-fig:#1A2230;--sc-line:rgba(255,255,255,.06);--sc-glow:#7FA6E8}
+[data-theme="contract"]{--sc-col:#E4DCC8;--sc-flute:rgba(0,0,0,.055);--sc-fig:#CCC2A8;--sc-line:rgba(0,0,0,.035);--sc-glow:#B0342B}
 
 /* ---------- hero ---------- */
 .hero{position:relative;overflow:hidden;padding:96px 0 78px;border-bottom:1px solid var(--line);isolation:isolate}
@@ -1713,3 +1722,263 @@ body[data-game] .kicker{color:var(--game-acc,var(--brass))}
   .rchead h4{font-size:1.08rem}
   .rcbody{padding:2px 18px 18px}
 }
+
+/* ==================================================================
+   SHELL — floating pill, hidden menu, Archivo
+   Navigation is out of sight until asked for. That is what removes
+   three stacked rows of chrome from every page.
+   ================================================================== */
+body{font-family:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,Helvetica,Arial,sans-serif}
+h1,h2,h3,.hero h1,.shead h2{font-weight:300;letter-spacing:-.028em;line-height:1.02}
+.hero h1{font-size:clamp(2.6rem,6.4vw,5.2rem);max-width:15ch}
+.shead h2{font-size:clamp(1.9rem,4vw,3.1rem)}
+
+/* ---- floating pill ---- */
+.lo-bar{position:fixed;top:20px;left:0;right:0;z-index:120;display:flex;justify-content:center;
+  pointer-events:none;transition:transform .45s cubic-bezier(.2,.9,.3,1),opacity .4s}
+.lo-bar.hide{transform:translateY(-150%);opacity:0}
+.lo-pill{pointer-events:auto;display:flex;align-items:center;gap:6px;
+  background:color-mix(in srgb,var(--panel) 88%,transparent);
+  border:1px solid var(--line2);border-radius:999px;padding:7px 7px 7px 18px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%)}
+.lo-pill .lo-brand{display:flex;align-items:center;gap:9px;font-weight:500;font-size:1rem;
+  letter-spacing:-.02em;color:var(--ink);text-decoration:none;
+  padding-right:13px;margin-right:5px;border-right:1px solid var(--line)}
+.lo-pill .lo-brand .logo{width:20px;height:20px}
+.lo-pill .lo-ib{font-family:inherit;font-size:.86rem;font-weight:400;color:var(--dim);
+  background:transparent;border:none;border-radius:999px;padding:9px 15px;cursor:pointer;
+  transition:.2s;white-space:nowrap;text-decoration:none;display:inline-block}
+.lo-pill .lo-ib:hover{color:var(--ink);background:var(--brass-glow)}
+.lo-pill .lo-cta{background:var(--brass);color:var(--bg);font-weight:500;padding:9px 19px}
+.lo-pill .lo-cta:hover{background:var(--brass);filter:brightness(1.1);color:var(--bg)}
+
+/* ---- full screen menu ---- */
+.lo-menu{position:fixed;inset:0;z-index:130;background:var(--bg);opacity:0;visibility:hidden;
+  transition:opacity .4s cubic-bezier(.2,.9,.3,1),visibility .4s;overflow-y:auto;
+  display:flex;align-items:center}
+.lo-menu.on{opacity:1;visibility:visible}
+.lo-close{position:absolute;top:26px;right:32px;font-family:inherit;font-size:.86rem;
+  color:var(--dim);background:transparent;border:1px solid var(--line2);border-radius:999px;
+  padding:10px 20px;cursor:pointer;z-index:2}
+.lo-close:hover{color:var(--ink);border-color:var(--ink)}
+.lo-mwrap{display:grid;grid-template-columns:1.15fr 1fr;gap:64px;padding-top:90px;padding-bottom:60px}
+.lo-mlbl{display:block;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:18px}
+.lo-menu .grow{display:flex;flex-direction:column;gap:0}
+.lo-menu .grow a{display:block;padding:15px 2px;border-top:1px solid var(--line);
+  font-size:clamp(1.35rem,3vw,2.3rem);font-weight:300;letter-spacing:-.03em;color:var(--ink);
+  text-decoration:none;transition:color .22s,padding .32s cubic-bezier(.2,.9,.3,1)}
+.lo-menu .grow a:last-child{border-bottom:1px solid var(--line)}
+.lo-menu .grow a:hover{color:var(--brass);padding-left:16px}
+.lo-menu .grow a.on{color:var(--brass)}
+.lo-menu .srow{display:flex;flex-direction:column;gap:2px}
+.lo-menu .srow.hide{display:none}
+.lo-menu .srow button{font-family:inherit;text-align:left;background:transparent;border:none;
+  color:var(--dim);font-size:1rem;padding:9px 2px;cursor:pointer;transition:.2s;border-radius:6px}
+.lo-menu .srow button:hover{color:var(--ink);padding-left:10px}
+.lo-menu .srow button.on{color:var(--brass)}
+.lo-mtools{margin-top:40px;padding-top:26px;border-top:1px solid var(--line)}
+.lo-menu .thmmenu{position:static;display:block;opacity:1;visibility:visible;transform:none;
+  background:transparent;border:none;box-shadow:none;padding:0;min-width:0;margin-bottom:16px}
+.lo-menu .lo-more{position:static;display:none}
+.lo-menu #moreMenu.on{display:block;position:static;opacity:1;visibility:visible;transform:none;
+  background:transparent;border:none;box-shadow:none;padding:0;margin-top:14px}
+.lo-menu #moreBtn{font-family:inherit;font-size:.86rem;color:var(--dim);background:transparent;
+  border:1px solid var(--line2);border-radius:999px;padding:9px 17px;cursor:pointer}
+.lo-menu #moreBtn:hover{color:var(--ink)}
+
+/* page content now clears the floating pill */
+.hero{padding-top:130px}
+body[data-game] .hero{padding-top:120px}
+
+@media(max-width:860px){
+  .lo-mwrap{grid-template-columns:1fr;gap:34px;padding-top:84px}
+  .lo-bar{top:10px}
+  .lo-pill{padding-left:14px;gap:3px}
+  .lo-pill .lo-ib{padding:9px 11px;font-size:.82rem}
+  .lo-pill .lo-brand b{display:none}
+  .hero{padding-top:104px}
+}
+
+/* ---- the scene is now a room, so give it room ---- */
+.hero{min-height:clamp(520px,72vh,760px);display:flex;align-items:center;padding-bottom:70px}
+.hero-art{mask-image:linear-gradient(180deg,rgba(0,0,0,.55) 0,#000 18%,#000 100%);
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.55) 0,#000 18%,#000 100%)}
+.hero::after{opacity:.6}
+.mote{fill:var(--sc-glow);opacity:.42;animation:drift linear infinite}
+@keyframes drift{
+  0%{transform:translate3d(0,0,0);opacity:0}
+  18%{opacity:.5}
+  100%{transform:translate3d(26px,-70px,0);opacity:0}
+}
+@media(prefers-reduced-motion:reduce){.mote{animation:none;opacity:.3}}
+
+
+/* ==================================================================
+   COMPONENTS — MATCHED TO THE PREVIEW
+   The shell and palette changed earlier; this is the layer underneath.
+   Hairline borders, 4px corners, far more air, and instructions that
+   stay out of the way until asked for.
+   ================================================================== */
+
+/* ---- the per-section explainer: closed by default ---- */
+.intro{display:block;background:transparent;border:none;border-top:1px solid var(--line);
+  border-radius:0;padding:0;margin:0 0 44px;overflow:visible}
+.intro>summary{list-style:none;cursor:pointer;padding:15px 2px;font-size:.88rem;
+  color:var(--faint);display:flex;align-items:center;gap:10px;transition:color .2s}
+.intro>summary::-webkit-details-marker{display:none}
+.intro>summary::before{content:'+';font-size:1rem;color:var(--brass);width:14px;flex:none}
+.intro[open]>summary::before{content:'–'}
+.intro>summary:hover{color:var(--ink)}
+.introb{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;padding:6px 2px 26px}
+.intro>div{background:transparent;padding:0}
+.intro u{display:block;text-decoration:none;font-size:.76rem;letter-spacing:.02em;
+  text-transform:none;color:var(--brass);margin-bottom:7px;font-family:inherit;font-weight:500}
+.intro p{font-size:.92rem;color:var(--dim);line-height:1.55}
+
+/* ---- entry cards become spacious rows ---- */
+.doorlist{display:block;border-top:1px solid var(--line)}
+.startcard{display:grid;grid-template-columns:46px 1fr auto;gap:24px;align-items:center;
+  background:transparent;border:none;border-bottom:1px solid var(--line);border-radius:0;
+  padding:26px 4px;transition:padding .4s cubic-bezier(.2,.9,.3,1),background .25s}
+.startcard:hover{transform:none;border-color:var(--line);padding-left:20px;background:var(--brass-glow)}
+.startcard .ic{width:auto;height:auto;background:transparent;border:none;border-radius:0;
+  font-size:1.5rem;color:var(--brass);display:block}
+.startcard h3{font-family:inherit;font-weight:300;font-size:clamp(1.15rem,2.5vw,1.75rem);
+  letter-spacing:-.024em;line-height:1.12;margin:0 0 6px;transition:color .25s}
+.startcard:hover h3{color:var(--brass)}
+.startcard p{font-size:.93rem;color:var(--faint);line-height:1.5;max-width:58ch;flex:none;margin:0}
+.startcard .go{grid-column:3;grid-row:1/span 2;align-self:center;font-size:1.1rem;color:var(--dim);
+  margin:0;transition:transform .4s cubic-bezier(.2,.9,.3,1)}
+.startcard:hover .go{transform:translateX(5px)}
+.startcard h3,.startcard p{grid-column:2}
+
+/* ---- panels and cards: hairline, square-ish, roomier ---- */
+:root{--r:4px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;box-shadow:none}
+.panel:hover{box-shadow:none}
+.panel-h{padding:20px 24px 14px;border-bottom:1px solid var(--line)}
+.panel-b{padding:22px 24px 24px}
+.gcard,.dccard,.prcard,.rcard,.door,.num,.nb{border-radius:4px;box-shadow:none}
+.gcard:hover,.dccard:hover,.prcard:hover{box-shadow:none;transform:translateY(-3px)}
+.chip,.btn,.iconbtn,.pl,.std,.tchip{border-radius:999px}
+
+/* ---- more air between sections ---- */
+.view{padding-bottom:20px}
+.shead{margin-bottom:34px}
+.shead .kicker{font-size:.78rem;letter-spacing:.02em;text-transform:none;color:var(--brass);
+  font-family:inherit;margin-bottom:14px}
+.shead .lede{font-size:1.06rem;color:var(--dim);max-width:52ch;line-height:1.5}
+.mb2{margin-bottom:56px}
+
+/* ---- the big logo was decoration ---- */
+.biglogo{display:none}
+
+@media(max-width:820px){
+  .introb{grid-template-columns:1fr;gap:20px}
+  .startcard{grid-template-columns:32px 1fr;gap:16px;padding:20px 2px}
+  .startcard .go{display:none}
+}
+
+/* ==================================================================
+   LOCKED TO THE PREVIEW
+   These are lifted verbatim from the preview file so the live pages
+   and the preview cannot drift. Last block in the sheet, so it wins.
+   ================================================================== */
+body{font-size:17px;line-height:1.55}
+.wrap{max-width:1180px;padding:0 34px}
+h1,h2,h3{font-weight:300;letter-spacing:-.028em;line-height:1.02}
+.hero{min-height:clamp(540px,76vh,800px);padding:130px 0 80px;display:flex;align-items:center}
+.hero h1{font-size:clamp(2.6rem,6.6vw,5.2rem);max-width:14ch;margin-bottom:24px;font-family:inherit}
+.hero .sub,.lede{font-size:clamp(1.02rem,1.5vw,1.26rem);max-width:42ch;line-height:1.48;color:var(--dim)}
+.eyebrow{font-size:.79rem;margin-bottom:22px;color:var(--brass);font-family:inherit;
+  letter-spacing:0;text-transform:none}
+.eyebrow::before{display:none}
+.view{padding:104px 0 40px}
+.view:first-child{padding-top:0}
+.shead h2{font-size:clamp(1.9rem,4vw,3rem);font-family:inherit;margin-bottom:14px}
+.shead .lede{max-width:48ch}
+
+/* the preview's buttons */
+.btn{font-family:inherit;font-size:.97rem;font-weight:500;padding:15px 29px;border-radius:999px;
+  letter-spacing:-.01em}
+.btn.lg{padding:16px 32px;font-size:1rem}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line2)}
+.btn.ghost:hover{border-color:var(--ink);background:transparent}
+
+/* the preview's cards */
+.gcard,.dccard,.prcard,.rcard{background:var(--panel);border:1px solid var(--line);border-radius:4px}
+.gcard h3,.dccard h4,.prcard h4{font-family:inherit;font-weight:400;letter-spacing:-.02em}
+
+@media(max-width:860px){
+  .wrap{padding:0 20px}
+  .hero{min-height:auto;padding:104px 0 60px}
+  .view{padding:70px 0 30px}
+}
+
+
+/* ---- fixes ---- */
+/* .hero is a flex row, so the content column must be told to fill it —
+   otherwise .wrap shrinks to its text and the whole hero collapses. */
+.hero>.wrap{flex:1 1 auto;width:100%}
+/* the first section sits directly under the hero; no need for 104px more */
+#main>.view:first-child{padding-top:0}
+
+/* ==================================================================
+   MENU: undo the old horizontal-nav rules
+   #gnav and #nav keep their original classes so app.js still fills
+   them, but .grow and .srow were written for a 42px-tall scrolling
+   tab strip. Inside the menu they are a vertical list, so the height,
+   overflow and the sliding underline all have to be switched off.
+   ================================================================== */
+.lo-menu .grow{height:auto;min-height:0;overflow:visible;align-items:stretch;
+  display:flex;flex-direction:column;gap:0}
+.lo-menu .grow a{position:relative;height:auto;padding:15px 2px;border-bottom:0;
+  white-space:normal;flex:none}
+.lo-menu .grow a::after{display:none;content:none}
+.lo-menu .grow a.on{border-bottom-color:transparent}
+
+.lo-menu .srow{height:auto;min-height:0;overflow:visible;padding:0;align-items:stretch;
+  display:flex;flex-direction:column;gap:2px}
+.lo-menu .srow button{height:auto;padding:9px 2px;border:none;background:transparent;
+  border-radius:0;overflow:visible;white-space:normal;text-align:left;width:100%;flex:none}
+.lo-menu .srow button:hover{background:transparent;border-color:transparent}
+.lo-menu .srow button.on{background:transparent;border-color:transparent;color:var(--brass)}
+
+/* the theme list was an absolutely-positioned dropdown */
+.lo-menu .thmmenu{position:static;display:block;opacity:1;visibility:visible;transform:none;
+  background:transparent;border:0;box-shadow:none;padding:0;min-width:0;width:auto;
+  max-height:none;overflow:visible;margin:0 0 16px}
+.lo-menu .thmmenu .thmopt{border-radius:4px}
+
+/* ==================================================================
+   CHART FIXES
+   ================================================================== */
+/* the menu was centred with align-items:center while also scrolling,
+   so whenever the content was taller than the window the top was cut
+   off and unreachable. margin:auto centres without ever clipping. */
+.lo-menu{align-items:flex-start}
+.lo-mwrap{margin-top:auto;margin-bottom:auto}
+
+/* radar legend */
+.rdlegend{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;padding-top:4px}
+.rdlg{display:inline-flex;align-items:center;gap:7px;font-size:.84rem;color:var(--dim)}
+.rdlg i{width:11px;height:11px;border-radius:3px;flex:none}
+.chart .axl{fill:var(--dim)}
+
+/* scatter: dots respond, labels only on the extremes */
+.areapt{cursor:pointer}
+.areapt .dot{transition:r .18s cubic-bezier(.2,.9,.3,1),fill-opacity .18s}
+.areapt:hover .dot,.areapt:focus-visible .dot{fill-opacity:1;stroke-width:2.6}
+.areapt:focus{outline:none}
+.areatx{fill:var(--dim);font-size:12px;font-weight:500;pointer-events:none}
+.quadlbl{font-size:11px;letter-spacing:.04em;font-weight:500}
+
+.areard{position:fixed;top:0;left:0;z-index:320;pointer-events:none;opacity:0;
+  transition:opacity .14s;background:var(--panel);border:1px solid var(--line2);
+  border-radius:4px;padding:11px 14px;min-width:186px;box-shadow:var(--shadow)}
+.areard.on{opacity:1}
+.areard b{display:block;font-weight:500;font-size:.96rem;margin-bottom:7px;color:var(--ink)}
+.areard span{display:flex;justify-content:space-between;gap:16px;font-size:.82rem;color:var(--faint)}
+.areard i{font-style:normal;color:var(--brass);font-weight:600}

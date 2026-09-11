@@ -1117,18 +1117,21 @@ $('#main').innerHTML=MYSEC.map(([id,label,title,lede,grp,what,who,how])=>`
       <p class="lede">${lede}</p>
       <div class="right" id="rt-${id}"></div>
     </div>
-    ${id==='start'?'':`<div class="intro reveal">
-      <div><u>What this is</u><p>${what}</p></div>
-      <div><u>Who it helps</u><p>${who}</p></div>
-      <div><u>How to use it</u><p>${how}</p></div>
-    </div>`}
+    ${id==='start'?'':`<details class="intro reveal">
+      <summary>What this is, who it helps, how to use it</summary>
+      <div class="introb">
+        <div><u>What this is</u><p>${what}</p></div>
+        <div><u>Who it helps</u><p>${who}</p></div>
+        <div><u>How to use it</u><p>${how}</p></div>
+      </div>
+    </details>`}
     <div id="b-${id}"></div>
   </section>`).join('');
 
 function sectionsIn(g){return SEC.filter(x=>x[4]===g)}
 function paintSubnav(){
   $('#nav').innerHTML=MYSEC.map(x=>`<button data-v="${x[0]}">${x[1]}</button>`).join('');
-  $('#subnav').classList.toggle('hide',MYSEC.length<2);
+  const sr=$('#nav'); if(sr)sr.classList.toggle('hide',MYSEC.length<2);
 }
 $('#nav').onclick=e=>{const b=e.target.closest('button');if(b)go(b.dataset.v)};
 
@@ -1150,9 +1153,7 @@ function go(v,params){
 }
 paintSubnav();
 
-/* clock */
-setInterval(()=>{const d=new Date();
-  $('#clock').innerHTML=d.toISOString().slice(11,19)+' <b>UTC</b> · '+d.toISOString().slice(0,10);},1000);
+/* the UTC clock is gone — it told readers the time somewhere they don't live */
 
 /* KPIs */
 function renderKpis(){
@@ -1490,19 +1491,38 @@ let cmpSel=['DNK','USA','DEU','IND','CHN','ZAF'], cmpMetric='rol';
 function renderCompare(){
   const sel=cmpSel.map(i=>byIso[i]).filter(Boolean);
   const axes=DIMS.slice(1);
-  const R=124,CX=170,CY=160,n=axes.length;
+  /* The box is now big enough for the labels. Before, the ring was
+     R=124 inside a 340-wide viewBox and the labels sat at radius 154,
+     so every one of them was cut off at the edge. */
+  const R=132,CX=272,CY=232,n=axes.length;
   const pt=(i,v)=>{const a=(Math.PI*2*i/n)-Math.PI/2;const r=R*(v/100);
     return [CX+Math.cos(a)*r,CY+Math.sin(a)*r]};
   const rings=[25,50,75,100].map(p=>
-    `<polygon points="${axes.map((_,i)=>pt(i,p).join(',')).join(' ')}" fill="none" stroke="var(--line)" stroke-width="1"></polygon>`).join('');
+    `<polygon points="${axes.map((_,i)=>pt(i,p).join(',')).join(' ')}" fill="none"
+       stroke="var(--line)" stroke-width="1"></polygon>`).join('')
+    + [25,50,75,100].map(p=>{const[,y]=pt(0,p);
+        return `<text x="${CX+4}" y="${y+3}" fill="var(--faint)" style="font-size:9px">${p}</text>`}).join('');
   const spokes=axes.map((a,i)=>{const[x,y]=pt(i,100);
-    const[lx,ly]=pt(i,124);
+    const[lx,ly]=pt(i,117);
+    /* full label, not just the first word — "Absence" and "Fundamental"
+       told the reader nothing on their own */
+    const words=a[1].split(' ');
+    const line2=words.length>1?words.slice(1).join(' '):'';
+    const anchor=lx<CX-10?'end':lx>CX+10?'start':'middle';
     return `<line x1="${CX}" y1="${CY}" x2="${x}" y2="${y}" stroke="var(--line)" stroke-width="1"></line>
-      <text class="axl" x="${lx}" y="${ly}" text-anchor="${lx<CX-8?'end':lx>CX+8?'start':'middle'}"
-        style="font-size:8px">${a[1].split(' ')[0]}</text>`}).join('');
-  const CLR=['#c9a227','#4d9bf5','#3fb27f','#e05c4f','#9b7fe0','#e0a33a'];
+      <text class="axl" x="${lx}" y="${ly}" text-anchor="${anchor}" style="font-size:11px">
+        <tspan x="${lx}" dy="0">${words[0]}</tspan>${line2?`<tspan x="${lx}" dy="12">${line2}</tspan>`:''}
+      </text>`}).join('');
+  const CLR=['#E08A3C','#5B9BD5','#4FAE7F','#D2685A','#A78BD0','#D9B650'];
+  /* stroke-led, barely filled: six translucent shapes on top of each
+     other was an unreadable smear */
   const polys=sel.map((j,k)=>`<polygon points="${axes.map(([m],i)=>pt(i,j[m]).join(',')).join(' ')}"
-    fill="${CLR[k]}" fill-opacity=".1" stroke="${CLR[k]}" stroke-width="1.8"></polygon>`).join('');
+    fill="${CLR[k]}" fill-opacity=".055" stroke="${CLR[k]}" stroke-width="2.4"
+    stroke-linejoin="round"></polygon>`).join('')
+    + sel.map((j,k)=>axes.map(([m],i)=>{const[x,y]=pt(i,j[m]);
+        return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="${CLR[k]}"/>`}).join('')).join('');
+  const legend=sel.map((j,k)=>
+    `<span class="rdlg"><i style="background:${CLR[k]}"></i>${esc(j.name)}</span>`).join('');
 
   const maxV=cmpMetric==='inc'?Math.max(...sel.map(j=>j.inc),1):100;
   const bars=sel.map((j,k)=>{const v=cmpMetric==='inc'?j.inc:j[cmpMetric];
@@ -1532,7 +1552,8 @@ function renderCompare(){
    <div class="grid g2 mb2">
      <div class="panel"><div class="panel-h"><h3>Profile radar</h3><span class="hint">Further out = stronger</span></div>
        <div class="panel-b" style="display:flex;justify-content:center">
-         <svg viewBox="0 0 340 320" class="chart" style="max-width:340px">${rings}${spokes}${polys}</svg></div>
+         <svg viewBox="0 0 544 466" class="chart" style="max-width:544px;width:100%">${rings}${spokes}${polys}</svg></div>
+       <div class="panel-b" style="padding-top:0"><div class="rdlegend">${legend}</div></div>
        <div class="panel-b" style="padding-top:0"><p style="font-size:.85rem;color:var(--dim)">
          A wide, even shape is a system that protects across the board. A spiky one has a specific structural problem —
          and the spike usually points at the dimension a government has found convenient to neglect.</p></div></div>
@@ -3006,33 +3027,70 @@ const SOURCES=[
    ================================================================== */
 let paSort='d', paCat='', paQ='';
 function areaColor(a){return a.st==='amplify'?'var(--green)':a.st==='augment'?'var(--blue)':'var(--red)'}
+/* The scatter no longer labels every point, so hovering has to say
+   what a dot is. A floating readout beats a native <title> tooltip:
+   it appears instantly and can show all four numbers. */
+function wireAreaHover(){
+  if(document.getElementById('areaReadout'))return;
+  const r=document.createElement('div');
+  r.id='areaReadout'; r.className='areard';
+  document.body.appendChild(r);
+  document.addEventListener('pointerover',e=>{
+    const g=e.target.closest&&e.target.closest('.areapt'); if(!g)return;
+    r.innerHTML=`<b>${g.dataset.a}</b>
+      <span>Demand <i>${g.dataset.d}</i></span>
+      <span>AI exposure <i>${g.dataset.ai}</i></span>
+      <span>Senior pay <i>${g.dataset.pay}</i></span>`;
+    r.classList.add('on');
+  });
+  document.addEventListener('pointermove',e=>{
+    if(!r.classList.contains('on'))return;
+    const p=14,w=r.offsetWidth,h=r.offsetHeight;
+    let x=e.clientX+p,y=e.clientY+p;
+    if(x+w>innerWidth-10)x=e.clientX-w-p;
+    if(y+h>innerHeight-10)y=e.clientY-h-p;
+    r.style.transform=`translate(${x}px,${y}px)`;
+  },{passive:true});
+  document.addEventListener('pointerout',e=>{
+    const g=e.target.closest&&e.target.closest('.areapt');
+    if(g)r.classList.remove('on');
+  });
+}
+
 function renderAreas(){
   const cats=[...new Set(AREAS.map(a=>a.cat))];
   let rows=AREAS.filter(a=>(!paCat||a.cat===paCat)&&(!paQ||(a.n+a.cat+a.day+a.who+a.tags.join(' ')).toLowerCase().includes(paQ)));
   rows.sort((x,y)=> paSort==='n'?x.n.localeCompare(y.n): paSort==='pay'?y.pay[2]-x.pay[2]: y[paSort]-x[paSort]);
   const W=1160,H=520,pad=64;
   const px=v=>pad+(v/100)*(W-pad*2), py=v=>H-pad-(v/100)*(H-pad*2);
-  // spread labels vertically so they never collide
-  const placed=[];
+  /* Twenty-nine labels cannot coexist on one scatter. The old code
+     nudged each colliding label 17px upward, up to 22 times, so they
+     climbed out of the plot in a column. Now: hover any dot for a
+     readout, and only the four corner cases carry a permanent label. */
+  const byDemand=[...AREAS].sort((a,b)=>b.d-a.d);
+  const byAi=[...AREAS].sort((a,b)=>b.ai-a.ai);
+  const named=new Set([byDemand[0].n, byDemand[byDemand.length-1].n,
+                       byAi[0].n,     byAi[byAi.length-1].n]);
   const pts=[...AREAS].sort((a,b)=>a.ai-b.ai).map(a=>{
-    const x=px(a.ai), y=py(a.d);
-    let ly=y-14, tries=0;
-    while(placed.some(p=>Math.abs(p.x-x)<132&&Math.abs(p.y-ly)<17)&&tries++<22) ly-=17;
-    placed.push({x,y:ly});
-    const short=a.n.replace('Intellectual Property — ','IP: ').replace(' & ',' & ').slice(0,26);
-    return `<g class="areapt" data-a="${esc(a.n)}">
-      <line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x.toFixed(1)}" y2="${(ly+4).toFixed(1)}"
-        stroke="${areaColor(a)}" stroke-width="1" opacity=".4"/>
-      <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(5+a.pay[2]/26).toFixed(1)}"
-        fill="${areaColor(a)}" fill-opacity=".75" stroke="${areaColor(a)}" stroke-width="1.6"/>
-      <text x="${x.toFixed(1)}" y="${ly.toFixed(1)}" class="areatx" text-anchor="middle">${esc(short)}</text>
-      <title>${esc(a.n)} — demand ${a.d}, AI exposure ${a.ai}</title></g>`;
+    const x=px(a.ai), y=py(a.d), r=5+a.pay[2]/26;
+    const lab=named.has(a.n)
+      ? `<text x="${x.toFixed(1)}" y="${(y-r-8).toFixed(1)}" class="areatx"
+           text-anchor="${x>W-260?'end':x<260?'start':'middle'}">${esc(a.n.replace('Intellectual Property — ','IP: '))}</text>`
+      : '';
+    return `<g class="areapt" data-a="${esc(a.n)}" data-d="${a.d}" data-ai="${a.ai}"
+              data-pay="${a.pay[2]}" tabindex="0">
+      <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r+7).toFixed(1)}"
+        fill="transparent"/>
+      <circle class="dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}"
+        fill="${areaColor(a)}" fill-opacity=".8" stroke="${areaColor(a)}" stroke-width="1.6"/>
+      ${lab}</g>`;
   }).join('');
   const quads=`
     <rect x="${pad}" y="${pad}" width="${(W-pad*2)/2}" height="${(H-pad*2)/2}" fill="var(--green)" opacity=".05"/>
     <rect x="${pad+(W-pad*2)/2}" y="${pad+(H-pad*2)/2}" width="${(W-pad*2)/2}" height="${(H-pad*2)/2}" fill="var(--red)" opacity=".05"/>
     <text x="${pad+14}" y="${pad+22}" class="quadlbl" fill="var(--green)">STRONG DEMAND · HARD TO AUTOMATE</text>
     <text x="${W-pad-14}" y="${H-pad-14}" class="quadlbl" text-anchor="end" fill="var(--red)">FLAT DEMAND · EASY TO AUTOMATE</text>`;
+  wireAreaHover();
   $('#b-areas').innerHTML=`
     <div class="howto reveal"><b>How to read this</b><p>Twenty-nine areas of legal work, scored on demand, automation exposure, how hard they are to enter and what they pay. Start with the scatter plot to see the landscape, then open any card for what the work is actually like on an ordinary Tuesday.</p></div>
     
@@ -3428,25 +3486,19 @@ let LENS=storeGet('lens','');
 function JL(){return LENS?J.filter(j=>j.trad===LENS):J}
 function tileOp(j){return (!LENS||j.trad===LENS) ? 0.84 : 0.12}
 
-$('#lensSel').onclick=e=>{
-  const b=e.target.closest('button'); if(!b)return;
-  LENS=b.dataset.l; saveStore({lens:LENS});
-  $$('#lensSel button').forEach(x=>x.classList.toggle('on',x===b));
-  const set=JL();
-  const bar=$('#lensBar');
-  if(LENS){
-    bar.classList.add('on');
-    bar.querySelector('.wrap').innerHTML=
-      `LENS ACTIVE · ${TRAD[LENS].toUpperCase()} · ${set.length} JURISDICTIONS ·
-       MEDIAN RULE OF LAW ${fmt(median(set.map(j=>j.rol)))} ·
-       MEDIAN INCARCERATION ${fmt(median(set.map(j=>j.inc)))}/100K ·
-       ${set.filter(j=>j.dp==='A'||j.dp==='P').length} ABOLITIONIST
-       <button class="chip" id="lensClear" style="margin-left:auto">CLEAR ✕</button>`;
-    const lc=$('#lensClear'); if(lc)lc.onclick=()=>$('#lensSel button[data-l=""]').click();
-  } else bar.classList.remove('on');
-  jFilter=LENS; renderAtlas(); renderIndex(); renderJuris();
-  toast(LENS?`Lens: ${TRAD[LENS]} · ${set.length} jurisdictions`:'Lens cleared · showing all jurisdictions');
-};
+/* The ALL/COMMON/CIVIL/MIXED selector is out of the header. Same
+   behaviour, now reached from More inside the menu. */
+function setLens(v){
+  LENS = v || '';
+  saveStore({lens:LENS});
+  const set = JL();
+  jFilter = LENS;
+  if($('#b-atlas')) renderAtlas();
+  if($('#b-index')) renderIndex();
+  if($('#b-juris')) renderJuris();
+  toast(LENS ? `Lens: ${TRAD[LENS]} · ${set.length} jurisdictions`
+             : 'Lens cleared · showing all jurisdictions');
+}
 
 /* ---- ticker ---- */
 function buildTicker(){
@@ -3469,7 +3521,7 @@ function buildTicker(){
     `<span class="tk-item"><b>CASE LAW</b> ${CASES.length} decisions · ${CASES[0].y<0?Math.abs(CASES[0].y)+' BC':CASES[0].y} to 2026</span>`,
     `<span class="tk-item"><b>PRACTICE</b> ${AREAS.length} areas · mean AI exposure ${Math.round(mean(AREAS.map(a=>a.ai)))}</span>`];
   const seq=[idx,...movers,...heads,...facts].join('');
-  $('#tkTrack').innerHTML=seq+seq;
+  const tk=$('#tkTrack'); if(tk)tk.innerHTML=seq+seq;
 }
 
 /* ---- docket title block ---- */
@@ -3704,7 +3756,7 @@ function renderStart(){
     </div></div>
     <svg class="biglogo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><polygon points="32,3 61,32 32,61 3,32" fill="var(--brass)" opacity=".22"/><rect x="10" y="9" width="44" height="44" fill="none" stroke="var(--brass)" stroke-width="3.2"/><polygon points="24.56,21.05 33.05,12.56 35.88,15.39 27.39,23.88" fill="var(--ink)"/><polygon points="28.45,24.94 36.94,16.45 51.44,30.95 42.95,39.44" fill="var(--ink)"/><polygon points="38.71,26.71 35.88,23.88 21.74,38.02 24.56,40.85" fill="var(--ink)"/><polygon points="21.31,37.60 24.99,41.27 16.79,45.80" fill="var(--brass)"/><path d="M16.79 45.80 L20.32 42.26" stroke="var(--panel)" stroke-width="1.1" stroke-linecap="round"/><circle cx="24.21" cy="38.37" r="1" fill="var(--panel)"/></svg>
     ${startResume()}
-    <div class="grid g4 mb2">${cards.map(([to,ic,h,p,cta])=>
+    <div class="doorlist mb2">${cards.map(([to,ic,h,p,cta])=>
       `<div class="startcard" data-go="${to}"><div class="ic">${ic}</div>
         <h3>${h}</h3><p>${p}</p><div class="go">${cta} →</div></div>`).join('')}</div>
 
@@ -3773,11 +3825,12 @@ function paintThemeMenu(){
   $$('#thmMenu .thmopt').forEach(b=>b.onclick=()=>{setTheme(b.dataset.t);$('#thmMenu').classList.remove('on')});
   $$('#startThemes button').forEach(b=>b.classList.toggle('on',b.dataset.t===THEME));
 }
-$('#thmBtn').onclick=e=>{e.stopPropagation();
-  $('#moreMenu').classList.remove('on'); $('#thmMenu').classList.toggle('on')};
+/* the theme list sits open inside the menu now, so it needs no toggle */
 
 /* ---------- more menu: ticker, console, sync ---------- */
-$('#moreBtn').insertAdjacentHTML('afterend','<div class="thmmenu" id="moreMenu" style="right:0"></div>');
+if(!$('#moreMenu')){
+  $('#moreBtn').insertAdjacentHTML('afterend','<div class="thmmenu" id="moreMenu" style="right:0"></div>');
+}
 $('#moreBtn').parentElement.style.position='relative';
 let tickerOn=storeGet('ticker',false), consoleOn=storeGet('console',false);
 function paintMore(){
@@ -3806,10 +3859,11 @@ function paintMore(){
   $$('#moreMenu [data-mt]').forEach(b=>b.onclick=e=>{e.stopPropagation();setTheme(b.dataset.mt)});
   $$('#moreMenu [data-ms]').forEach(b=>b.onclick=e=>{e.stopPropagation();setTextSize(b.dataset.ms)});
   $$('#moreMenu [data-ml]').forEach(b=>b.onclick=e=>{e.stopPropagation();
-    const t=$('#lensSel button[data-l="'+b.dataset.ml+'"]'); if(t)t.click(); paintMore();});
+    setLens(b.dataset.ml); paintMore();});
   $$('#moreMenu .thmopt').forEach(b=>b.onclick=()=>{
     const m=b.dataset.m;
-    if(m==='ticker'){tickerOn=!tickerOn;saveStore({ticker:tickerOn});$('#ticker').classList.toggle('on',tickerOn);}
+    if(m==='ticker'){tickerOn=!tickerOn;saveStore({ticker:tickerOn});
+      const tk=$('#ticker'); if(tk)tk.classList.toggle('on',tickerOn);}
     else if(m==='console'){consoleOn=!consoleOn;saveStore({console:consoleOn});$('#term').classList.toggle('avail',consoleOn);document.body.classList.toggle('console-on',consoleOn);
       if(!consoleOn)$('#term').classList.remove('open'); else toast('Console added at the bottom of the page');}
     else if(m==='sync'){$('#syncBtn').click();$('#moreMenu').classList.remove('on');return}
@@ -3820,7 +3874,7 @@ function paintMore(){
 $('#moreBtn').onclick=e=>{e.stopPropagation();
   $('#thmMenu').classList.remove('on'); $('#moreMenu').classList.toggle('on')};
 document.addEventListener('click',e=>{
-  const inThm=e.target.closest('#thmMenu,#thmBtn'), inMore=e.target.closest('#moreMenu,#moreBtn');
+  const inThm=e.target.closest('#thmMenu'), inMore=e.target.closest('#moreMenu,#moreBtn');
   if(!inThm)$('#thmMenu').classList.remove('on');
   if(!inMore)$('#moreMenu').classList.remove('on');
 });
@@ -6634,7 +6688,8 @@ const RENDERERS={start:()=>renderStart(),help:()=>renderHelp(),guide:()=>renderG
   models:()=>renderModels(),areas:()=>renderAreas(),ai:()=>renderAIsec(),qualify:()=>renderQualify(),
   fit:()=>renderFit(),method:()=>renderMethod()};
 function renderAll(){
-  if($('#kpis'))renderKpis();
+  /* the KPI strip is gone: median incarceration was the first thing a
+     frightened reader saw, before the site said what it was for */
   if(GAME){ setupGamePage(); paintLab(); }
   MYSEC.forEach(x=>{ const f=RENDERERS[x[0]]; if(f&&$('#b-'+x[0]))f(); });
   buildTicker();paintThemeMenu();paintMore();
@@ -6657,10 +6712,9 @@ function applySaved(){
   if(st.theme)document.documentElement.setAttribute('data-theme',st.theme);
   if(st.textSize){const z=SIZES.find(x=>x[0]===st.textSize);
     if(z){document.documentElement.style.fontSize=z[2]+'px';document.body.style.fontSize=z[2]+'px'}}
-  if(st.ticker){$('#ticker').classList.add('on')}
+  if(st.ticker){const tk=$('#ticker'); if(tk)tk.classList.add('on')}
   if(st.console){$('#term').classList.add('avail');document.body.classList.add('console-on')}
-  if(st.lens){ const b=$('#lensSel button[data-l="'+st.lens+'"]');
-    if(b){$$('#lensSel button').forEach(x=>x.classList.toggle('on',x===b));} }
+  /* lens comes back through storeGet into LENS; there is no selector to paint */
 }
 (function boot(){
   applySaved();
@@ -6685,4 +6739,40 @@ document.addEventListener('click',e=>{
 });
 addEventListener('hashchange',()=>{ const h=(location.hash||'').slice(1);
   if(SECBY[h]&&SECBY[h][4]===PAGE)go(h); });
-window.go=go;window.setTheme=setTheme;
+
+/* ==================================================================
+   MENU OVERLAY
+   Navigation is hidden until asked for. That single change removes
+   three stacked rows of chrome from every page.
+   ================================================================== */
+(function(){
+  const menu=$('#menu'), btn=$('#menuBtn'), x=$('#menuX'), bar=$('#bar');
+  if(!menu||!btn)return;
+  let open=false;
+  function set(v){
+    open=v;
+    menu.classList.toggle('on',open);
+    btn.setAttribute('aria-expanded',open?'true':'false');
+    document.body.style.overflow=open?'hidden':'';
+    if(open&&typeof paintThemeMenu==='function')paintThemeMenu();
+    if(open&&typeof paintMore==='function')paintMore();
+  }
+  btn.onclick=()=>set(!open);
+  if(x)x.onclick=()=>set(false);
+  menu.addEventListener('click',e=>{
+    if(e.target===menu) return set(false);
+    if(e.target.closest('#gnav a')) return;            /* real page link */
+    if(e.target.closest('#nav button')) set(false);    /* same-page jump */
+  });
+  addEventListener('keydown',e=>{ if(e.key==='Escape'&&open)set(false); });
+
+  /* the pill retreats going down, returns coming up */
+  let last=0;
+  addEventListener('scroll',()=>{
+    const y=scrollY;
+    if(bar) bar.classList.toggle('hide', y>last && y>320 && !open);
+    last=y;
+  },{passive:true});
+})();
+
+window.go=go;window.setTheme=setTheme;window.setLens=setLens;

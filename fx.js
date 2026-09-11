@@ -4,15 +4,6 @@
 const RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------- shared courtroom scene ---------- */
-function pillar(x,w,h,y){
-  const c=w*1.28;
-  return `<g>
-    <rect x="${x-(c-w)/2}" y="${y}" width="${c}" height="${h*0.055}" rx="2" fill="var(--sc-col)"/>
-    <rect x="${x}" y="${y+h*0.055}" width="${w}" height="${h*0.87}" fill="var(--sc-col)"/>
-    ${[0.22,0.5,0.78].map(f=>`<rect x="${x+w*f-1.4}" y="${y+h*0.09}" width="2.8" height="${h*0.8}" fill="var(--sc-flute)"/>`).join('')}
-    <rect x="${x-(c-w)/2}" y="${y+h*0.925}" width="${c}" height="${h*0.075}" rx="2" fill="var(--sc-col)"/>
-  </g>`;
-}
 const PIECES={
  start:`<g>
    <rect x="543" y="366" width="114" height="16" rx="3" fill="var(--sc-fig)"/>
@@ -90,40 +81,133 @@ const PIECES={
    <rect x="540" y="368" width="120" height="14" rx="3" fill="var(--sc-fig)"/></g>`
 };
 
-function heroArt(page){
-  const dust=Array.from({length:22},(_,i)=>{
-    const x=180+Math.random()*840, y=90+Math.random()*300, r=0.9+Math.random()*2.2;
-    return `<circle class="mote" cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(1)}"
-      style="animation-duration:${(6+Math.random()*7).toFixed(1)}s;animation-delay:${(-Math.random()*8).toFixed(1)}s"/>`;
-  }).join('');
-  return `<svg class="scene" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-  <defs>
-    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="var(--sc-glow)" stop-opacity=".42"/>
-      <stop offset="100%" stop-color="var(--sc-glow)" stop-opacity="0"/></linearGradient>
-    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="var(--sc-col)" stop-opacity=".5"/>
-      <stop offset="100%" stop-color="var(--sc-col)" stop-opacity="0"/></linearGradient>
-  </defs>
-  <g data-depth=".016">
-    ${Array.from({length:15},(_,i)=>`<rect x="${i*82}" y="0" width="3" height="420" fill="var(--sc-line)"/>`).join('')}
-    <path d="M430 200 A170 170 0 0 1 770 200 L770 210 L430 210 Z" fill="var(--sc-glow)" opacity=".16"/>
-    <path d="M430 196 A170 170 0 0 1 770 196" fill="none" stroke="var(--brass)" stroke-width="3" opacity=".5"/>
-  </g>
-  <g data-depth=".05"><path d="M436 200 L764 200 L960 420 L240 420 Z" fill="url(#beam)"/></g>
-  <g data-depth=".07">${pillar(84,58,300,96)}${pillar(250,44,270,126)}${pillar(906,44,270,126)}${pillar(1058,58,300,96)}</g>
-  <g data-depth=".13">${PIECES[page]||PIECES.start}</g>
-  <g data-depth=".22" class="dust">${dust}</g>
-  <g data-depth=".3">
-    <rect x="0" y="392" width="1200" height="28" fill="var(--sc-col)" opacity=".9"/>
-    <rect x="0" y="386" width="1200" height="8" rx="4" fill="var(--brass)" opacity=".55"/>
-    ${Array.from({length:26},(_,i)=>`<rect x="${18+i*46}" y="398" width="9" height="22" rx="3" fill="var(--sc-line)"/>`).join('')}
-  </g>
-  <rect x="0" y="330" width="1200" height="90" fill="url(#floor)" opacity=".5"/>
-</svg><div class="spotlight" id="spot"></div>`;
+/* ==================================================================
+   HERO SCENE — a room, not a band
+   ------------------------------------------------------------------
+   Built in depth layers so the pointer parallax has something to
+   separate: back wall and window, colonnade, gallery rail, the focal
+   piece for the page, then a foreground rail that sits closest to
+   the reader. Everything is drawn from theme variables so all four
+   palettes stay coherent.
+   ================================================================== */
+function col(x, w, top, base){
+  const capH = w * 0.34, baseH = w * 0.30;
+  let flutes = '';
+  for (let i = 1; i < 5; i++){
+    const fx = x + (w * i / 5);
+    flutes += `<rect x="${fx.toFixed(1)}" y="${top + capH}" width="${(w*0.055).toFixed(1)}"
+      height="${(base - top - capH - baseH).toFixed(1)}" fill="var(--sc-flute)"/>`;
+  }
+  return `<g>
+    <rect x="${x}" y="${top}" width="${w}" height="${base - top}" fill="var(--sc-col)"/>
+    ${flutes}
+    <rect x="${x - w*0.12}" y="${top}" width="${w*1.24}" height="${capH}" rx="2" fill="var(--sc-col)"/>
+    <rect x="${x - w*0.17}" y="${top}" width="${w*1.34}" height="${capH*0.3}" rx="2" fill="var(--sc-col)"/>
+    <rect x="${x - w*0.15}" y="${base - baseH}" width="${w*1.30}" height="${baseH}" rx="2" fill="var(--sc-col)"/>
+    <rect x="${x}" y="${top}" width="${(w*0.16).toFixed(1)}" height="${base - top}" fill="#fff" opacity=".05"/>
+  </g>`;
 }
 
-/* ---------- reveals ---------- */
+function heroArt(page){
+  const motes = Array.from({length: 30}, () => {
+    const x = 240 + Math.random()*720, y = 60 + Math.random()*420;
+    const r = 0.8 + Math.random()*2.4;
+    return `<circle class="mote" cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(1)}"
+      style="animation-duration:${(7+Math.random()*8).toFixed(1)}s;animation-delay:${(-Math.random()*9).toFixed(1)}s"/>`;
+  }).join('');
+
+  /* coffered ceiling */
+  let coffer = '';
+  for (let i = 0; i < 9; i++){
+    const y = 16 + i*13, inset = i*26;
+    coffer += `<rect x="${240+inset}" y="${y}" width="${720-inset*2}" height="6" rx="2"
+      fill="var(--sc-line)"/>`;
+  }
+
+  /* gallery railing */
+  let rail = '';
+  for (let i = 0; i < 26; i++){
+    rail += `<rect x="${186 + i*33}" y="392" width="5" height="40" rx="2.5" fill="var(--sc-col)" opacity=".85"/>`;
+  }
+
+  /* back wall panelling */
+  let panels = '';
+  for (let i = 0; i < 6; i++){
+    panels += `<rect x="${430 + i*57}" y="250" width="44" height="150" rx="3"
+      fill="none" stroke="var(--sc-line)" stroke-width="2"/>`;
+  }
+
+  return `<svg class="scene" viewBox="0 0 1200 680" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="shaft" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="var(--sc-glow)" stop-opacity=".55"/>
+      <stop offset="55%"  stop-color="var(--sc-glow)" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="var(--sc-glow)" stop-opacity="0"/></linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--sc-glow)" stop-opacity=".85"/>
+      <stop offset="100%" stop-color="var(--sc-glow)" stop-opacity=".25"/></linearGradient>
+    <linearGradient id="floorFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--sc-col)" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="var(--sc-col)" stop-opacity="0"/></linearGradient>
+    <radialGradient id="lamp" cx="50%" cy="50%">
+      <stop offset="0%"   stop-color="var(--sc-glow)" stop-opacity=".5"/>
+      <stop offset="100%" stop-color="var(--sc-glow)" stop-opacity="0"/></radialGradient>
+  </defs>
+
+  <!-- back wall, window, light -->
+  <g data-depth=".012">
+    ${coffer}
+    ${panels}
+    <path d="M470 250 A130 130 0 0 1 730 250 L730 400 L470 400 Z" fill="url(#glass)" opacity=".2"/>
+    <path d="M470 250 A130 130 0 0 1 730 250" fill="none" stroke="var(--brass)" stroke-width="3.5" opacity=".55"/>
+    <path d="M600 122 L600 400 M470 250 L730 250 M508 178 L692 178" stroke="var(--brass)"
+      stroke-width="2" opacity=".4"/>
+    <rect x="468" y="398" width="264" height="7" rx="3" fill="var(--sc-col)"/>
+  </g>
+
+  <!-- volumetric shaft -->
+  <g data-depth=".035">
+    <path d="M474 252 L726 252 L980 680 L220 680 Z" fill="url(#shaft)"/>
+  </g>
+
+  <!-- colonnade -->
+  <g data-depth=".07">
+    ${col(70, 62, 60, 560)}${col(228, 48, 96, 540)}
+    ${col(924, 48, 96, 540)}${col(1068, 62, 60, 560)}
+  </g>
+
+  <!-- hanging lamps -->
+  <g data-depth=".10">
+    <circle cx="330" cy="150" r="46" fill="url(#lamp)"/>
+    <circle cx="870" cy="150" r="46" fill="url(#lamp)"/>
+    <path d="M330 40 L330 132 M870 40 L870 132" stroke="var(--sc-col)" stroke-width="3"/>
+    <path d="M306 132 h48 l-8 22 h-32 z" fill="var(--sc-col)"/>
+    <path d="M846 132 h48 l-8 22 h-32 z" fill="var(--sc-col)"/>
+  </g>
+
+  <!-- gallery rail -->
+  <g data-depth=".14">
+    <rect x="180" y="384" width="840" height="8" rx="4" fill="var(--sc-col)"/>
+    ${rail}
+    <rect x="180" y="430" width="840" height="9" rx="4" fill="var(--sc-col)"/>
+  </g>
+
+  <!-- the page's own piece -->
+  <g data-depth=".20">${PIECES[page] || PIECES.start}</g>
+
+  <!-- foreground: the bench you are standing behind -->
+  <g data-depth=".30">
+    <path d="M0 600 L1200 600 L1200 680 L0 680 Z" fill="var(--sc-col)" opacity=".9"/>
+    <rect x="0" y="592" width="1200" height="10" rx="4" fill="var(--sc-col)"/>
+    <path d="M0 640 L1200 640" stroke="var(--sc-flute)" stroke-width="3"/>
+    <path d="M120 600 v80 M420 600 v80 M780 600 v80 M1080 600 v80"
+      stroke="var(--sc-flute)" stroke-width="4"/>
+  </g>
+
+  <g data-depth=".045" class="motes">${motes}</g>
+  <path d="M0 560 L1200 560 L1200 680 L0 680 Z" fill="url(#floorFade)" opacity=".5"/>
+</svg>`;
+}
 let _io=null;
 function revealScan(){
   if(RM||typeof IntersectionObserver==='undefined'){
