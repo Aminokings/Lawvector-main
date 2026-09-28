@@ -1982,3 +1982,19 @@ h1,h2,h3{font-weight:300;letter-spacing:-.028em;line-height:1.02}
 .areard b{display:block;font-weight:500;font-size:.96rem;margin-bottom:7px;color:var(--ink)}
 .areard span{display:flex;justify-content:space-between;gap:16px;font-size:.82rem;color:var(--faint)}
 .areard i{font-style:normal;color:var(--brass);font-weight:600}
+
+/* ==================================================================
+   INCOMING LISTINGS
+   Machine-listed, unread. Deliberately quieter than a curated entry:
+   the reader should be able to tell at a glance that nobody has
+   vouched for these. Dimmer text, a dashed left edge rather than the
+   solid one a real entry gets, and no hover lift.
+   ================================================================== */
+.rcinq{margin-top:12px}
+.rcinq .rcl{background:transparent;border-style:dashed;border-left-width:1px;opacity:.86}
+.rcinq .rcl:hover{opacity:1;transform:none;border-left-color:var(--brass);
+  border-color:var(--line2);background:var(--bg2)}
+.rcinq .rcl b{font-family:inherit;font-weight:400;font-size:.92rem;color:var(--dim)}
+.rcinq .rcl:hover b{color:var(--ink)}
+.rcinq .rclmeta{color:var(--faint)}
+.rcinmore{margin-top:12px;font-style:italic}

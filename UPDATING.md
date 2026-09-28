@@ -69,10 +69,36 @@ Coverage is currently strongest for the UK. Widening it is good, but not at the 
 
 ---
 
-## The procedure
+## How this runs now: two stages
 
-1. **Read** the current `cases-recent.js` so nothing is duplicated. Check the `id` values.
-2. **Search** the official sources for judgments handed down since `RECENT_UPDATED`.
+Since September 2026 the work is split in two, because listing a case and explaining one are different jobs with different risks.
+
+**Stage one — daily, automatic, unattended.** A GitHub Action (`.github/workflows/update-cases.yml`) runs `fetch-cases.js`, which reads the courts' own published feeds and writes `cases-incoming.js`. It records a case name, a citation, a date, a court and a link. Every one of those is copied from the court. It writes no summary, and `validate-cases.js` fails the run if a summary ever appears in that file. The Action commits and pushes by itself, so the site lists new judgments without anyone touching GitHub Desktop.
+
+That is safe to leave unattended precisely because it makes no claims. A listing says *this was decided, here it is*. It cannot be wrong about what a court held, because it does not say.
+
+**Stage two — weekly, judged.** Triage works through `cases-incoming.js` and decides, case by case: promote it into `cases-recent.js` with a stream, an area and a summary; or leave it; or drop it. This stage reads judgments and writes prose, so it commits for Amin to review and push. It never pushes by itself.
+
+An entry moves from incoming to recent. It is never in both — the validator warns if it is.
+
+Incoming listings age out after 75 days and at most 40 are held. An entry that ages out unpromoted is no loss: it was a pointer, never a claim, and the section already tells the reader it is not a complete record.
+
+### Adding a court to stage one
+
+Add a block to `SOURCES` in `fetch-cases.js`. `cap` is the most one run will take from that source, which is what stops the Court of Appeal (roughly 1,200 judgments a year) from burying the Supreme Court (roughly 45). Test the parser against a saved copy of the feed before trusting it:
+
+```
+node fetch-cases.js --dry-run --fixture path/to/fixtures
+```
+
+Currently wired: UK Supreme Court, Court of Appeal (Civil and Criminal), US Supreme Court. The CJEU and the European Court of Human Rights are not — their documented feeds returned nothing when checked on 28 September 2026, and no parser should be written against a source nobody has seen working. A source that returns nothing is reported in the Action log and does not stop the others.
+
+---
+
+## The procedure for triage
+
+1. **Read** `cases-incoming.js` and the current `cases-recent.js` so nothing is duplicated. Check the `id` values.
+2. **Work through the incoming list.** Anything still worth explaining that stage one has not caught can also be found by searching the official sources directly.
 3. **Filter** hard against the tests above. Expect most weeks to yield one or two, often none.
 4. **For each survivor**, open the judgment. If the holding is clear, write `sum` and `why` in plain English — no Latin, no unexplained terms of art, short sentences, and say what it means for a reader rather than for a lawyer. If the holding is not clear, leave both empty and let it be a listed entry.
 5. **Add** the entries to `RECENT`, newest anywhere in the array — the section sorts by date itself.

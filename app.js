@@ -6556,6 +6556,12 @@ const RCASES = (typeof RECENT!=='undefined' && Array.isArray(RECENT)) ? RECENT :
 const RPEND  = (typeof PENDING!=='undefined' && Array.isArray(PENDING)) ? PENDING : [];
 const RCURR  = (typeof CURRENTS!=='undefined' && Array.isArray(CURRENTS)) ? CURRENTS : [];
 const RUPD   = (typeof RECENT_UPDATED!=='undefined') ? RECENT_UPDATED : '';
+/* Machine-listed and unread. Written by fetch-cases.js into its own
+   file, so if that file is missing, empty or malformed the rest of
+   Recent Decisions is untouched. Same contract as everything above. */
+const RINC   = (typeof INCOMING!=='undefined' && Array.isArray(INCOMING)) ? INCOMING : [];
+const RINCU  = (typeof INCOMING_UPDATED!=='undefined') ? INCOMING_UPDATED : '';
+const RINC_SHOW = 14;
 let rcStream='people', rcOpen='';
 
 function rcDate(iso){
@@ -6647,6 +6653,20 @@ function renderRecent(){
         <b>${esc(c.t)}</b>
         <span class="rclmeta">${esc(c.cite)} · ${esc(c.area)} ↗</span></a>`).join('')}
     </div>`:''}
+
+    ${RINC.length?`
+    <h4 class="rch">Just handed down &mdash; nobody has read these yet</h4>
+    <p class="dchint">These arrive automatically from the courts&rsquo; own published feeds, newest first. Nothing here has
+      been read, so there is nothing but the case name, the court, the date and a link &mdash; no summary, and no claim that
+      any of it matters. Some will turn out to be significant, most will not. They get written up, or dropped, when
+      someone works through them.${RINCU?` Checked ${rcDate(RINCU)}.`:''}</p>
+    <div class="rclisted rcinq">
+      ${RINC.slice(0,RINC_SHOW).map(c=>`<a class="rcl" href="${esc(c.src)}" target="_blank" rel="noopener noreferrer">
+        <span class="rcldt">${rcDate(c.date)}</span>
+        <b>${esc(c.t)}</b>
+        <span class="rclmeta">${esc(c.cite)} &middot; ${esc(c.court)} &#8599;</span></a>`).join('')}
+    </div>
+    ${RINC.length>RINC_SHOW?`<p class="dchint rcinmore">${RINC.length-RINC_SHOW} more held and not shown.</p>`:''}`:''}
 
     ${RPEND.length?`
     <h4 class="rch">Argued but not yet decided</h4>

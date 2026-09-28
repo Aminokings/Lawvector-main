@@ -1,0 +1,116 @@
+# ==================================================================
+# Daily listing refresh for LawOrchard's Recent Decisions
+# ------------------------------------------------------------------
+# Reads the courts' own published feeds and writes cases-incoming.js,
+# then commits and pushes it. GitHub Pages redeploys on the push, so
+# the site updates with nobody touching GitHub Desktop.
+#
+# WHAT IT IS ALLOWED TO PUBLISH UNATTENDED
+# Case name, citation, date, court, link. Facts copied from the court.
+# It never writes a summary, and validate-cases.js fails the run if a
+# summary ever appears in that file. Interpretation stays with triage.
+#
+# The only file it can change is cases-incoming.js. The `git add` is
+# explicit, and the run aborts if anything else turns up modified.
+# ==================================================================
+name: Update case listings
+
+on:
+  schedule:
+    # 06:20 UTC daily - about 07:20 UK in summer, 06:20 in winter.
+    # GitHub often delays scheduled runs by a few minutes; harmless here.
+    - cron: '20 6 * * *'
+  # lets you run it by hand from the Actions tab, which is how to test it
+  workflow_dispatch:
+
+# least privilege: enough to push a commit, nothing else
+permissions:
+  contents: write
+
+# never let two runs write the same file at once
+concurrency:
+  group: update-cases
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Confirm the site's own scripts still parse
+        # if app.js is broken, stop: committing on top of a broken site
+        # makes the problem harder to see, not easier
+        run: |
+          node --check app.js
+          node --check cases-recent.js
+          node --check fetch-cases.js
+
+      - name: Fetch new listings
+        run: node fetch-cases.js
+
+      - name: Validate before trusting anything
+        # this is the gate. a non-zero exit here means no commit.
+        run: node validate-cases.js
+
+      - name: Confirm only cases-incoming.js changed
+        run: |
+          # porcelain catches untracked files too, which a plain
+          # `git diff` misses - if this file were ever untracked, the
+          # commit step below would think nothing had changed and the
+          # automation would go quietly dead.
+          CHANGED=$(git status --porcelain | awk '{print $2}')
+          echo "changed files: ${CHANGED:-none}"
+          UNEXPECTED=$(echo "$CHANGED" | grep -v '^cases-incoming\.js$' | grep -v '^$' || true)
+          if [ -n "$UNEXPECTED" ]; then
+            echo "::error::Refusing to commit. Unexpected files modified:"
+            echo "$UNEXPECTED"
+            exit 1
+          fi
+
+      - name: Commit and push if there is anything new
+        run: |
+          if [ -z "$(git status --porcelain -- cases-incoming.js)" ]; then
+            echo "Nothing new from any court today. No commit."
+            exit 0
+          fi
+
+          N=$(node -e "
+            const vm=require('vm'),fs=require('fs');
+            const s=fs.readFileSync('cases-incoming.js','utf8');
+            const {INCOMING}=vm.runInNewContext(s+';({INCOMING})');
+            process.stdout.write(String(INCOMING.length));
+          ")
+
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add cases-incoming.js
+          git commit -m "Listings: refresh incoming to ${N} unread (automated)"
+
+          # rebase in case a human pushed while this was running
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "Pushed. Pages will redeploy."
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### Case listing refresh"
+            echo ""
+            if [ -f cases-incoming.js ]; then
+              echo "Unread listings now held: **$(grep -c "^{id:'i-" cases-incoming.js || echo 0)**"
+            else
+              echo "No cases-incoming.js was produced."
+            fi
+            echo ""
+            echo "Summaries are never written here. Run the triage task to write them up."
+          } >> "$GITHUB_STEP_SUMMARY"

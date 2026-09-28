@@ -11,7 +11,10 @@ Amin reviews the diff in GitHub Desktop and pushes. Do not commit or push withou
 | `index.html` + 7 section pages | `situation`, `lab`, `world`, `learn`, `tools`, `careers`, `about` |
 | `game-*.html` | 13 game pages, one per Law Lab game |
 | `app.js` | All content and logic. ~550KB. Shared by every page |
-| `cases-recent.js` | Recent Decisions data. Loads *before* `app.js`. The only file automatic updates touch |
+| `cases-recent.js` | Recent Decisions data, curated by hand. Loads *before* `app.js`. Summaries live here and nowhere else |
+| `cases-incoming.js` | **Generated — never edit by hand.** Machine-listed, unread judgments. `fetch-cases.js` overwrites it |
+| `fetch-cases.js` | Reads court feeds, writes `cases-incoming.js`. Listings only; it may never write a summary |
+| `.github/workflows/update-cases.yml` | Runs the above daily and pushes by itself. The only thing here that pushes unattended |
 | `styles.css` | All styling, all four themes |
 | `fx.js` | Hero scenes and motion |
 | `validate-cases.js` | Run before committing any change to `cases-recent.js` |
@@ -24,8 +27,19 @@ No build step, no dependencies, no framework. Plain HTML, CSS and JS.
 ## Before finishing any change
 
 1. `node --check app.js` — one enormous file; a syntax error takes down every page
-2. `node validate-cases.js` — if `cases-recent.js` was touched
+2. `node validate-cases.js` — if `cases-recent.js` or `cases-incoming.js` was touched
 3. Render-test with jsdom. Parsing clean is not the same as rendering; the bugs are in rendering
+
+When render-testing, concatenate `fx.js`, `cases-recent.js`, `cases-incoming.js` and `app.js` and evaluate them as **one** string. Evaluated separately, each file's top-level `const` is invisible to the next and everything silently renders empty.
+
+## The line that must not move
+
+A summary is a claim about what a real court decided, read by people whose lives have gone wrong. Two things follow, and both are enforced in code rather than left to good intentions:
+
+- Machine-written listings go in `cases-incoming.js` and carry **no** `sum` or `why`. `validate-cases.js` fails if they do.
+- Anything that pushes unattended may only publish facts copied from a court. Prose waits for review.
+
+Loosening either of these is not a refactor. It is a change of editorial policy, and it needs Amin's explicit say-so.
 
 ## Things that have bitten before
 

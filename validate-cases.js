@@ -123,6 +123,78 @@ const today = new Date().toISOString().slice(0, 10);
   if (p.cite) warn(`${at} has a citation but is listed as undecided. Move it to RECENT if judgment is out.`);
 });
 
+/* ------------------------------------------------------------------
+   3b. cases-incoming.js — the machine-written file
+   ------------------------------------------------------------------
+   Absent is fine and normal: the site falls back to an empty list and
+   nothing breaks. Present and broken is not fine, because the daily
+   workflow commits this file unattended.
+
+   The rule enforced here is the one that makes unattended publishing
+   defensible: AN INCOMING ENTRY MAY NOT CARRY A SUMMARY. Nothing has
+   read these judgments, so nothing may claim to know what they
+   decided. If a summary ever appears in this file, something has gone
+   wrong upstream and the run must not be committed.
+   ------------------------------------------------------------------ */
+const INCF = path.join(__dirname, 'cases-incoming.js');
+let INCOMING, INCOMING_UPDATED, incPresent = false;
+
+if (fs.existsSync(INCF)) {
+  incPresent = true;
+  const IPROBE = `
+;({ INCOMING:         typeof INCOMING         !== 'undefined' ? INCOMING         : undefined,
+    INCOMING_UPDATED: typeof INCOMING_UPDATED !== 'undefined' ? INCOMING_UPDATED : undefined })`;
+  try {
+    const isrc = fs.readFileSync(INCF, 'utf8');
+    ({ INCOMING, INCOMING_UPDATED } =
+      vm.runInContext(isrc + IPROBE, vm.createContext({}), { timeout: 4000 }));
+  } catch (e) {
+    fail('cases-incoming.js does not parse: ' + e.message);
+  }
+
+  if (INCOMING !== undefined && !Array.isArray(INCOMING))
+    fail('INCOMING is present but is not an array.');
+
+  if (INCOMING_UPDATED !== undefined &&
+      !/^\d{4}-\d{2}-\d{2}$/.test(String(INCOMING_UPDATED)))
+    fail('INCOMING_UPDATED must be a YYYY-MM-DD string.');
+
+  (Array.isArray(INCOMING) ? INCOMING : []).forEach((c, i) => {
+    const at = `INCOMING[${i}] ${c && c.id ? '(' + c.id + ')' : ''}`;
+    if (!c || typeof c !== 'object') return fail(at + ' is not an object.');
+
+    ['id', 't', 'cite', 'date', 'court', 'src'].forEach(k => {
+      if (!c[k] || String(c[k]).trim() === '') fail(`${at} is missing "${k}".`);
+    });
+
+    /* the guarantee */
+    if ('sum' in c || 'why' in c)
+      fail(`${at} carries a summary. Nothing in this file has been read, so nothing in it may explain a judgment.`);
+
+    if (c.id) {
+      if (seen.has(c.id)) fail(`${at} id clashes with a curated entry. Incoming ids are prefixed "i-" to prevent this.`);
+      seen.add(c.id);
+      if (!/^i-[a-z0-9_-]*$/.test(c.id)) fail(`${at} incoming id must start "i-" and be lowercase ascii.`);
+    }
+
+    if (c.src && !/^https:\/\//.test(c.src)) fail(`${at} src must be an https URL.`);
+
+    if (c.date) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(c.date)) fail(`${at} date must be YYYY-MM-DD.`);
+      else if (isNaN(new Date(c.date + 'T00:00:00Z'))) fail(`${at} date is not a real date.`);
+      else if (c.date > today) fail(`${at} is dated in the future (${c.date}).`);
+    }
+  });
+
+  /* A listing that duplicates something already written up is clutter:
+     the reader sees the same case twice, once explained and once not. */
+  const curatedCites = new Set((RECENT || []).map(c => String(c && c.cite || '').toLowerCase()).filter(Boolean));
+  (Array.isArray(INCOMING) ? INCOMING : []).forEach((c, i) => {
+    if (c && c.cite && curatedCites.has(String(c.cite).toLowerCase()))
+      warn(`INCOMING[${i}] (${c.cite}) is already written up in RECENT. It should have been dropped on promotion.`);
+  });
+}
+
 /* ---------- 4. report ---------- */
 const nEx = (RECENT || []).filter(c => c && c.sum).length;
 const nLi = (RECENT || []).length - nEx;
@@ -130,6 +202,9 @@ const nLi = (RECENT || []).length - nEx;
 console.log('');
 console.log(`  cases-recent.js — ${(RECENT || []).length} decisions (${nEx} explained, ${nLi} listed), ` +
             `${(CURRENTS || []).length} currents, ${(PENDING || []).length} pending, reviewed ${RECENT_UPDATED}`);
+console.log(incPresent
+  ? `  cases-incoming.js — ${(INCOMING || []).length} unread listings, checked ${INCOMING_UPDATED || '(no date)'}`
+  : `  cases-incoming.js — absent (fine; the site falls back to an empty list)`);
 console.log('');
 
 warnings.forEach(w => console.log('  warn  ' + w));
