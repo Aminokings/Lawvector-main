@@ -12,10 +12,18 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-09-28
+   Written: 2026-09-29
    ================================================================== */
-const INCOMING_UPDATED = '2026-09-28';
+const INCOMING_UPDATED = '2026-09-29';
 const INCOMING = [
+{id:'i-crim-2026-1225', t:'R v Lawrence Joshua Rafter',
+ cite:'[2026] EWCA Crim 1225', date:'2026-09-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1225', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1212', t:'Gary Jones v Persons Unknown',
+ cite:'[2026] EWCA Civ 1212', date:'2026-09-28', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1212', srcName:'Judgment (National Archives)'},
+
 {id:'i-opinions-25pdf-26a388q86bpdf', t:'People Not Politicians v. Onder',
  cite:'US Supreme Court, No. 26A388', date:'2026-09-25', court:'US Supreme Court', iso:'USA',
  src:'https://www.supremecourt.gov/opinions/25pdf/26a388_q86b.pdf', srcName:'Slip opinion (PDF)'},
@@ -64,9 +72,25 @@ const INCOMING = [
  cite:'[2026] EWCA Civ 1167', date:'2026-09-10', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1167', srcName:'Judgment (National Archives)'},
 
+{id:'i-civ-2026-1161', t:'ABC v Huntercombe (no.12) Limited & Ors',
+ cite:'[2026] EWCA Civ 1161', date:'2026-09-08', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1161', srcName:'Judgment (National Archives)'},
+
 {id:'i-crim-2026-1198', t:'R v Oliver Davis & Anor',
  cite:'[2026] EWCA Crim 1198', date:'2026-09-02', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1198', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1135', t:'Anthony Kalinga v R',
+ cite:'[2026] EWCA Crim 1135', date:'2026-09-01', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1135', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1182', t:'R v JJH',
+ cite:'[2026] EWCA Crim 1182', date:'2026-08-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1182', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1183', t:'R v Julie Evans',
+ cite:'[2026] EWCA Crim 1183', date:'2026-08-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1183', srcName:'Judgment (National Archives)'},
 
 {id:'i-uksc-2026-31', t:'Avon Freeholds Limited v Cresta Court E RTM Company Limited',
  cite:'[2026] UKSC 31', date:'2026-08-27', court:'UK Supreme Court', iso:'GBR',
