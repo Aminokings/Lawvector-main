@@ -12,13 +12,17 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-09-30
+   Written: 2026-10-01
    ================================================================== */
-const INCOMING_UPDATED = '2026-09-30';
+const INCOMING_UPDATED = '2026-10-01';
 const INCOMING = [
 {id:'i-crim-2026-1225', t:'R v Lawrence Joshua Rafter',
  cite:'[2026] EWCA Crim 1225', date:'2026-09-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1225', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1216', t:'C (Child Arrangements Orders; Domestic Abuse; Child Focused Court), Re',
+ cite:'[2026] EWCA Civ 1216', date:'2026-09-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1216', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1212', t:'Gary Jones v Persons Unknown',
  cite:'[2026] EWCA Civ 1212', date:'2026-09-28', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -56,6 +60,14 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1201', date:'2026-09-17', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1201', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1235', t:'R v Christopher Brooks',
+ cite:'[2026] EWCA Crim 1235', date:'2026-09-17', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1235', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1233', t:'R v Alan Ranns',
+ cite:'[2026] EWCA Crim 1233', date:'2026-09-17', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1233', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-953', t:'Rhian Bernard Guerrero v Secretary of State for Home Department',
  cite:'[2026] EWCA Civ 953', date:'2026-09-16', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/953', srcName:'Judgment (National Archives)'},
@@ -87,6 +99,10 @@ const INCOMING = [
 {id:'i-crim-2026-1226', t:'R v Martyn Horne',
  cite:'[2026] EWCA Crim 1226', date:'2026-09-04', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1226', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1229', t:'R v Shackeel Blanie',
+ cite:'[2026] EWCA Crim 1229', date:'2026-09-03', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1229', srcName:'Judgment (National Archives)'},
 
 {id:'i-crim-2026-1198', t:'R v Oliver Davis & Anor',
  cite:'[2026] EWCA Crim 1198', date:'2026-09-02', court:'Court of Appeal (Criminal Division)', iso:'GBR',
