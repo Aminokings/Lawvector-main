@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-02
+   Written: 2026-10-03
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-02';
+const INCOMING_UPDATED = '2026-10-03';
 const INCOMING = [
 {id:'i-civ-2026-1248', t:'GI Globinvestment Limited & Anor v XY ERS UK Limited',
  cite:'[2026] EWCA Civ 1248', date:'2026-10-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -23,6 +23,14 @@ const INCOMING = [
 {id:'i-civ-2026-1224', t:'Aviator Llc & Ors v Spribe O\u00fc',
  cite:'[2026] EWCA Civ 1224', date:'2026-10-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1224', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1238', t:'Grosvenor Property Developers Limited (in liquidation) v Partner Law Limited',
+ cite:'[2026] EWCA Civ 1238', date:'2026-10-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1238', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1240', t:'R v Mark Acklom',
+ cite:'[2026] EWCA Crim 1240', date:'2026-09-30', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1240', srcName:'Judgment (National Archives)'},
 
 {id:'i-crim-2026-1225', t:'R v Lawrence Joshua Rafter',
  cite:'[2026] EWCA Crim 1225', date:'2026-09-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
@@ -115,6 +123,10 @@ const INCOMING = [
 {id:'i-crim-2026-1198', t:'R v Oliver Davis & Anor',
  cite:'[2026] EWCA Crim 1198', date:'2026-09-02', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1198', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1247', t:'R v Pedro Souza Da Costa',
+ cite:'[2026] EWCA Crim 1247', date:'2026-09-02', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1247', srcName:'Judgment (National Archives)'},
 
 {id:'i-crim-2026-1135', t:'Anthony Kalinga v R',
  cite:'[2026] EWCA Crim 1135', date:'2026-09-01', court:'Court of Appeal (Criminal Division)', iso:'GBR',
