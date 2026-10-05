@@ -88,14 +88,6 @@ const INCOMING = [
  cite:'[2026] EWCA Civ 953', date:'2026-09-16', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/953', srcName:'Judgment (National Archives)'},
 
-{id:'i-crim-2026-1181', t:'Fiona Hodge & Ors v R',
- cite:'[2026] EWCA Crim 1181', date:'2026-09-16', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1181', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1184', t:'TDB, R (on the application of) v London Borough of Haringey',
- cite:'[2026] EWCA Civ 1184', date:'2026-09-15', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1184', srcName:'Judgment (National Archives)'},
-
 {id:'i-civ-2026-1185', t:'Axa France Iard SA & Anor v Santander Cards UK Limited & Anor',
  cite:'[2026] EWCA Civ 1185', date:'2026-09-15', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1185', srcName:'Judgment (National Archives)'},
@@ -144,14 +136,6 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1131', date:'2026-08-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1131', srcName:'Judgment (National Archives)'},
 
-{id:'i-uksc-2026-31', t:'Avon Freeholds Limited v Cresta Court E RTM Company Limited',
- cite:'[2026] UKSC 31', date:'2026-08-27', court:'UK Supreme Court', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/31', srcName:'Judgment (National Archives)'},
-
-{id:'i-uksc-2026-30', t:'Benjamin Gilbert & Anor v Broadoak Private Finance "Ltd" \u2014 Re',
- cite:'[2026] UKSC 30', date:'2026-08-12', court:'UK Supreme Court', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/30', srcName:'Judgment (National Archives)'},
-
 {id:'i-uksc-2026-26', t:'Akbars Restaurant (Middlesborough) Limited v Secretary of State for the Home Department',
  cite:'[2026] UKSC 26', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/26', srcName:'Judgment (National Archives)'},
@@ -159,10 +143,6 @@ const INCOMING = [
 {id:'i-uksc-2026-29', t:'Valeriy Ernestovich Drelle v Servis-Terminal LLC (In Liquidation in the Russian Federation)',
  cite:'[2026] UKSC 29', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/29', srcName:'Judgment (National Archives)'},
-
-{id:'i-uksc-2026-28', t:'R v Sheikh and others',
- cite:'[2026] UKSC 28', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/28', srcName:'Judgment (National Archives)'},
 
 {id:'i-uksc-2026-24', t:'AXA Insurance UK PLC and another v Commissioners of Inland Revenue and another',
  cite:'[2026] UKSC 24', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
