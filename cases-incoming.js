@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-03
+   Written: 2026-10-06
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-03';
+const INCOMING_UPDATED = '2026-10-06';
 const INCOMING = [
 {id:'i-civ-2026-1248', t:'GI Globinvestment Limited & Anor v XY ERS UK Limited',
  cite:'[2026] EWCA Civ 1248', date:'2026-10-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -60,6 +60,10 @@ const INCOMING = [
  cite:'[2026] EWCA Civ 1172', date:'2026-09-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1172', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1252', t:'R v Kristian Parry',
+ cite:'[2026] EWCA Crim 1252', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1252', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1204', t:'Stephen Turner v Coupland Cavendish Limited',
  cite:'[2026] EWCA Civ 1204', date:'2026-09-21', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1204', srcName:'Judgment (National Archives)'},
@@ -67,6 +71,10 @@ const INCOMING = [
 {id:'i-civ-2026-1202', t:'Gillian McGivern v MBR Acres Limited & Ors',
  cite:'[2026] EWCA Civ 1202', date:'2026-09-18', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1202', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1266', t:'R v Terri Marie Wood & Anor',
+ cite:'[2026] EWCA Crim 1266', date:'2026-09-18', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1266', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1199', t:'Sean Fitzgerald, R (on the application of) v The Parole Board for England and Wales',
  cite:'[2026] EWCA Civ 1199', date:'2026-09-17', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -88,6 +96,10 @@ const INCOMING = [
  cite:'[2026] EWCA Civ 953', date:'2026-09-16', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/953', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1269', t:'R v Jamie Reece Williamson & Anor',
+ cite:'[2026] EWCA Crim 1269', date:'2026-09-16', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1269', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1185', t:'Axa France Iard SA & Anor v Santander Cards UK Limited & Anor',
  cite:'[2026] EWCA Civ 1185', date:'2026-09-15', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1185', srcName:'Judgment (National Archives)'},
@@ -95,6 +107,10 @@ const INCOMING = [
 {id:'i-crim-2026-1165', t:'Darren Osment v R',
  cite:'[2026] EWCA Crim 1165', date:'2026-09-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1165', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1268', t:'R v Morsal Mohammed Naim',
+ cite:'[2026] EWCA Crim 1268', date:'2026-09-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1268', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1167', t:'E (A Child) (Special Guardianship Order: Public Law Proceedings), Re',
  cite:'[2026] EWCA Civ 1167', date:'2026-09-10', court:'Court of Appeal (Civil Division)', iso:'GBR',
