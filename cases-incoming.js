@@ -12,10 +12,14 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-06
+   Written: 2026-10-07
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-06';
+const INCOMING_UPDATED = '2026-10-07';
 const INCOMING = [
+{id:'i-civ-2026-1259', t:'Rasmala Trade Finance Fund v Trafigura Pte Ltd',
+ cite:'[2026] EWCA Civ 1259', date:'2026-10-07', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1259', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1248', t:'GI Globinvestment Limited & Anor v XY ERS UK Limited',
  cite:'[2026] EWCA Civ 1248', date:'2026-10-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1248', srcName:'Judgment (National Archives)'},
@@ -52,6 +56,14 @@ const INCOMING = [
  cite:'US Supreme Court, No. 26A388', date:'2026-09-25', court:'US Supreme Court', iso:'USA',
  src:'https://www.supremecourt.gov/opinions/25pdf/26a388_q86b.pdf', srcName:'Slip opinion (PDF)'},
 
+{id:'i-crim-2026-1279', t:'R v PHN',
+ cite:'[2026] EWCA Crim 1279', date:'2026-09-25', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1279', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1282', t:'R v Christopher James Cornish',
+ cite:'[2026] EWCA Crim 1282', date:'2026-09-23', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1282', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1206', t:'Suleman Patel v General Optical Council',
  cite:'[2026] EWCA Civ 1206', date:'2026-09-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1206', srcName:'Judgment (National Archives)'},
@@ -63,6 +75,14 @@ const INCOMING = [
 {id:'i-crim-2026-1252', t:'R v Kristian Parry',
  cite:'[2026] EWCA Crim 1252', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1252', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1285', t:'R v Jawaad Tariq',
+ cite:'[2026] EWCA Crim 1285', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1285', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1283', t:'R v Bilal Mabchour',
+ cite:'[2026] EWCA Crim 1283', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1283', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1204', t:'Stephen Turner v Coupland Cavendish Limited',
  cite:'[2026] EWCA Civ 1204', date:'2026-09-21', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -155,16 +175,4 @@ const INCOMING = [
 {id:'i-uksc-2026-26', t:'Akbars Restaurant (Middlesborough) Limited v Secretary of State for the Home Department',
  cite:'[2026] UKSC 26', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/26', srcName:'Judgment (National Archives)'},
-
-{id:'i-uksc-2026-29', t:'Valeriy Ernestovich Drelle v Servis-Terminal LLC (In Liquidation in the Russian Federation)',
- cite:'[2026] UKSC 29', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/29', srcName:'Judgment (National Archives)'},
-
-{id:'i-uksc-2026-24', t:'AXA Insurance UK PLC and another v Commissioners of Inland Revenue and another',
- cite:'[2026] UKSC 24', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/24', srcName:'Judgment (National Archives)'},
-
-{id:'i-uksc-2026-27', t:'Tesla, Inc and another v InterDigital Patent Holdings, Inc and others; Tesla, Inc and others v InterDigital Patent Holdings, Inc and another No 2',
- cite:'[2026] UKSC 27', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/27', srcName:'Judgment (National Archives)'},
 ];
