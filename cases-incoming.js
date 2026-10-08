@@ -12,10 +12,14 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-07
+   Written: 2026-10-08
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-07';
+const INCOMING_UPDATED = '2026-10-08';
 const INCOMING = [
+{id:'i-crim-2026-1284', t:'R v Frederic Priestley',
+ cite:'[2026] EWCA Crim 1284', date:'2026-10-08', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1284', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1259', t:'Rasmala Trade Finance Fund v Trafigura Pte Ltd',
  cite:'[2026] EWCA Civ 1259', date:'2026-10-07', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1259', srcName:'Judgment (National Archives)'},
@@ -59,6 +63,10 @@ const INCOMING = [
 {id:'i-crim-2026-1279', t:'R v PHN',
  cite:'[2026] EWCA Crim 1279', date:'2026-09-25', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1279', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1291', t:'R v Archie Morgan',
+ cite:'[2026] EWCA Crim 1291', date:'2026-09-25', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1291', srcName:'Judgment (National Archives)'},
 
 {id:'i-crim-2026-1282', t:'R v Christopher James Cornish',
  cite:'[2026] EWCA Crim 1282', date:'2026-09-23', court:'Court of Appeal (Criminal Division)', iso:'GBR',
@@ -167,12 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1183', t:'R v Julie Evans',
  cite:'[2026] EWCA Crim 1183', date:'2026-08-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1183', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1131', t:'Daryl Derek Richardson v R',
- cite:'[2026] EWCA Crim 1131', date:'2026-08-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1131', srcName:'Judgment (National Archives)'},
-
-{id:'i-uksc-2026-26', t:'Akbars Restaurant (Middlesborough) Limited v Secretary of State for the Home Department',
- cite:'[2026] UKSC 26', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/26', srcName:'Judgment (National Archives)'},
 ];
