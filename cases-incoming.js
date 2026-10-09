@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-08
+   Written: 2026-10-09
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-08';
+const INCOMING_UPDATED = '2026-10-09';
 const INCOMING = [
 {id:'i-crim-2026-1284', t:'R v Frederic Priestley',
  cite:'[2026] EWCA Crim 1284', date:'2026-10-08', court:'Court of Appeal (Criminal Division)', iso:'GBR',
@@ -104,6 +104,10 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1266', date:'2026-09-18', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1266', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1295', t:'R v Jayden Varnell-Harris',
+ cite:'[2026] EWCA Crim 1295', date:'2026-09-18', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1295', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1199', t:'Sean Fitzgerald, R (on the application of) v The Parole Board for England and Wales',
  cite:'[2026] EWCA Civ 1199', date:'2026-09-17', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1199', srcName:'Judgment (National Archives)'},
@@ -171,8 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1182', t:'R v JJH',
  cite:'[2026] EWCA Crim 1182', date:'2026-08-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1182', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1183', t:'R v Julie Evans',
- cite:'[2026] EWCA Crim 1183', date:'2026-08-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1183', srcName:'Judgment (National Archives)'},
 ];
