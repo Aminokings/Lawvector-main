@@ -21,8 +21,15 @@
            stream, sum (plain-English, may be ''), why (may be ''),
            src, srcName
    ================================================================== */
-const RECENT_UPDATED = '2026-10-05';
+const RECENT_UPDATED = '2026-10-12';
 const RECENT = [
+
+{id:'ukscakbars', t:'Akbars Restaurant (Middlesborough) Ltd v Secretary of State for the Home Department',
+ cite:'[2026] UKSC 26', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
+ area:'Illegal working penalties', stream:'people',
+ sum:'The Supreme Court unanimously allowed a restaurant\u2019s appeal against a \u00a315,000 penalty for employing a worker who was not allowed to work. Under section 15 of the Immigration, Asylum and Nationality Act 2006 the Home Secretary can fine an employer who employs an adult without permission to work, and section 15(1) sets out three different ways an employer can be liable, which cannot all be true at once. The law requires the penalty notice to \u201cstate why\u201d the Home Secretary thinks the employer is liable. The notice sent to the restaurant listed all three grounds without saying which applied. The Home Secretary only said which one she relied on later, in her evidence to the county court. The Supreme Court held that a notice must say which ground applies. Because the scheme is a penalty, the person fined is entitled to know why before deciding whether to appeal, and a notice that lists every possibility does not tell them. The Court also rejected the argument that the notice could be saved because the employer suffered no harm once the ground was given during the appeal.',
+ why:'Employers fined for illegal working are entitled to a notice that says which ground the Home Office relies on, so a notice that lists all three grounds does not meet the law. Employers who received such notices have gained a ground to challenge them. The Home Office loses the ability to fix a vague notice after the event and will have to decide the ground before it issues a penalty. The ruling concerns what the notice must say. It does not decide whether any particular employer employed someone illegally, and the Home Secretary can still fine employers who are liable, as long as the notice states the ground.',
+ src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/26', srcName:'Judgment (National Archives)'},
 
 {id:'ewcahodge', t:'Hodge and others v R',
  cite:'[2026] EWCA Crim 1181', date:'2026-09-16', court:'Court of Appeal (Criminal Division)', iso:'GBR',

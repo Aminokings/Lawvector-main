@@ -152,10 +152,6 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1131', date:'2026-08-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1131', srcName:'Judgment (National Archives)'},
 
-{id:'i-uksc-2026-26', t:'Akbars Restaurant (Middlesborough) Limited v Secretary of State for the Home Department',
- cite:'[2026] UKSC 26', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/26', srcName:'Judgment (National Archives)'},
-
 {id:'i-uksc-2026-29', t:'Valeriy Ernestovich Drelle v Servis-Terminal LLC (In Liquidation in the Russian Federation)',
  cite:'[2026] UKSC 29', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/29', srcName:'Judgment (National Archives)'},
