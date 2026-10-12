@@ -12,10 +12,18 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-06
+   Written: 2026-10-09
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-06';
+const INCOMING_UPDATED = '2026-10-09';
 const INCOMING = [
+{id:'i-crim-2026-1284', t:'R v Frederic Priestley',
+ cite:'[2026] EWCA Crim 1284', date:'2026-10-08', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1284', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1259', t:'Rasmala Trade Finance Fund v Trafigura Pte Ltd',
+ cite:'[2026] EWCA Civ 1259', date:'2026-10-07', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1259', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1248', t:'GI Globinvestment Limited & Anor v XY ERS UK Limited',
  cite:'[2026] EWCA Civ 1248', date:'2026-10-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1248', srcName:'Judgment (National Archives)'},
@@ -52,6 +60,18 @@ const INCOMING = [
  cite:'US Supreme Court, No. 26A388', date:'2026-09-25', court:'US Supreme Court', iso:'USA',
  src:'https://www.supremecourt.gov/opinions/25pdf/26a388_q86b.pdf', srcName:'Slip opinion (PDF)'},
 
+{id:'i-crim-2026-1279', t:'R v PHN',
+ cite:'[2026] EWCA Crim 1279', date:'2026-09-25', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1279', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1291', t:'R v Archie Morgan',
+ cite:'[2026] EWCA Crim 1291', date:'2026-09-25', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1291', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1282', t:'R v Christopher James Cornish',
+ cite:'[2026] EWCA Crim 1282', date:'2026-09-23', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1282', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1206', t:'Suleman Patel v General Optical Council',
  cite:'[2026] EWCA Civ 1206', date:'2026-09-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1206', srcName:'Judgment (National Archives)'},
@@ -64,6 +84,14 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1252', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1252', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1285', t:'R v Jawaad Tariq',
+ cite:'[2026] EWCA Crim 1285', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1285', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1283', t:'R v Bilal Mabchour',
+ cite:'[2026] EWCA Crim 1283', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1283', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1204', t:'Stephen Turner v Coupland Cavendish Limited',
  cite:'[2026] EWCA Civ 1204', date:'2026-09-21', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1204', srcName:'Judgment (National Archives)'},
@@ -75,6 +103,10 @@ const INCOMING = [
 {id:'i-crim-2026-1266', t:'R v Terri Marie Wood & Anor',
  cite:'[2026] EWCA Crim 1266', date:'2026-09-18', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1266', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1295', t:'R v Jayden Varnell-Harris',
+ cite:'[2026] EWCA Crim 1295', date:'2026-09-18', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1295', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1199', t:'Sean Fitzgerald, R (on the application of) v The Parole Board for England and Wales',
  cite:'[2026] EWCA Civ 1199', date:'2026-09-17', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -143,6 +175,7 @@ const INCOMING = [
 {id:'i-crim-2026-1182', t:'R v JJH',
  cite:'[2026] EWCA Crim 1182', date:'2026-08-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1182', srcName:'Judgment (National Archives)'},
+<<<<<<< HEAD
 
 {id:'i-crim-2026-1183', t:'R v Julie Evans',
  cite:'[2026] EWCA Crim 1183', date:'2026-08-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
@@ -163,4 +196,6 @@ const INCOMING = [
 {id:'i-uksc-2026-27', t:'Tesla, Inc and another v InterDigital Patent Holdings, Inc and others; Tesla, Inc and others v InterDigital Patent Holdings, Inc and another No 2',
  cite:'[2026] UKSC 27', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/27', srcName:'Judgment (National Archives)'},
+=======
+>>>>>>> 3b5496b04a088b0451601cdf07db35769e1c38f1
 ];
