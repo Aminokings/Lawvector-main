@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-13
+   Written: 2026-10-14
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-13';
+const INCOMING_UPDATED = '2026-10-14';
 const INCOMING = [
 {id:'i-civ-2026-1304', t:'Kofi Osei-Bonsu v Secretary of State for The Home Department',
  cite:'[2026] EWCA Civ 1304', date:'2026-10-12', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -87,4 +87,12 @@ const INCOMING = [
 {id:'i-crim-2026-1252', t:'R v Kristian Parry',
  cite:'[2026] EWCA Crim 1252', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1252', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1283', t:'R v Bilal Mabchour',
+ cite:'[2026] EWCA Crim 1283', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1283', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1295', t:'R v Jayden Varnell-Harris',
+ cite:'[2026] EWCA Crim 1295', date:'2026-09-18', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1295', srcName:'Judgment (National Archives)'},
 ];
