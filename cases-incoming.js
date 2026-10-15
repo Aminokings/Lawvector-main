@@ -12,10 +12,14 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-14
+   Written: 2026-10-15
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-14';
+const INCOMING_UPDATED = '2026-10-15';
 const INCOMING = [
+{id:'i-crim-2026-1330', t:'R v Nahim Mohammed',
+ cite:'[2026] EWCA Crim 1330', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1330', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1304', t:'Kofi Osei-Bonsu v Secretary of State for The Home Department',
  cite:'[2026] EWCA Civ 1304', date:'2026-10-12', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1304', srcName:'Judgment (National Archives)'},
@@ -51,6 +55,10 @@ const INCOMING = [
 {id:'i-crim-2026-1225', t:'R v Lawrence Joshua Rafter',
  cite:'[2026] EWCA Crim 1225', date:'2026-09-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1225', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1325', t:'R v Cheryl McEwan',
+ cite:'[2026] EWCA Crim 1325', date:'2026-09-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1325', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1212', t:'Gary Jones v Persons Unknown',
  cite:'[2026] EWCA Civ 1212', date:'2026-09-28', court:'Court of Appeal (Civil Division)', iso:'GBR',
