@@ -12,13 +12,21 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-15
+   Written: 2026-10-16
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-15';
+const INCOMING_UPDATED = '2026-10-16';
 const INCOMING = [
+{id:'i-civ-2026-1331', t:'Timothy Bunting v The Commissioners for HMRC',
+ cite:'[2026] EWCA Civ 1331', date:'2026-10-16', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1331', srcName:'Judgment (National Archives)'},
+
 {id:'i-crim-2026-1330', t:'R v Nahim Mohammed',
  cite:'[2026] EWCA Crim 1330', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1330', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1310', t:'The Secretary of State for the Home Department v MD Shahadat Hossain',
+ cite:'[2026] EWCA Civ 1310', date:'2026-10-15', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1310', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1304', t:'Kofi Osei-Bonsu v Secretary of State for The Home Department',
  cite:'[2026] EWCA Civ 1304', date:'2026-10-12', court:'Court of Appeal (Civil Division)', iso:'GBR',
