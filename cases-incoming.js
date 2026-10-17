@@ -12,13 +12,17 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-16
+   Written: 2026-10-17
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-16';
+const INCOMING_UPDATED = '2026-10-17';
 const INCOMING = [
 {id:'i-civ-2026-1331', t:'Timothy Bunting v The Commissioners for HMRC',
  cite:'[2026] EWCA Civ 1331', date:'2026-10-16', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1331', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1336', t:'R v Christopher Hindley',
+ cite:'[2026] EWCA Crim 1336', date:'2026-10-16', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1336', srcName:'Judgment (National Archives)'},
 
 {id:'i-crim-2026-1330', t:'R v Nahim Mohammed',
  cite:'[2026] EWCA Crim 1330', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
@@ -39,6 +43,14 @@ const INCOMING = [
 {id:'i-civ-2026-1259', t:'Rasmala Trade Finance Fund v Trafigura Pte Ltd',
  cite:'[2026] EWCA Civ 1259', date:'2026-10-07', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1259', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1335', t:'R v Erik Muci',
+ cite:'[2026] EWCA Crim 1335', date:'2026-10-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1335', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1337', t:'R v Mohammed Qureshi & Anor',
+ cite:'[2026] EWCA Crim 1337', date:'2026-10-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1337', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1248', t:'GI Globinvestment Limited & Anor v XY ERS UK Limited',
  cite:'[2026] EWCA Civ 1248', date:'2026-10-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
