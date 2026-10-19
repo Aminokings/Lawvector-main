@@ -68,10 +68,6 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1240', date:'2026-09-30', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1240', srcName:'Judgment (National Archives)'},
 
-{id:'i-civ-2026-1216', t:'C (Child Arrangements Orders; Domestic Abuse; Child Focused Court), Re',
- cite:'[2026] EWCA Civ 1216', date:'2026-09-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1216', srcName:'Judgment (National Archives)'},
-
 {id:'i-crim-2026-1225', t:'R v Lawrence Joshua Rafter',
  cite:'[2026] EWCA Crim 1225', date:'2026-09-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1225', srcName:'Judgment (National Archives)'},

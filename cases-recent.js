@@ -21,8 +21,15 @@
            stream, sum (plain-English, may be ''), why (may be ''),
            src, srcName
    ================================================================== */
-const RECENT_UPDATED = '2026-10-12';
+const RECENT_UPDATED = '2026-10-19';
 const RECENT = [
+{id:'ewcarec1216', t:'C (Child Arrangements Orders; Domestic Abuse; Child Focused Court), Re',
+ cite:'[2026] EWCA Civ 1216', date:'2026-09-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ area:'Domestic abuse in family courts', stream:'people',
+ sum:'The Court of Appeal gave guidance on how family courts must handle claims of domestic abuse when deciding where a child lives and who they see. A mother appealed against final orders made at the Family Court in Wrexham. The Court said the new \u201cChild Focused Court\u201d way of running cases does not change the law: the child\u2019s welfare is still the court\u2019s first concern, and the rules on domestic abuse in Practice Direction 12J (the court\u2019s written instructions for these cases) still apply in full. A separate hearing to decide whether alleged abuse happened is needed only where its findings are \u201cnecessary\u201d to decide what is best for the child, so not every allegation has to be investigated. Where abuse is proved and the order still allows contact with the person responsible, the court must explain why that contact will not expose the child to a risk of harm. On the mother\u2019s own case, the Court allowed the appeal only in part. It set aside a section 91(14) order made against her \u2014 an order that limits a person\u2019s right to bring further court applications \u2014 because the judge had not analysed whether her conduct fell within the test for such an order. It dismissed the appeal in all other respects, and all three judges agreed.',
+ why:'Parents in disputes where abuse is alleged can now see the test the court is expected to apply: abuse claims are looked at where they matter to the child\u2019s safety and the decision, not automatically and not never. People who say they were abused gain a clear requirement that the court explain its reasoning if it still orders contact. People accused of abuse, and parents who want a case to move quickly, may find that a full hearing on every allegation is not held. The order against the mother shows that a restriction on applying to court again needs its own reasons. The judgment sets out principles for these cases generally; the decisions about this particular family were made on its own facts.',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1216', srcName:'Judgment (National Archives)'},
+
 
 {id:'ukscakbars', t:'Akbars Restaurant (Middlesborough) Ltd v Secretary of State for the Home Department',
  cite:'[2026] UKSC 26', date:'2026-07-27', court:'UK Supreme Court', iso:'GBR',
