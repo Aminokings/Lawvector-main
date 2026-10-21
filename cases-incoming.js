@@ -12,10 +12,22 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-20
+   Written: 2026-10-21
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-20';
+const INCOMING_UPDATED = '2026-10-21';
 const INCOMING = [
+{id:'i-uksc-2026-35', t:'ScottishPower (SCPL) Limited and others v Commissioners for His Majesty\u2019s Revenue and Customs',
+ cite:'[2026] UKSC 35', date:'2026-10-21', court:'UK Supreme Court', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/35', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1349', t:'The Republic of Mozambique v Privinvest Shipbuilding SAL (Holding) & Ors',
+ cite:'[2026] EWCA Civ 1349', date:'2026-10-21', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1349', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1338', t:'David James v The General Medical Council',
+ cite:'[2026] EWCA Civ 1338', date:'2026-10-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1338', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1331', t:'Timothy Bunting v The Commissioners for HMRC',
  cite:'[2026] EWCA Civ 1331', date:'2026-10-16', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1331', srcName:'Judgment (National Archives)'},
