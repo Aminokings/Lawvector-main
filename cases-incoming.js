@@ -12,10 +12,22 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-21
+   Written: 2026-10-22
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-21';
+const INCOMING_UPDATED = '2026-10-22';
 const INCOMING = [
+{id:'i-civ-2026-1364', t:'CKT & Anor, R (on the application of ) v Twyford Church of England Academies Trust & Ors',
+ cite:'[2026] EWCA Civ 1364', date:'2026-10-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1364', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1353', t:'The Russian Federation v Hulley Enterprises Limited & Ors',
+ cite:'[2026] EWCA Civ 1353', date:'2026-10-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1353', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1358', t:'Republic of India v Ras Al Khaimah Investment Authority',
+ cite:'[2026] EWCA Civ 1358', date:'2026-10-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1358', srcName:'Judgment (National Archives)'},
+
 {id:'i-uksc-2026-35', t:'ScottishPower (SCPL) Limited and others v Commissioners for His Majesty\u2019s Revenue and Customs',
  cite:'[2026] UKSC 35', date:'2026-10-21', court:'UK Supreme Court', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/35', srcName:'Judgment (National Archives)'},
@@ -23,6 +35,10 @@ const INCOMING = [
 {id:'i-civ-2026-1349', t:'The Republic of Mozambique v Privinvest Shipbuilding SAL (Holding) & Ors',
  cite:'[2026] EWCA Civ 1349', date:'2026-10-21', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1349', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1363', t:'Leyla Soner Sophia Antoniou v Westley Nathan Morgan',
+ cite:'[2026] EWCA Civ 1363', date:'2026-10-21', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1363', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1338', t:'David James v The General Medical Council',
  cite:'[2026] EWCA Civ 1338', date:'2026-10-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -35,6 +51,10 @@ const INCOMING = [
 {id:'i-crim-2026-1336', t:'R v Christopher Hindley',
  cite:'[2026] EWCA Crim 1336', date:'2026-10-16', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1336', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1319', t:'Munic\u00edpio de Mariana v BHP Group (UK) Ltd & Anor',
+ cite:'[2026] EWCA Civ 1319', date:'2026-10-16', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1319', srcName:'Judgment (National Archives)'},
 
 {id:'i-crim-2026-1330', t:'R v Nahim Mohammed',
  cite:'[2026] EWCA Crim 1330', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
