@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-22
+   Written: 2026-10-23
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-22';
+const INCOMING_UPDATED = '2026-10-23';
 const INCOMING = [
 {id:'i-civ-2026-1364', t:'CKT & Anor, R (on the application of ) v Twyford Church of England Academies Trust & Ors',
  cite:'[2026] EWCA Civ 1364', date:'2026-10-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -79,6 +79,10 @@ const INCOMING = [
 {id:'i-crim-2026-1348', t:'R v David Kelly',
  cite:'[2026] EWCA Crim 1348', date:'2026-10-07', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1348', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1361', t:'R v ZJX',
+ cite:'[2026] EWCA Crim 1361', date:'2026-10-07', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1361', srcName:'Judgment (National Archives)'},
 
 {id:'i-crim-2026-1335', t:'R v Erik Muci',
  cite:'[2026] EWCA Crim 1335', date:'2026-10-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
