@@ -12,10 +12,14 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-23
+   Written: 2026-10-26
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-23';
+const INCOMING_UPDATED = '2026-10-26';
 const INCOMING = [
+{id:'i-civ-2026-1357', t:'David Parsons v Convatec Limited',
+ cite:'[2026] EWCA Civ 1357', date:'2026-10-26', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1357', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1364', t:'CKT & Anor, R (on the application of ) v Twyford Church of England Academies Trust & Ors',
  cite:'[2026] EWCA Civ 1364', date:'2026-10-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1364', srcName:'Judgment (National Archives)'},
