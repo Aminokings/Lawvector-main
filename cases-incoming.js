@@ -12,10 +12,18 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-26
+   Written: 2026-10-28
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-26';
+const INCOMING_UPDATED = '2026-10-28';
 const INCOMING = [
+{id:'i-uksc-2026-36', t:'The Kingdom of Spain and another v The London Steam-Ship Owners\u2019 Mutual Insurance Association Limited No 2',
+ cite:'[2026] UKSC 36', date:'2026-10-28', court:'UK Supreme Court', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/36', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1367', t:'Daniel Makin v Protec Security Group Limited',
+ cite:'[2026] EWCA Civ 1367', date:'2026-10-27', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1367', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1357', t:'David Parsons v Convatec Limited',
  cite:'[2026] EWCA Civ 1357', date:'2026-10-26', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1357', srcName:'Judgment (National Archives)'},
