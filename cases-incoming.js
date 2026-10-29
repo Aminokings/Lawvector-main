@@ -12,10 +12,18 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-28
+   Written: 2026-10-29
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-28';
+const INCOMING_UPDATED = '2026-10-29';
 const INCOMING = [
+{id:'i-civ-2026-1368', t:'TJ Trading Express Limited, R (on the application of) v Secretary of State for the Home Department',
+ cite:'[2026] EWCA Civ 1368', date:'2026-10-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1368', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1374', t:'Barry McCaffrey & Anor v Chief Constable of Police Service of Northern Ireland & Ors',
+ cite:'[2026] EWCA Civ 1374', date:'2026-10-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1374', srcName:'Judgment (National Archives)'},
+
 {id:'i-uksc-2026-36', t:'The Kingdom of Spain and another v The London Steam-Ship Owners\u2019 Mutual Insurance Association Limited No 2',
  cite:'[2026] UKSC 36', date:'2026-10-28', court:'UK Supreme Court', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/36', srcName:'Judgment (National Archives)'},
@@ -67,6 +75,10 @@ const INCOMING = [
 {id:'i-civ-2026-1319', t:'Munic\u00edpio de Mariana v BHP Group (UK) Ltd & Anor',
  cite:'[2026] EWCA Civ 1319', date:'2026-10-16', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1319', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1371', t:'R v Mohammed Fahir Amaaz',
+ cite:'[2026] EWCA Crim 1371', date:'2026-10-16', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1371', srcName:'Judgment (National Archives)'},
 
 {id:'i-crim-2026-1330', t:'R v Nahim Mohammed',
  cite:'[2026] EWCA Crim 1330', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
@@ -163,12 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1252', t:'R v Kristian Parry',
  cite:'[2026] EWCA Crim 1252', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1252', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1283', t:'R v Bilal Mabchour',
- cite:'[2026] EWCA Crim 1283', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1283', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1295', t:'R v Jayden Varnell-Harris',
- cite:'[2026] EWCA Crim 1295', date:'2026-09-18', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1295', srcName:'Judgment (National Archives)'},
 ];
