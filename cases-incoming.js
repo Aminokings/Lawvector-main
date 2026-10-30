@@ -12,10 +12,14 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-29
+   Written: 2026-10-30
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-29';
+const INCOMING_UPDATED = '2026-10-30';
 const INCOMING = [
+{id:'i-civ-2026-1373', t:'PJSC VTB BANK v HM TREASURY',
+ cite:'[2026] EWCA Civ 1373', date:'2026-10-30', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1373', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1368', t:'TJ Trading Express Limited, R (on the application of) v Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1368', date:'2026-10-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1368', srcName:'Judgment (National Archives)'},
@@ -23,6 +27,10 @@ const INCOMING = [
 {id:'i-civ-2026-1374', t:'Barry McCaffrey & Anor v Chief Constable of Police Service of Northern Ireland & Ors',
  cite:'[2026] EWCA Civ 1374', date:'2026-10-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1374', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1375', t:'Transworld Payment Solutions UK Limited & Anor v First Cura\u00e7ao International Bank NV & Anor',
+ cite:'[2026] EWCA Civ 1375', date:'2026-10-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1375', srcName:'Judgment (National Archives)'},
 
 {id:'i-uksc-2026-36', t:'The Kingdom of Spain and another v The London Steam-Ship Owners\u2019 Mutual Insurance Association Limited No 2',
  cite:'[2026] UKSC 36', date:'2026-10-28', court:'UK Supreme Court', iso:'GBR',
@@ -88,9 +96,25 @@ const INCOMING = [
  cite:'[2026] EWCA Civ 1310', date:'2026-10-15', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1310', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1385', t:'R E X v ALAN EUGINE HARRIS',
+ cite:'[2026] EWCA Crim 1385', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1385', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1391', t:'R v Troy Tyrique Davies',
+ cite:'[2026] EWCA Crim 1391', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1391', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1384', t:'R v Franck Ponzi',
+ cite:'[2026] EWCA Crim 1384', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1384', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1304', t:'Kofi Osei-Bonsu v Secretary of State for The Home Department',
  cite:'[2026] EWCA Civ 1304', date:'2026-10-12', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1304', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1388', t:'R v Mohammed Kabir Hossain',
+ cite:'[2026] EWCA Crim 1388', date:'2026-10-09', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1388', srcName:'Judgment (National Archives)'},
 
 {id:'i-crim-2026-1284', t:'R v Frederic Priestley',
  cite:'[2026] EWCA Crim 1284', date:'2026-10-08', court:'Court of Appeal (Criminal Division)', iso:'GBR',
@@ -151,28 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1291', t:'R v Archie Morgan',
  cite:'[2026] EWCA Crim 1291', date:'2026-09-25', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1291', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1279', t:'R v PHN',
- cite:'[2026] EWCA Crim 1279', date:'2026-09-25', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1279', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1282', t:'R v Christopher James Cornish',
- cite:'[2026] EWCA Crim 1282', date:'2026-09-23', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1282', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1206', t:'Suleman Patel v General Optical Council',
- cite:'[2026] EWCA Civ 1206', date:'2026-09-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1206', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1172', t:'Benjamin Gilbert & Anor v Broadoak Private Finance Limited',
- cite:'[2026] EWCA Civ 1172', date:'2026-09-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1172', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1285', t:'R v Jawaad Tariq',
- cite:'[2026] EWCA Crim 1285', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1285', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1252', t:'R v Kristian Parry',
- cite:'[2026] EWCA Crim 1252', date:'2026-09-22', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1252', srcName:'Judgment (National Archives)'},
 ];
