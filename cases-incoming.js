@@ -12,13 +12,17 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-30
+   Written: 2026-10-31
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-30';
+const INCOMING_UPDATED = '2026-10-31';
 const INCOMING = [
 {id:'i-civ-2026-1373', t:'PJSC VTB BANK v HM TREASURY',
  cite:'[2026] EWCA Civ 1373', date:'2026-10-30', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1373', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1369', t:'THOMAS HOLDINGS LIMITED (R on the application of) v THE COMMISSIONERS FOR HIS MAJESTY\u2019S REVENUE AND CUSTOMS',
+ cite:'[2026] EWCA Civ 1369', date:'2026-10-30', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1369', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1368', t:'TJ Trading Express Limited, R (on the application of) v Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1368', date:'2026-10-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -171,8 +175,4 @@ const INCOMING = [
 {id:'i-civ-2026-1219', t:'Diogo Santos Coelho, R (on the application of) v The Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1219', date:'2026-09-28', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1219', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1291', t:'R v Archie Morgan',
- cite:'[2026] EWCA Crim 1291', date:'2026-09-25', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1291', srcName:'Judgment (National Archives)'},
 ];
