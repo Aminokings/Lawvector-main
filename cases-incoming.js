@@ -12,10 +12,18 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-10-31
+   Written: 2026-11-02
    ================================================================== */
-const INCOMING_UPDATED = '2026-10-31';
+const INCOMING_UPDATED = '2026-11-02';
 const INCOMING = [
+{id:'i-civ-2026-1377', t:'The Kingdom Hall Trust v Peter Robert Davies',
+ cite:'[2026] EWCA Civ 1377', date:'2026-11-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1377', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1392', t:'Operafund Eco-Invest Sicav Plc & Ors v The Kingdom of Spain',
+ cite:'[2026] EWCA Civ 1392', date:'2026-11-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1392', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1373', t:'PJSC VTB BANK v HM TREASURY',
  cite:'[2026] EWCA Civ 1373', date:'2026-10-30', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1373', srcName:'Judgment (National Archives)'},
@@ -23,6 +31,10 @@ const INCOMING = [
 {id:'i-civ-2026-1369', t:'THOMAS HOLDINGS LIMITED (R on the application of) v THE COMMISSIONERS FOR HIS MAJESTY\u2019S REVENUE AND CUSTOMS',
  cite:'[2026] EWCA Civ 1369', date:'2026-10-30', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1369', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1390', t:'Servis-Terminal LLC v Valeriy Ernestovich Drelle',
+ cite:'[2026] EWCA Civ 1390', date:'2026-10-30', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1390', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1368', t:'TJ Trading Express Limited, R (on the application of) v Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1368', date:'2026-10-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -163,16 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1225', t:'R v Lawrence Joshua Rafter',
  cite:'[2026] EWCA Crim 1225', date:'2026-09-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1225', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1325', t:'R v Cheryl McEwan',
- cite:'[2026] EWCA Crim 1325', date:'2026-09-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1325', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1212', t:'Gary Jones v Persons Unknown',
- cite:'[2026] EWCA Civ 1212', date:'2026-09-28', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1212', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1219', t:'Diogo Santos Coelho, R (on the application of) v The Secretary of State for the Home Department',
- cite:'[2026] EWCA Civ 1219', date:'2026-09-28', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1219', srcName:'Judgment (National Archives)'},
 ];
