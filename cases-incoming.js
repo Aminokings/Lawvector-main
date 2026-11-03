@@ -12,10 +12,22 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-02
+   Written: 2026-11-03
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-02';
+const INCOMING_UPDATED = '2026-11-03';
 const INCOMING = [
+{id:'i-civ-2026-1402', t:'Caerphilly County Borough Council v Richard James Williamson, R (on the application of)',
+ cite:'[2026] EWCA Civ 1402', date:'2026-11-03', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1402', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1389', t:'Vivid Housing Limited v Allianz Global Corporate & Specialty SE',
+ cite:'[2026] EWCA Civ 1389', date:'2026-11-03', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1389', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1396', t:'R v James Ibori',
+ cite:'[2026] EWCA Crim 1396', date:'2026-11-03', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1396', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1377', t:'The Kingdom Hall Trust v Peter Robert Davies',
  cite:'[2026] EWCA Civ 1377', date:'2026-11-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1377', srcName:'Judgment (National Archives)'},
@@ -163,16 +175,4 @@ const INCOMING = [
 {id:'i-civ-2026-1224', t:'Aviator Llc & Ors v Spribe O\u00fc',
  cite:'[2026] EWCA Civ 1224', date:'2026-10-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1224', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1238', t:'Grosvenor Property Developers Limited (in liquidation) v Partner Law Limited',
- cite:'[2026] EWCA Civ 1238', date:'2026-10-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1238', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1240', t:'R v Mark Acklom',
- cite:'[2026] EWCA Crim 1240', date:'2026-09-30', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1240', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1225', t:'R v Lawrence Joshua Rafter',
- cite:'[2026] EWCA Crim 1225', date:'2026-09-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1225', srcName:'Judgment (National Archives)'},
 ];
