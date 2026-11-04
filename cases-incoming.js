@@ -12,10 +12,14 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-03
+   Written: 2026-11-04
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-03';
+const INCOMING_UPDATED = '2026-11-04';
 const INCOMING = [
+{id:'i-civ-2026-1412', t:'SmartestEnergy Business Limited v Odeon Arcade Limited',
+ cite:'[2026] EWCA Civ 1412', date:'2026-11-04', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1412', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1402', t:'Caerphilly County Borough Council v Richard James Williamson, R (on the application of)',
  cite:'[2026] EWCA Civ 1402', date:'2026-11-03', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1402', srcName:'Judgment (National Archives)'},
@@ -27,6 +31,10 @@ const INCOMING = [
 {id:'i-crim-2026-1396', t:'R v James Ibori',
  cite:'[2026] EWCA Crim 1396', date:'2026-11-03', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1396', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1403', t:'Alliance Petrochemical Investment (Singapore) PTE Ltd v Francesco Mazzagatti & Anor',
+ cite:'[2026] EWCA Civ 1403', date:'2026-11-03', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1403', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1377', t:'The Kingdom Hall Trust v Peter Robert Davies',
  cite:'[2026] EWCA Civ 1377', date:'2026-11-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -96,6 +104,10 @@ const INCOMING = [
  cite:'[2026] EWCA Civ 1363', date:'2026-10-21', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1363', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1415', t:'R v Bilal Alfroh',
+ cite:'[2026] EWCA Crim 1415', date:'2026-10-21', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1415', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1338', t:'David James v The General Medical Council',
  cite:'[2026] EWCA Civ 1338', date:'2026-10-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1338', srcName:'Judgment (National Archives)'},
@@ -163,16 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1335', t:'R v Erik Muci',
  cite:'[2026] EWCA Crim 1335', date:'2026-10-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1335', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1337', t:'R v Mohammed Qureshi & Anor',
- cite:'[2026] EWCA Crim 1337', date:'2026-10-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1337', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1248', t:'GI Globinvestment Limited & Anor v XY ERS UK Limited',
- cite:'[2026] EWCA Civ 1248', date:'2026-10-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1248', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1224', t:'Aviator Llc & Ors v Spribe O\u00fc',
- cite:'[2026] EWCA Civ 1224', date:'2026-10-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1224', srcName:'Judgment (National Archives)'},
 ];
