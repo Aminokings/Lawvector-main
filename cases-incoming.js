@@ -12,13 +12,25 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-04
+   Written: 2026-11-05
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-04';
+const INCOMING_UPDATED = '2026-11-05';
 const INCOMING = [
+{id:'i-civ-2026-1420', t:'Treal Care (UK) Limited, R (on the application of) v Secretary of State for the Home Department',
+ cite:'[2026] EWCA Civ 1420', date:'2026-11-05', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1420', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1412', t:'SmartestEnergy Business Limited v Odeon Arcade Limited',
  cite:'[2026] EWCA Civ 1412', date:'2026-11-04', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1412', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1416', t:'RM v The Secretary of State for the Home Department',
+ cite:'[2026] EWCA Civ 1416', date:'2026-11-04', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1416', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1411', t:'AAM v The Secretary of State for the Home Department',
+ cite:'[2026] EWCA Civ 1411', date:'2026-11-04', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1411', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1402', t:'Caerphilly County Borough Council v Richard James Williamson, R (on the application of)',
  cite:'[2026] EWCA Civ 1402', date:'2026-11-03', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -163,16 +175,4 @@ const INCOMING = [
 {id:'i-civ-2026-1259', t:'Rasmala Trade Finance Fund v Trafigura Pte Ltd',
  cite:'[2026] EWCA Civ 1259', date:'2026-10-07', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1259', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1348', t:'R v David Kelly',
- cite:'[2026] EWCA Crim 1348', date:'2026-10-07', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1348', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1361', t:'R v ZJX',
- cite:'[2026] EWCA Crim 1361', date:'2026-10-07', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1361', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1335', t:'R v Erik Muci',
- cite:'[2026] EWCA Crim 1335', date:'2026-10-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1335', srcName:'Judgment (National Archives)'},
 ];
