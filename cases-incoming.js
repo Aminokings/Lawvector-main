@@ -12,13 +12,17 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-05
+   Written: 2026-11-06
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-05';
+const INCOMING_UPDATED = '2026-11-06';
 const INCOMING = [
 {id:'i-civ-2026-1420', t:'Treal Care (UK) Limited, R (on the application of) v Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1420', date:'2026-11-05', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1420', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1430', t:'Elle Walton & Anor v R',
+ cite:'[2026] EWCA Crim 1430', date:'2026-11-05', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1430', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1412', t:'SmartestEnergy Business Limited v Odeon Arcade Limited',
  cite:'[2026] EWCA Civ 1412', date:'2026-11-04', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -91,6 +95,10 @@ const INCOMING = [
 {id:'i-civ-2026-1357', t:'David Parsons v Convatec Limited',
  cite:'[2026] EWCA Civ 1357', date:'2026-10-26', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1357', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1428', t:'R v Brian O\'Neil',
+ cite:'[2026] EWCA Crim 1428', date:'2026-10-23', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1428', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1364', t:'CKT & Anor, R (on the application of ) v Twyford Church of England Academies Trust & Ors',
  cite:'[2026] EWCA Civ 1364', date:'2026-10-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -167,12 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1388', t:'R v Mohammed Kabir Hossain',
  cite:'[2026] EWCA Crim 1388', date:'2026-10-09', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1388', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1284', t:'R v Frederic Priestley',
- cite:'[2026] EWCA Crim 1284', date:'2026-10-08', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1284', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1259', t:'Rasmala Trade Finance Fund v Trafigura Pte Ltd',
- cite:'[2026] EWCA Civ 1259', date:'2026-10-07', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1259', srcName:'Judgment (National Archives)'},
 ];
