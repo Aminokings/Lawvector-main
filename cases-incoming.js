@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-06
+   Written: 2026-11-07
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-06';
+const INCOMING_UPDATED = '2026-11-07';
 const INCOMING = [
 {id:'i-civ-2026-1420', t:'Treal Care (UK) Limited, R (on the application of) v Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1420', date:'2026-11-05', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -91,6 +91,10 @@ const INCOMING = [
 {id:'i-civ-2026-1367', t:'Daniel Makin v Protec Security Group Limited',
  cite:'[2026] EWCA Civ 1367', date:'2026-10-27', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1367', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1435', t:'R v Davia Howarth',
+ cite:'[2026] EWCA Crim 1435', date:'2026-10-27', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1435', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1357', t:'David Parsons v Convatec Limited',
  cite:'[2026] EWCA Civ 1357', date:'2026-10-26', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -171,8 +175,4 @@ const INCOMING = [
 {id:'i-civ-2026-1304', t:'Kofi Osei-Bonsu v Secretary of State for The Home Department',
  cite:'[2026] EWCA Civ 1304', date:'2026-10-12', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1304', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1388', t:'R v Mohammed Kabir Hossain',
- cite:'[2026] EWCA Crim 1388', date:'2026-10-09', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1388', srcName:'Judgment (National Archives)'},
 ];
