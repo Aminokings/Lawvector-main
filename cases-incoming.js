@@ -12,10 +12,14 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-07
+   Written: 2026-11-09
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-07';
+const INCOMING_UPDATED = '2026-11-09';
 const INCOMING = [
+{id:'i-civ-2026-1432', t:'Alphier Capital Two LLP v Blyvoor Gold Capital (Pty) Ltd',
+ cite:'[2026] EWCA Civ 1432', date:'2026-11-09', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1432', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1420', t:'Treal Care (UK) Limited, R (on the application of) v Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1420', date:'2026-11-05', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1420', srcName:'Judgment (National Archives)'},
@@ -132,9 +136,21 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1415', date:'2026-10-21', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1415', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1399', t:'R v Crimea Luke Price',
+ cite:'[2026] EWCA Crim 1399', date:'2026-10-21', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1399', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1338', t:'David James v The General Medical Council',
  cite:'[2026] EWCA Civ 1338', date:'2026-10-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1338', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1398', t:'R v Peter Ash',
+ cite:'[2026] EWCA Crim 1398', date:'2026-10-20', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1398', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1397', t:'R v Daisharn Carr',
+ cite:'[2026] EWCA Crim 1397', date:'2026-10-20', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1397', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1331', t:'Timothy Bunting v The Commissioners for HMRC',
  cite:'[2026] EWCA Civ 1331', date:'2026-10-16', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -159,20 +175,4 @@ const INCOMING = [
 {id:'i-civ-2026-1310', t:'The Secretary of State for the Home Department v MD Shahadat Hossain',
  cite:'[2026] EWCA Civ 1310', date:'2026-10-15', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1310', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1385', t:'R E X v ALAN EUGINE HARRIS',
- cite:'[2026] EWCA Crim 1385', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1385', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1391', t:'R v Troy Tyrique Davies',
- cite:'[2026] EWCA Crim 1391', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1391', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1384', t:'R v Franck Ponzi',
- cite:'[2026] EWCA Crim 1384', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1384', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1304', t:'Kofi Osei-Bonsu v Secretary of State for The Home Department',
- cite:'[2026] EWCA Civ 1304', date:'2026-10-12', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1304', srcName:'Judgment (National Archives)'},
 ];
