@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-09
+   Written: 2026-11-10
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-09';
+const INCOMING_UPDATED = '2026-11-10';
 const INCOMING = [
 {id:'i-civ-2026-1432', t:'Alphier Capital Two LLP v Blyvoor Gold Capital (Pty) Ltd',
  cite:'[2026] EWCA Civ 1432', date:'2026-11-09', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -27,6 +27,10 @@ const INCOMING = [
 {id:'i-crim-2026-1430', t:'Elle Walton & Anor v R',
  cite:'[2026] EWCA Crim 1430', date:'2026-11-05', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1430', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1429', t:'R v Vickrum Singh Digwa',
+ cite:'[2026] EWCA Crim 1429', date:'2026-11-05', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1429', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1412', t:'SmartestEnergy Business Limited v Odeon Arcade Limited',
  cite:'[2026] EWCA Civ 1412', date:'2026-11-04', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -171,8 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1330', t:'R v Nahim Mohammed',
  cite:'[2026] EWCA Crim 1330', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1330', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1310', t:'The Secretary of State for the Home Department v MD Shahadat Hossain',
- cite:'[2026] EWCA Civ 1310', date:'2026-10-15', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1310', srcName:'Judgment (National Archives)'},
 ];
