@@ -12,10 +12,26 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-10
+   Written: 2026-11-11
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-10';
+const INCOMING_UPDATED = '2026-11-11';
 const INCOMING = [
+{id:'i-civ-2026-1445', t:'G (A Child: Leave to Oppose Adoption)',
+ cite:'[2026] EWCA Civ 1445', date:'2026-11-11', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1445', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1447', t:'Secretary of State for the Home Department v Frantisek Barus',
+ cite:'[2026] EWCA Civ 1447', date:'2026-11-11', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1447', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1441', t:'Kristopher Bloomfield v R',
+ cite:'[2026] EWCA Crim 1441', date:'2026-11-11', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1441', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1437', t:'Robert Knapp v R',
+ cite:'[2026] EWCA Crim 1437', date:'2026-11-10', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1437', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1432', t:'Alphier Capital Two LLP v Blyvoor Gold Capital (Pty) Ltd',
  cite:'[2026] EWCA Civ 1432', date:'2026-11-09', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1432', srcName:'Judgment (National Archives)'},
@@ -159,20 +175,4 @@ const INCOMING = [
 {id:'i-civ-2026-1331', t:'Timothy Bunting v The Commissioners for HMRC',
  cite:'[2026] EWCA Civ 1331', date:'2026-10-16', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1331', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1336', t:'R v Christopher Hindley',
- cite:'[2026] EWCA Crim 1336', date:'2026-10-16', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1336', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1319', t:'Munic\u00edpio de Mariana v BHP Group (UK) Ltd & Anor',
- cite:'[2026] EWCA Civ 1319', date:'2026-10-16', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1319', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1371', t:'R v Mohammed Fahir Amaaz',
- cite:'[2026] EWCA Crim 1371', date:'2026-10-16', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1371', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1330', t:'R v Nahim Mohammed',
- cite:'[2026] EWCA Crim 1330', date:'2026-10-15', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1330', srcName:'Judgment (National Archives)'},
 ];
