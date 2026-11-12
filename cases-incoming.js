@@ -12,10 +12,14 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-11
+   Written: 2026-11-12
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-11';
+const INCOMING_UPDATED = '2026-11-12';
 const INCOMING = [
+{id:'i-civ-2026-1440', t:'The Commissioners for HMRC v Hugh Edward Mark Osmond & Anor',
+ cite:'[2026] EWCA Civ 1440', date:'2026-11-12', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1440', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1445', t:'G (A Child: Leave to Oppose Adoption)',
  cite:'[2026] EWCA Civ 1445', date:'2026-11-11', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1445', srcName:'Judgment (National Archives)'},
@@ -28,13 +32,29 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1441', date:'2026-11-11', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1441', srcName:'Judgment (National Archives)'},
 
+{id:'i-civ-2026-1446', t:'Jen & Jamie Limited v The Secretary of State for the Home Department',
+ cite:'[2026] EWCA Civ 1446', date:'2026-11-11', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1446', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1442', t:'Paul Matthews v BSN (SW) Property Ltd & Anor',
+ cite:'[2026] EWCA Civ 1442', date:'2026-11-11', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1442', srcName:'Judgment (National Archives)'},
+
 {id:'i-crim-2026-1437', t:'Robert Knapp v R',
  cite:'[2026] EWCA Crim 1437', date:'2026-11-10', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1437', srcName:'Judgment (National Archives)'},
 
+{id:'i-civ-2026-1448', t:'H (Children: Exclusion of Expert Report), Re',
+ cite:'[2026] EWCA Civ 1448', date:'2026-11-10', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1448', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1432', t:'Alphier Capital Two LLP v Blyvoor Gold Capital (Pty) Ltd',
  cite:'[2026] EWCA Civ 1432', date:'2026-11-09', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1432', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1434', t:'Latika Chugh v Sandeep Chugh',
+ cite:'[2026] EWCA Civ 1434', date:'2026-11-09', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1434', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1420', t:'Treal Care (UK) Limited, R (on the application of) v Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1420', date:'2026-11-05', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -155,24 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1415', t:'R v Bilal Alfroh',
  cite:'[2026] EWCA Crim 1415', date:'2026-10-21', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1415', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1399', t:'R v Crimea Luke Price',
- cite:'[2026] EWCA Crim 1399', date:'2026-10-21', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1399', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1338', t:'David James v The General Medical Council',
- cite:'[2026] EWCA Civ 1338', date:'2026-10-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1338', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1398', t:'R v Peter Ash',
- cite:'[2026] EWCA Crim 1398', date:'2026-10-20', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1398', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1397', t:'R v Daisharn Carr',
- cite:'[2026] EWCA Crim 1397', date:'2026-10-20', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1397', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1331', t:'Timothy Bunting v The Commissioners for HMRC',
- cite:'[2026] EWCA Civ 1331', date:'2026-10-16', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1331', srcName:'Judgment (National Archives)'},
 ];
