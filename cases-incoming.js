@@ -12,10 +12,18 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-12
+   Written: 2026-11-13
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-12';
+const INCOMING_UPDATED = '2026-11-13';
 const INCOMING = [
+{id:'i-civ-2026-1462', t:'Dr Ebenezer Adodo v Argos Limited',
+ cite:'[2026] EWCA Civ 1462', date:'2026-11-13', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1462', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1457', t:'Alex Pabon & Ors v R (LIBOR and EURIBOR appeals) (Judgment on consequential orders)',
+ cite:'[2026] EWCA Crim 1457', date:'2026-11-13', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1457', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1440', t:'The Commissioners for HMRC v Hugh Edward Mark Osmond & Anor',
  cite:'[2026] EWCA Civ 1440', date:'2026-11-12', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1440', srcName:'Judgment (National Archives)'},
@@ -128,9 +136,21 @@ const INCOMING = [
  cite:'[2026] EWCA Civ 1375', date:'2026-10-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1375', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1449', t:'R v Kevin Sumner',
+ cite:'[2026] EWCA Crim 1449', date:'2026-10-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1449', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1459', t:'R v Y',
+ cite:'[2026] EWCA Crim 1459', date:'2026-10-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1459', srcName:'Judgment (National Archives)'},
+
 {id:'i-uksc-2026-36', t:'The Kingdom of Spain and another v The London Steam-Ship Owners\u2019 Mutual Insurance Association Limited No 2',
  cite:'[2026] UKSC 36', date:'2026-10-28', court:'UK Supreme Court', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/36', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1460', t:'R v Bradley Johnson',
+ cite:'[2026] EWCA Crim 1460', date:'2026-10-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1460', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1367', t:'Daniel Makin v Protec Security Group Limited',
  cite:'[2026] EWCA Civ 1367', date:'2026-10-27', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -155,24 +175,4 @@ const INCOMING = [
 {id:'i-civ-2026-1353', t:'The Russian Federation v Hulley Enterprises Limited & Ors',
  cite:'[2026] EWCA Civ 1353', date:'2026-10-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1353', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1358', t:'Republic of India v Ras Al Khaimah Investment Authority',
- cite:'[2026] EWCA Civ 1358', date:'2026-10-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1358', srcName:'Judgment (National Archives)'},
-
-{id:'i-uksc-2026-35', t:'ScottishPower (SCPL) Limited and others v Commissioners for His Majesty\u2019s Revenue and Customs',
- cite:'[2026] UKSC 35', date:'2026-10-21', court:'UK Supreme Court', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/35', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1349', t:'The Republic of Mozambique v Privinvest Shipbuilding SAL (Holding) & Ors',
- cite:'[2026] EWCA Civ 1349', date:'2026-10-21', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1349', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1363', t:'Leyla Soner Sophia Antoniou v Westley Nathan Morgan',
- cite:'[2026] EWCA Civ 1363', date:'2026-10-21', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1363', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1415', t:'R v Bilal Alfroh',
- cite:'[2026] EWCA Crim 1415', date:'2026-10-21', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1415', srcName:'Judgment (National Archives)'},
 ];
