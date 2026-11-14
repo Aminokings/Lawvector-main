@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-13
+   Written: 2026-11-14
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-13';
+const INCOMING_UPDATED = '2026-11-14';
 const INCOMING = [
 {id:'i-civ-2026-1462', t:'Dr Ebenezer Adodo v Argos Limited',
  cite:'[2026] EWCA Civ 1462', date:'2026-11-13', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -23,6 +23,14 @@ const INCOMING = [
 {id:'i-crim-2026-1457', t:'Alex Pabon & Ors v R (LIBOR and EURIBOR appeals) (Judgment on consequential orders)',
  cite:'[2026] EWCA Crim 1457', date:'2026-11-13', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1457', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1458', t:'Christian Bittar v R',
+ cite:'[2026] EWCA Crim 1458', date:'2026-11-13', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1458', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1443', t:'Kieron Goodwin v R',
+ cite:'[2026] EWCA Crim 1443', date:'2026-11-13', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1443', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1440', t:'The Commissioners for HMRC v Hugh Edward Mark Osmond & Anor',
  cite:'[2026] EWCA Civ 1440', date:'2026-11-12', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -167,12 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1428', t:'R v Brian O\'Neil',
  cite:'[2026] EWCA Crim 1428', date:'2026-10-23', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1428', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1364', t:'CKT & Anor, R (on the application of ) v Twyford Church of England Academies Trust & Ors',
- cite:'[2026] EWCA Civ 1364', date:'2026-10-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1364', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1353', t:'The Russian Federation v Hulley Enterprises Limited & Ors',
- cite:'[2026] EWCA Civ 1353', date:'2026-10-22', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1353', srcName:'Judgment (National Archives)'},
 ];
