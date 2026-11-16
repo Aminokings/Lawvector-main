@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-15
+   Written: 2026-11-16
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-15';
+const INCOMING_UPDATED = '2026-11-16';
 const INCOMING = [
 {id:'i-civ-2026-1462', t:'Dr Ebenezer Adodo v Argos Limited',
  cite:'[2026] EWCA Civ 1462', date:'2026-11-13', court:'Court of Appeal (Civil Division)', iso:'GBR',
