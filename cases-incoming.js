@@ -12,10 +12,18 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-16
+   Written: 2026-11-17
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-16';
+const INCOMING_UPDATED = '2026-11-17';
 const INCOMING = [
+{id:'i-civ-2026-1466', t:'Almacantar Centre Point Nominee No.1 Limited & Anor v Penelope Claire de Valk & Ors',
+ cite:'[2026] EWCA Civ 1466', date:'2026-11-17', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1466', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1465', t:'Morris Homes Limited & Anor, R (on the application of) v Secretary of State for Housing, Communities and Local Government',
+ cite:'[2026] EWCA Civ 1465', date:'2026-11-17', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1465', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1462', t:'Dr Ebenezer Adodo v Argos Limited',
  cite:'[2026] EWCA Civ 1462', date:'2026-11-13', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1462', srcName:'Judgment (National Archives)'},
@@ -112,6 +120,10 @@ const INCOMING = [
  cite:'[2026] EWCA Civ 1403', date:'2026-11-03', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1403', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1468', t:'R v Craig Chmiel',
+ cite:'[2026] EWCA Crim 1468', date:'2026-11-03', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1468', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1377', t:'The Kingdom Hall Trust v Peter Robert Davies',
  cite:'[2026] EWCA Civ 1377', date:'2026-11-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1377', srcName:'Judgment (National Archives)'},
@@ -152,6 +164,10 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1459', date:'2026-10-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1459', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1456', t:'R v Michael Kenny',
+ cite:'[2026] EWCA Crim 1456', date:'2026-10-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1456', srcName:'Judgment (National Archives)'},
+
 {id:'i-uksc-2026-36', t:'The Kingdom of Spain and another v The London Steam-Ship Owners\u2019 Mutual Insurance Association Limited No 2',
  cite:'[2026] UKSC 36', date:'2026-10-28', court:'UK Supreme Court', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/36', srcName:'Judgment (National Archives)'},
@@ -159,20 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1460', t:'R v Bradley Johnson',
  cite:'[2026] EWCA Crim 1460', date:'2026-10-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1460', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1367', t:'Daniel Makin v Protec Security Group Limited',
- cite:'[2026] EWCA Civ 1367', date:'2026-10-27', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1367', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1435', t:'R v Davia Howarth',
- cite:'[2026] EWCA Crim 1435', date:'2026-10-27', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1435', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1357', t:'David Parsons v Convatec Limited',
- cite:'[2026] EWCA Civ 1357', date:'2026-10-26', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1357', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1428', t:'R v Brian O\'Neil',
- cite:'[2026] EWCA Crim 1428', date:'2026-10-23', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1428', srcName:'Judgment (National Archives)'},
 ];
