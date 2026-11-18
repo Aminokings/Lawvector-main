@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-17
+   Written: 2026-11-18
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-17';
+const INCOMING_UPDATED = '2026-11-18';
 const INCOMING = [
 {id:'i-civ-2026-1466', t:'Almacantar Centre Point Nominee No.1 Limited & Anor v Penelope Claire de Valk & Ors',
  cite:'[2026] EWCA Civ 1466', date:'2026-11-17', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -124,6 +124,10 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1468', date:'2026-11-03', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1468', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1469', t:'R v John Robbins & Anor',
+ cite:'[2026] EWCA Crim 1469', date:'2026-11-03', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1469', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1377', t:'The Kingdom Hall Trust v Peter Robert Davies',
  cite:'[2026] EWCA Civ 1377', date:'2026-11-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1377', srcName:'Judgment (National Archives)'},
@@ -171,8 +175,4 @@ const INCOMING = [
 {id:'i-uksc-2026-36', t:'The Kingdom of Spain and another v The London Steam-Ship Owners\u2019 Mutual Insurance Association Limited No 2',
  cite:'[2026] UKSC 36', date:'2026-10-28', court:'UK Supreme Court', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/36', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1460', t:'R v Bradley Johnson',
- cite:'[2026] EWCA Crim 1460', date:'2026-10-28', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1460', srcName:'Judgment (National Archives)'},
 ];
