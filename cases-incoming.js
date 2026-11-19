@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-18
+   Written: 2026-11-19
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-18';
+const INCOMING_UPDATED = '2026-11-19';
 const INCOMING = [
 {id:'i-civ-2026-1466', t:'Almacantar Centre Point Nominee No.1 Limited & Anor v Penelope Claire de Valk & Ors',
  cite:'[2026] EWCA Civ 1466', date:'2026-11-17', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -91,6 +91,10 @@ const INCOMING = [
 {id:'i-crim-2026-1429', t:'R v Vickrum Singh Digwa',
  cite:'[2026] EWCA Crim 1429', date:'2026-11-05', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1429', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1478', t:'R v Matthew Kevin Appleton',
+ cite:'[2026] EWCA Crim 1478', date:'2026-11-05', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1478', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1412', t:'SmartestEnergy Business Limited v Odeon Arcade Limited',
  cite:'[2026] EWCA Civ 1412', date:'2026-11-04', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -171,8 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1456', t:'R v Michael Kenny',
  cite:'[2026] EWCA Crim 1456', date:'2026-10-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1456', srcName:'Judgment (National Archives)'},
-
-{id:'i-uksc-2026-36', t:'The Kingdom of Spain and another v The London Steam-Ship Owners\u2019 Mutual Insurance Association Limited No 2',
- cite:'[2026] UKSC 36', date:'2026-10-28', court:'UK Supreme Court', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/36', srcName:'Judgment (National Archives)'},
 ];
