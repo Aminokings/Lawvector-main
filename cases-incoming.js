@@ -12,10 +12,34 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-19
+   Written: 2026-11-20
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-19';
+const INCOMING_UPDATED = '2026-11-20';
 const INCOMING = [
+{id:'i-civ-2026-1484', t:'Peter Scholey Dunn v Kostas Kazolides',
+ cite:'[2026] EWCA Civ 1484', date:'2026-11-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1484', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1485', t:'London Borough of Enfield v Bakshi Tarenjit Singh Lamba',
+ cite:'[2026] EWCA Civ 1485', date:'2026-11-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1485', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1476', t:'Mex Group Worldwide Limited v Stewart Owen Ford & Ors',
+ cite:'[2026] EWCA Civ 1476', date:'2026-11-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1476', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1483', t:'Island Park (Medway) Limited & Anor v Ian Dunkley & Anor',
+ cite:'[2026] EWCA Civ 1483', date:'2026-11-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1483', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1486', t:'MS \'V1\' GmbH & Co KG & Anor v SY Co Ltd',
+ cite:'[2026] EWCA Civ 1486', date:'2026-11-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1486', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1487', t:'Pradeep Morjaria & Ors v Camran Mirzna & Ors',
+ cite:'[2026] EWCA Civ 1487', date:'2026-11-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1487', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1466', t:'Almacantar Centre Point Nominee No.1 Limited & Anor v Penelope Claire de Valk & Ors',
  cite:'[2026] EWCA Civ 1466', date:'2026-11-17', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1466', srcName:'Judgment (National Archives)'},
@@ -80,6 +104,10 @@ const INCOMING = [
  cite:'[2026] EWCA Civ 1434', date:'2026-11-09', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1434', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1490', t:'R v Alan John Holmes Smillie',
+ cite:'[2026] EWCA Crim 1490', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1490', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1420', t:'Treal Care (UK) Limited, R (on the application of) v Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1420', date:'2026-11-05', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1420', srcName:'Judgment (National Archives)'},
@@ -95,6 +123,10 @@ const INCOMING = [
 {id:'i-crim-2026-1478', t:'R v Matthew Kevin Appleton',
  cite:'[2026] EWCA Crim 1478', date:'2026-11-05', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1478', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1488', t:'R v Z\'Fa Hayles',
+ cite:'[2026] EWCA Crim 1488', date:'2026-11-05', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1488', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1412', t:'SmartestEnergy Business Limited v Odeon Arcade Limited',
  cite:'[2026] EWCA Civ 1412', date:'2026-11-04', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -143,36 +175,4 @@ const INCOMING = [
 {id:'i-civ-2026-1373', t:'PJSC VTB BANK v HM TREASURY',
  cite:'[2026] EWCA Civ 1373', date:'2026-10-30', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1373', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1369', t:'THOMAS HOLDINGS LIMITED (R on the application of) v THE COMMISSIONERS FOR HIS MAJESTY\u2019S REVENUE AND CUSTOMS',
- cite:'[2026] EWCA Civ 1369', date:'2026-10-30', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1369', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1390', t:'Servis-Terminal LLC v Valeriy Ernestovich Drelle',
- cite:'[2026] EWCA Civ 1390', date:'2026-10-30', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1390', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1368', t:'TJ Trading Express Limited, R (on the application of) v Secretary of State for the Home Department',
- cite:'[2026] EWCA Civ 1368', date:'2026-10-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1368', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1374', t:'Barry McCaffrey & Anor v Chief Constable of Police Service of Northern Ireland & Ors',
- cite:'[2026] EWCA Civ 1374', date:'2026-10-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1374', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1375', t:'Transworld Payment Solutions UK Limited & Anor v First Cura\u00e7ao International Bank NV & Anor',
- cite:'[2026] EWCA Civ 1375', date:'2026-10-29', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1375', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1449', t:'R v Kevin Sumner',
- cite:'[2026] EWCA Crim 1449', date:'2026-10-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1449', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1459', t:'R v Y',
- cite:'[2026] EWCA Crim 1459', date:'2026-10-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1459', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1456', t:'R v Michael Kenny',
- cite:'[2026] EWCA Crim 1456', date:'2026-10-29', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1456', srcName:'Judgment (National Archives)'},
 ];
