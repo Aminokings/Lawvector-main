@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-20
+   Written: 2026-11-21
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-20';
+const INCOMING_UPDATED = '2026-11-21';
 const INCOMING = [
 {id:'i-civ-2026-1484', t:'Peter Scholey Dunn v Kostas Kazolides',
  cite:'[2026] EWCA Civ 1484', date:'2026-11-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -39,6 +39,10 @@ const INCOMING = [
 {id:'i-civ-2026-1487', t:'Pradeep Morjaria & Ors v Camran Mirzna & Ors',
  cite:'[2026] EWCA Civ 1487', date:'2026-11-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1487', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1464', t:'Swindon Borough Council v Thames Water Utilities Limited, R (on the application of)',
+ cite:'[2026] EWCA Civ 1464', date:'2026-11-19', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1464', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1466', t:'Almacantar Centre Point Nominee No.1 Limited & Anor v Penelope Claire de Valk & Ors',
  cite:'[2026] EWCA Civ 1466', date:'2026-11-17', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -108,6 +112,10 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1490', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1490', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1489', t:'R v Antonino Precaj',
+ cite:'[2026] EWCA Crim 1489', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1489', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1420', t:'Treal Care (UK) Limited, R (on the application of) v Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1420', date:'2026-11-05', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1420', srcName:'Judgment (National Archives)'},
@@ -167,12 +175,4 @@ const INCOMING = [
 {id:'i-civ-2026-1377', t:'The Kingdom Hall Trust v Peter Robert Davies',
  cite:'[2026] EWCA Civ 1377', date:'2026-11-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1377', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1392', t:'Operafund Eco-Invest Sicav Plc & Ors v The Kingdom of Spain',
- cite:'[2026] EWCA Civ 1392', date:'2026-11-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1392', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1373', t:'PJSC VTB BANK v HM TREASURY',
- cite:'[2026] EWCA Civ 1373', date:'2026-10-30', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1373', srcName:'Judgment (National Archives)'},
 ];
