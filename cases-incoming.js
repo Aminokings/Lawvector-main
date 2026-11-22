@@ -12,9 +12,9 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-21
+   Written: 2026-11-22
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-21';
+const INCOMING_UPDATED = '2026-11-22';
 const INCOMING = [
 {id:'i-civ-2026-1484', t:'Peter Scholey Dunn v Kostas Kazolides',
  cite:'[2026] EWCA Civ 1484', date:'2026-11-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
