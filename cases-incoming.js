@@ -12,10 +12,18 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-23
+   Written: 2026-11-24
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-23';
+const INCOMING_UPDATED = '2026-11-24';
 const INCOMING = [
+{id:'i-civ-2026-1493', t:'Nadine Morgan Gould & Anor v Carol Esteban',
+ cite:'[2026] EWCA Civ 1493', date:'2026-11-24', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1493', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1501', t:'Secretary of State for the Home Department v Mohammed Mubeen Agha Aslam',
+ cite:'[2026] EWCA Civ 1501', date:'2026-11-23', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1501', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1484', t:'Peter Scholey Dunn v Kostas Kazolides',
  cite:'[2026] EWCA Civ 1484', date:'2026-11-20', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1484', srcName:'Judgment (National Archives)'},
@@ -116,6 +124,14 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1489', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1489', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1515', t:'R v Gareth Daniel Ide',
+ cite:'[2026] EWCA Crim 1515', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1515', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1514', t:'R v Joanne Pemberton',
+ cite:'[2026] EWCA Crim 1514', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1514', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1420', t:'Treal Care (UK) Limited, R (on the application of) v Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1420', date:'2026-11-05', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1420', srcName:'Judgment (National Archives)'},
@@ -159,20 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1396', t:'R v James Ibori',
  cite:'[2026] EWCA Crim 1396', date:'2026-11-03', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1396', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1403', t:'Alliance Petrochemical Investment (Singapore) PTE Ltd v Francesco Mazzagatti & Anor',
- cite:'[2026] EWCA Civ 1403', date:'2026-11-03', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1403', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1468', t:'R v Craig Chmiel',
- cite:'[2026] EWCA Crim 1468', date:'2026-11-03', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1468', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1469', t:'R v John Robbins & Anor',
- cite:'[2026] EWCA Crim 1469', date:'2026-11-03', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1469', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1377', t:'The Kingdom Hall Trust v Peter Robert Davies',
- cite:'[2026] EWCA Civ 1377', date:'2026-11-02', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1377', srcName:'Judgment (National Archives)'},
 ];
