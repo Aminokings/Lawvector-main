@@ -12,13 +12,37 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-24
+   Written: 2026-11-25
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-24';
+const INCOMING_UPDATED = '2026-11-25';
 const INCOMING = [
+{id:'i-uksc-2026-38', t:'Stenner v Teignbridge District Council',
+ cite:'[2026] UKSC 38', date:'2026-11-25', court:'UK Supreme Court', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/38', srcName:'Judgment (National Archives)'},
+
+{id:'i-uksc-2026-37', t:'R (on the application of Foodrise Ltd (formerly Global Feedback Ltd)) v His Majesty\u2019s Treasury and others',
+ cite:'[2026] UKSC 37', date:'2026-11-25', court:'UK Supreme Court', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/37', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1500', t:'Farooq, R (on the application of) v Secretary of State for the Home Department',
+ cite:'[2026] EWCA Civ 1500', date:'2026-11-25', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1500', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1535', t:'Amin Dharmeshkumar v Secretary of State for Housing, Communities and Local Government & Anor',
+ cite:'[2026] EWCA Civ 1535', date:'2026-11-25', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1535', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1533', t:'QMR & Anor v R',
+ cite:'[2026] EWCA Crim 1533', date:'2026-11-25', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1533', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1493', t:'Nadine Morgan Gould & Anor v Carol Esteban',
  cite:'[2026] EWCA Civ 1493', date:'2026-11-24', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1493', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1502', t:'JSC "Kazan Oil Plant" v Aves Trade DMCC',
+ cite:'[2026] EWCA Civ 1502', date:'2026-11-24', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1502', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1501', t:'Secretary of State for the Home Department v Mohammed Mubeen Agha Aslam',
  cite:'[2026] EWCA Civ 1501', date:'2026-11-23', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -80,6 +104,10 @@ const INCOMING = [
  cite:'[2026] EWCA Civ 1440', date:'2026-11-12', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1440', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1540', t:'R v Devonne Claxton',
+ cite:'[2026] EWCA Crim 1540', date:'2026-11-12', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1540', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1445', t:'G (A Child: Leave to Oppose Adoption)',
  cite:'[2026] EWCA Civ 1445', date:'2026-11-11', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1445', srcName:'Judgment (National Archives)'},
@@ -132,6 +160,10 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1514', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1514', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1480', t:'R v Nicholas Mitchell',
+ cite:'[2026] EWCA Crim 1480', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1480', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1420', t:'Treal Care (UK) Limited, R (on the application of) v Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1420', date:'2026-11-05', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1420', srcName:'Judgment (National Archives)'},
@@ -143,36 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1429', t:'R v Vickrum Singh Digwa',
  cite:'[2026] EWCA Crim 1429', date:'2026-11-05', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1429', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1478', t:'R v Matthew Kevin Appleton',
- cite:'[2026] EWCA Crim 1478', date:'2026-11-05', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1478', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1488', t:'R v Z\'Fa Hayles',
- cite:'[2026] EWCA Crim 1488', date:'2026-11-05', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1488', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1412', t:'SmartestEnergy Business Limited v Odeon Arcade Limited',
- cite:'[2026] EWCA Civ 1412', date:'2026-11-04', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1412', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1416', t:'RM v The Secretary of State for the Home Department',
- cite:'[2026] EWCA Civ 1416', date:'2026-11-04', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1416', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1411', t:'AAM v The Secretary of State for the Home Department',
- cite:'[2026] EWCA Civ 1411', date:'2026-11-04', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1411', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1402', t:'Caerphilly County Borough Council v Richard James Williamson, R (on the application of)',
- cite:'[2026] EWCA Civ 1402', date:'2026-11-03', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1402', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1389', t:'Vivid Housing Limited v Allianz Global Corporate & Specialty SE',
- cite:'[2026] EWCA Civ 1389', date:'2026-11-03', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1389', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1396', t:'R v James Ibori',
- cite:'[2026] EWCA Crim 1396', date:'2026-11-03', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1396', srcName:'Judgment (National Archives)'},
 ];
