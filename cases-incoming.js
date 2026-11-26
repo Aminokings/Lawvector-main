@@ -12,10 +12,26 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-25
+   Written: 2026-11-26
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-25';
+const INCOMING_UPDATED = '2026-11-26';
 const INCOMING = [
+{id:'i-civ-2026-1545', t:'Kanlungan Migrant Centre v Undram Munkhbat & Ors',
+ cite:'[2026] EWCA Civ 1545', date:'2026-11-26', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1545', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1536', t:'Cabo Concepts Limited & Anor v MGA Entertainment (UK) Limited & Anor',
+ cite:'[2026] EWCA Civ 1536', date:'2026-11-26', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1536', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1544', t:'Paul Hewett v Toby Scott Whittaker',
+ cite:'[2026] EWCA Civ 1544', date:'2026-11-26', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1544', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1546', t:'Ramandeep Singh & Anor, R (on the application of) v The Secretary of State for the Home Department',
+ cite:'[2026] EWCA Civ 1546', date:'2026-11-26', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1546', srcName:'Judgment (National Archives)'},
+
 {id:'i-uksc-2026-38', t:'Stenner v Teignbridge District Council',
  cite:'[2026] UKSC 38', date:'2026-11-25', court:'UK Supreme Court', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/uksc/2026/38', srcName:'Judgment (National Archives)'},
@@ -100,6 +116,10 @@ const INCOMING = [
  cite:'[2026] EWCA Crim 1443', date:'2026-11-13', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1443', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1551', t:'R v Abbas Hussain',
+ cite:'[2026] EWCA Crim 1551', date:'2026-11-13', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1551', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1440', t:'The Commissioners for HMRC v Hugh Edward Mark Osmond & Anor',
  cite:'[2026] EWCA Civ 1440', date:'2026-11-12', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1440', srcName:'Judgment (National Archives)'},
@@ -107,6 +127,10 @@ const INCOMING = [
 {id:'i-crim-2026-1540', t:'R v Devonne Claxton',
  cite:'[2026] EWCA Crim 1540', date:'2026-11-12', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1540', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1550', t:'R v Daryl German & Ors',
+ cite:'[2026] EWCA Crim 1550', date:'2026-11-12', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1550', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1445', t:'G (A Child: Leave to Oppose Adoption)',
  cite:'[2026] EWCA Civ 1445', date:'2026-11-11', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -136,6 +160,10 @@ const INCOMING = [
  cite:'[2026] EWCA Civ 1448', date:'2026-11-10', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1448', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1549', t:'R v Scott Brand',
+ cite:'[2026] EWCA Crim 1549', date:'2026-11-10', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1549', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1432', t:'Alphier Capital Two LLP v Blyvoor Gold Capital (Pty) Ltd',
  cite:'[2026] EWCA Civ 1432', date:'2026-11-09', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1432', srcName:'Judgment (National Archives)'},
@@ -147,32 +175,4 @@ const INCOMING = [
 {id:'i-crim-2026-1490', t:'R v Alan John Holmes Smillie',
  cite:'[2026] EWCA Crim 1490', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1490', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1489', t:'R v Antonino Precaj',
- cite:'[2026] EWCA Crim 1489', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1489', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1515', t:'R v Gareth Daniel Ide',
- cite:'[2026] EWCA Crim 1515', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1515', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1514', t:'R v Joanne Pemberton',
- cite:'[2026] EWCA Crim 1514', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1514', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1480', t:'R v Nicholas Mitchell',
- cite:'[2026] EWCA Crim 1480', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1480', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1420', t:'Treal Care (UK) Limited, R (on the application of) v Secretary of State for the Home Department',
- cite:'[2026] EWCA Civ 1420', date:'2026-11-05', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1420', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1430', t:'Elle Walton & Anor v R',
- cite:'[2026] EWCA Crim 1430', date:'2026-11-05', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1430', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1429', t:'R v Vickrum Singh Digwa',
- cite:'[2026] EWCA Crim 1429', date:'2026-11-05', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1429', srcName:'Judgment (National Archives)'},
 ];
