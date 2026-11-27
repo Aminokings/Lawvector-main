@@ -12,10 +12,26 @@
    Triage promotes an entry into cases-recent.js, where it gains a
    stream, an area, and a summary if it earns one. See UPDATING.md.
 
-   Written: 2026-11-26
+   Written: 2026-11-27
    ================================================================== */
-const INCOMING_UPDATED = '2026-11-26';
+const INCOMING_UPDATED = '2026-11-27';
 const INCOMING = [
+{id:'i-civ-2026-1542', t:'Secretary of State for the Home Department v Mahad Muumin',
+ cite:'[2026] EWCA Civ 1542', date:'2026-11-27', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1542', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1494', t:'Michael Saunders v The Commissioners for HMRC',
+ cite:'[2026] EWCA Civ 1494', date:'2026-11-27', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1494', srcName:'Judgment (National Archives)'},
+
+{id:'i-civ-2026-1562', t:'Felix Ngole v Touchstone Leeds',
+ cite:'[2026] EWCA Civ 1562', date:'2026-11-27', court:'Court of Appeal (Civil Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1562', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1555', t:'R v QGO',
+ cite:'[2026] EWCA Crim 1555', date:'2026-11-27', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1555', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1545', t:'Kanlungan Migrant Centre v Undram Munkhbat & Ors',
  cite:'[2026] EWCA Civ 1545', date:'2026-11-26', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1545', srcName:'Judgment (National Archives)'},
@@ -100,6 +116,14 @@ const INCOMING = [
  cite:'[2026] EWCA Civ 1465', date:'2026-11-17', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1465', srcName:'Judgment (National Archives)'},
 
+{id:'i-crim-2026-1565', t:'R v Mandeep Thiara',
+ cite:'[2026] EWCA Crim 1565', date:'2026-11-17', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1565', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1566', t:'R v Wayne Davis',
+ cite:'[2026] EWCA Crim 1566', date:'2026-11-17', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1566', srcName:'Judgment (National Archives)'},
+
 {id:'i-civ-2026-1462', t:'Dr Ebenezer Adodo v Argos Limited',
  cite:'[2026] EWCA Civ 1462', date:'2026-11-13', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1462', srcName:'Judgment (National Archives)'},
@@ -119,6 +143,10 @@ const INCOMING = [
 {id:'i-crim-2026-1551', t:'R v Abbas Hussain',
  cite:'[2026] EWCA Crim 1551', date:'2026-11-13', court:'Court of Appeal (Criminal Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1551', srcName:'Judgment (National Archives)'},
+
+{id:'i-crim-2026-1564', t:'R v Jake Dodsworth',
+ cite:'[2026] EWCA Crim 1564', date:'2026-11-13', court:'Court of Appeal (Criminal Division)', iso:'GBR',
+ src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1564', srcName:'Judgment (National Archives)'},
 
 {id:'i-civ-2026-1440', t:'The Commissioners for HMRC v Hugh Edward Mark Osmond & Anor',
  cite:'[2026] EWCA Civ 1440', date:'2026-11-12', court:'Court of Appeal (Civil Division)', iso:'GBR',
@@ -147,32 +175,4 @@ const INCOMING = [
 {id:'i-civ-2026-1446', t:'Jen & Jamie Limited v The Secretary of State for the Home Department',
  cite:'[2026] EWCA Civ 1446', date:'2026-11-11', court:'Court of Appeal (Civil Division)', iso:'GBR',
  src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1446', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1442', t:'Paul Matthews v BSN (SW) Property Ltd & Anor',
- cite:'[2026] EWCA Civ 1442', date:'2026-11-11', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1442', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1437', t:'Robert Knapp v R',
- cite:'[2026] EWCA Crim 1437', date:'2026-11-10', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1437', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1448', t:'H (Children: Exclusion of Expert Report), Re',
- cite:'[2026] EWCA Civ 1448', date:'2026-11-10', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1448', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1549', t:'R v Scott Brand',
- cite:'[2026] EWCA Crim 1549', date:'2026-11-10', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1549', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1432', t:'Alphier Capital Two LLP v Blyvoor Gold Capital (Pty) Ltd',
- cite:'[2026] EWCA Civ 1432', date:'2026-11-09', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1432', srcName:'Judgment (National Archives)'},
-
-{id:'i-civ-2026-1434', t:'Latika Chugh v Sandeep Chugh',
- cite:'[2026] EWCA Civ 1434', date:'2026-11-09', court:'Court of Appeal (Civil Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/civ/2026/1434', srcName:'Judgment (National Archives)'},
-
-{id:'i-crim-2026-1490', t:'R v Alan John Holmes Smillie',
- cite:'[2026] EWCA Crim 1490', date:'2026-11-06', court:'Court of Appeal (Criminal Division)', iso:'GBR',
- src:'https://caselaw.nationalarchives.gov.uk/ewca/crim/2026/1490', srcName:'Judgment (National Archives)'},
 ];
